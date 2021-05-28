@@ -112,12 +112,12 @@ class Player
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $GoldentRacketPlayed;
+    private $GoldenRacketPlayed;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $GoldentRacketAveragePlacement;
+    private $GoldenRacketAveragePlacement;
 
     public function __construct()
     {
@@ -361,26 +361,26 @@ class Player
         return $this;
     }
 
-    public function getGoldentRacketPlayed(): ?int
+    public function getGoldenRacketPlayed(): ?int
     {
-        return $this->GoldentRacketPlayed;
+        return $this->GoldenRacketPlayed;
     }
 
-    public function setGoldentRacketPlayed(?int $GoldentRacketPlayed): self
+    public function setGoldenRacketPlayed(?int $GoldenRacketPlayed): self
     {
-        $this->GoldentRacketPlayed = $GoldentRacketPlayed;
+        $this->GoldenRacketPlayed = $GoldenRacketPlayed;
 
         return $this;
     }
 
-    public function getGoldentRacketAveragePlacement(): ?float
+    public function getGoldenRacketAveragePlacement(): ?float
     {
-        return $this->GoldentRacketAveragePlacement;
+        return $this->GoldenRacketAveragePlacement;
     }
 
-    public function setGoldentRacketAveragePlacement(?float $GoldentRacketAveragePlacement): self
+    public function setGoldenRacketAveragePlacement(?float $GoldenRacketAveragePlacement): self
     {
-        $this->GoldentRacketAveragePlacement = $GoldentRacketAveragePlacement;
+        $this->GoldenRacketAveragePlacement = $GoldenRacketAveragePlacement;
 
         return $this;
     }
