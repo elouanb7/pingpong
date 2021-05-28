@@ -54,6 +54,16 @@ class Game
      */
     private $isGoldenRacket;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $scoreP1;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $scoreP2;
+
     public function __construct()
     {
         $this->Players = new ArrayCollection();
@@ -157,6 +167,54 @@ class Game
     public function setIsGoldenRacket(?bool $isGoldenRacket): self
     {
         $this->isGoldenRacket = $isGoldenRacket;
+
+        return $this;
+    }
+
+    public function getScoreP1(): ?int
+    {
+        return $this->scoreP1;
+    }
+
+    public function setScoreP1(?int $scoreP1): self
+    {
+        $this->scoreP1 = $scoreP1;
+
+        return $this;
+    }
+
+    public function getScoreP2(): ?int
+    {
+        return $this->scoreP2;
+    }
+
+    public function setScoreP2(?int $scoreP2): self
+    {
+        $this->scoreP2 = $scoreP2;
+
+        return $this;
+    }
+
+    public function getPlayer1()
+    {
+        return $this->player1;
+    }
+
+    public function setPlayer1($player1): self
+    {
+        $this->player1 = $player1;
+
+        return $this;
+    }
+
+    public function getPlayer2()
+    {
+        return $this->player2;
+    }
+
+    public function setPlayer2($player2): self
+    {
+        $this->player2 = $player2;
 
         return $this;
     }
