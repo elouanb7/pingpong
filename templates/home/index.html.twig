@@ -31,11 +31,13 @@
                                                 Nouveau Match
                                             </h1>
                                             <p class="card-text">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, provident.
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius,
+                                                provident.
                                             </p>
                                         </div>
                                         <div class="col-3 my-auto">
-                                            <a href="{{ path('chooseP1') }}" class="btn btn-success">Commencer un match</a>
+                                            <a href="{{ path('chooseP1') }}" class="btn btn-success">Commencer un
+                                                match</a>
                                         </div>
                                     </div>
 
@@ -43,50 +45,63 @@
                                 </div>
                             </div>
                         </div>
-                        {#<div class="col-md-9">
+                        <div class="col-md-9">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Historique des matchs</h5>
                                     <hr>
                                     <div class="card-text">
-                                        <div class="list-group {{ tickets|length>2 ? "dashboard" : "" }}">
-                                            {% for ticket in tickets %}
+                                        <div class="list-group {{ games|length>3 ? "dashboard" : "" }}">
+                                            {% for game in games %}
 
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
                                                         <div class="col-md-9 ">
 
-                                                            <a href="{{ path('detail',{'id':ticket.id}) }}"><h5
-                                                                        class="mb-1">{{ ticket.intitule }}</h5>
+                                                            <a href="{# {{ path('detail',{'id':ticket.id}) }} #}">
+                                                                <h5 class="mb-1">
+                                                                    {% set show = 1 %}
+                                                                    {% for jouer in jouers %}
+                                                                        {% if jouer.game == game %}
+                                                                        {{ jouer.player.fullName }}
+                                                                            {% set show = show+1 %}
+                                                                        {% endif %}
+                                                                        {% if show == 2 %}
+                                                                            VS
+                                                                            {% set show = false %}
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </h5>
                                                             </a>
-                                                            <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p>
-                                                            <small>Posté par <a
+                                                            {#<p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p>#}
+                                                            {#<small>Posté par <a
                                                                         href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
-                                                            </small>
+                                                            </small>#}
 
                                                         </div>
 
-                                                        <div class="col-md-3">
+                                                        {#<div class="col-md-3">
                                                             <div class="col-md-12 text-right">
                                                                 {% set myOlderDate = ticket.createdAt | date %}
                                                                 <small class="">{{ myOlderDate|ago }}</small>
                                                             </div>
-                                                        </div>
+                                                        </div>#}
                                                     </div>
                                                 </div>
                                             {% endfor %}
-                                            {% if allTickets > 6 %}
+                                            {#{% if allTickets > 6 %}
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
-                                                        <h5><a class="ml-3" href="{{ path('tickets') }}">Voir plus >></a></h5>
+                                                        <h5><a class="ml-3" href="{{ path('tickets') }}">Voir plus
+                                                                >></a></h5>
                                                     </div>
                                                 </div>
-                                            {% endif %}
+                                            {% endif %}#}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>#}
+                        </div>
                         <div class="col-3">
 
                         </div>

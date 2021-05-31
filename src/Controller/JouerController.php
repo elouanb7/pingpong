@@ -4,9 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Entity\Jouer;
+use App\Entity\Player;
 use App\Form\JouerType;
 use App\Repository\GameRepository;
+use App\Repository\JouerRepository;
+use App\Repository\PlayerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +20,15 @@ class JouerController extends AbstractController
 {
     private EntityManagerInterface $manager;
     private GameRepository $gameRepo;
+    private PlayerRepository $playerRepo;
+    private JouerRepository $jouerRepo;
 
-    public function __construct(EntityManagerInterface $manager, GameRepository $gameRepo)
+    public function __construct(EntityManagerInterface $manager, GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo)
     {
         $this->manager = $manager;
         $this->gameRepo = $gameRepo;
+        $this->jouerRepo = $jouerRepo;
+        $this->playerRepo = $playerRepo;
     }
 
     /**
@@ -32,15 +40,25 @@ class JouerController extends AbstractController
     {
         $game = new Game();
         $jouer = new Jouer();
-
+        $form2 = $this->createFormBuilder()
+            ->add('player', EntityType::class, [
+                'class' => Player::class,
+                'choice_label' => function ($player) {
+                    return $player->getFullName();
+                },
+                'disabled' => true,
+            ])
+            ->getForm();
         $form = $this->createForm(JouerType::class, $jouer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $jouer = $form->getData();
+            $player1 = $this->playerRepo->findOneBy(['id' => $jouer->getPlayer()->getId()]);
             $date = new \DateTime('now');
             $jouer->setPlayedAt($date);
             $jouer->setGame($game);
+            $game->setPlayedAt($date);
             $this->manager->persist($game);
             $this->manager->persist($jouer);
             $this->manager->flush();
@@ -50,28 +68,43 @@ class JouerController extends AbstractController
             );
             return $this->redirectToRoute('chooseP2', [
                 'id' => $game->getId(),
+                'player1' => $player1,
             ]);
         }
         return $this->render('jouer/player1.html.twig', [
             'form' => $form->createView(),
+            'formD' => $form2->createView(),
+
         ]);
     }
 
     /**
-     * @Route("/game/newGame/player1", name="chooseP2")
+     * @Route("/game/newGame/player2", name="chooseP2")
      * @param Request $request
      * @return Response
      */
     public function chooseP2(Request $request): Response
     {
         $jouer = new Jouer();
-        $game = $this->gameRepo->findOneBy([]['DESC']);
+
+        $game = $this->gameRepo->findOneBy([], ['playedAt' => 'DESC']);
+
+        $player1Jouer =  $this->jouerRepo->findOneBy(['Game' => $game->getId()]);
+        $player1 = $this->playerRepo->findOneBy(['id' => $player1Jouer->getPlayer()]);
         $form = $this->createForm(JouerType::class, $jouer);
         $form->handleRequest($request);
-
+        $form2 = $this->createFormBuilder()
+            ->add('player', EntityType::class, [
+                'class' => Player::class,
+                'choice_label' => function ($player) {
+                    return $player->getFullName();
+                },
+                'disabled' => true,
+            ])
+            ->getForm();
         if ($form->isSubmitted() && $form->isValid()) {
             $jouer = $form->getData();
-            $date = new \DateTime('now');
+            $date = $game->getPlayedAt();
             $jouer->setPlayedAt($date);
             $jouer->setGame($game);
             $this->manager->persist($jouer);
@@ -86,6 +119,8 @@ class JouerController extends AbstractController
         }
         return $this->render('jouer/player2.html.twig', [
             'form' => $form->createView(),
+            'formD' => $form2->createView(),
+            'player1' => $player1,
         ]);
     }
 }

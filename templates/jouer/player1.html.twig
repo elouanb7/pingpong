@@ -14,7 +14,9 @@
                         <p class="card-text">
                             {{ form_start(form) }}
                             {{ form_widget(form.player) }}
-                            <button type="submit" class="btn btn-success mt-3">Valider</button>
+                            <button type="submit" class="btn btn-success mt-3 btn-block">Valider</button>
+
+
                             {{ form_end(form) }}
                         </p>
                     </div>
@@ -23,14 +25,17 @@
             <div class="col-2">
                 <h1 class="text-center">VS</h1>
             </div>
-            <div class="col-5 disabled">
+            <div class="col-5">
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title">
                             Joueur 2 :
                         </h1>
                         <p class="card-text">
-
+                            {{ form_start(formD) }}
+                            {{ form_widget(formD.player) }}
+                            <button type="submit" class="btn btn-success mt-3 btn-block" disabled>Valider</button>
+                            {{ form_end(formD) }}
                         </p>
                     </div>
                 </div>
@@ -38,5 +43,4 @@
         </div>
     </div>
 {% endblock %}
-
 
