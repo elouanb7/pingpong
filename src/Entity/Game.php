@@ -30,11 +30,6 @@ class Game
     private $Tournament;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Player::class, inversedBy="games")
-     */
-    private $Players;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $playedAt;
@@ -64,9 +59,14 @@ class Game
      */
     private $scoreP2;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Jouer::class, mappedBy="Game")
+     */
+    private $jouers;
+
     public function __construct()
     {
-        $this->Players = new ArrayCollection();
+        $this->jouers = new ArrayCollection();
     }
 
 
@@ -95,30 +95,6 @@ class Game
     public function setTournament(?Tournament $Tournament): self
     {
         $this->Tournament = $Tournament;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Player[]
-     */
-    public function getPlayers(): Collection
-    {
-        return $this->Players;
-    }
-
-    public function addPlayer(Player $player): self
-    {
-        if (!$this->Players->contains($player)) {
-            $this->Players[] = $player;
-        }
-
-        return $this;
-    }
-
-    public function removePlayer(Player $player): self
-    {
-        $this->Players->removeElement($player);
 
         return $this;
     }
@@ -195,28 +171,33 @@ class Game
         return $this;
     }
 
-    public function getPlayer1()
+    /**
+     * @return Collection|Jouer[]
+     */
+    public function getJouers(): Collection
     {
-        return $this->player1;
+        return $this->jouers;
     }
 
-    public function setPlayer1($player1): self
+    public function addJouer(Jouer $jouer): self
     {
-        $this->player1 = $player1;
+        if (!$this->jouers->contains($jouer)) {
+            $this->jouers[] = $jouer;
+            $jouer->setGame($this);
+        }
 
         return $this;
     }
 
-    public function getPlayer2()
+    public function removeJouer(Jouer $jouer): self
     {
-        return $this->player2;
-    }
-
-    public function setPlayer2($player2): self
-    {
-        $this->player2 = $player2;
+        if ($this->jouers->removeElement($jouer)) {
+            // set the owning side to null (unless already changed)
+            if ($jouer->getGame() === $this) {
+                $jouer->setGame(null);
+            }
+        }
 
         return $this;
     }
-
 }

@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
 
         // 2 - Je récupère mes utilisateurs et je crée un match
 
-        $players = $this->playerRepo->findAll();
+       /* $players = $this->playerRepo->findAll();
         for ($i = 0; $i < 10; $i++) {
             $players[$i]->setMatchScore((mt_rand(0, 10)));
             $game = new Game();
@@ -75,7 +75,7 @@ class AppFixtures extends Fixture
             $game->setPlayer2($players[$j]);
             $manager->persist($game);
         }
-        $manager->flush();
+        $manager->flush();*/
 
 
         // 3 - Je boucle (for)

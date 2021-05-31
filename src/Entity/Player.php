@@ -34,11 +34,6 @@ class Player implements UserInterface
     private $GoldenRacketPlayers;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Game::class, mappedBy="Players")
-     */
-    private $games;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $matchScore;
@@ -130,9 +125,15 @@ class Player implements UserInterface
      */
     private $GoldenRacketAveragePlacement;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Jouer::class, mappedBy="Player")
+     */
+    private $jouers;
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
+        $this->jouers = new ArrayCollection();
     }
 
 
@@ -161,33 +162,6 @@ class Player implements UserInterface
     public function setGoldenRacketPlayers(?GoldenRacketPlayers $GoldenRacketPlayers): self
     {
         $this->GoldenRacketPlayers = $GoldenRacketPlayers;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Game[]
-     */
-    public function getGames(): Collection
-    {
-        return $this->games;
-    }
-
-    public function addGame(Game $game): self
-    {
-        if (!$this->games->contains($game)) {
-            $this->games[] = $game;
-            $game->addPlayer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGame(Game $game): self
-    {
-        if ($this->games->removeElement($game)) {
-            $game->removePlayer($this);
-        }
 
         return $this;
     }
@@ -226,6 +200,11 @@ class Player implements UserInterface
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+       return $this->firstName . ' ' . $this->lastName;
     }
 
     public function getEmail(): ?string
@@ -414,5 +393,35 @@ class Player implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Jouer[]
+     */
+    public function getJouers(): Collection
+    {
+        return $this->jouers;
+    }
+
+    public function addJouer(Jouer $jouer): self
+    {
+        if (!$this->jouers->contains($jouer)) {
+            $this->jouers[] = $jouer;
+            $jouer->setPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJouer(Jouer $jouer): self
+    {
+        if ($this->jouers->removeElement($jouer)) {
+            // set the owning side to null (unless already changed)
+            if ($jouer->getPlayer() === $this) {
+                $jouer->setPlayer(null);
+            }
+        }
+
+        return $this;
     }
 }
