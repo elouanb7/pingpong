@@ -20,12 +20,12 @@ class GoldenRacket
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=GoldenRacketPlayers::class, mappedBy="GoldenRacket")
+     * @ORM\OneToMany(targetEntity=GoldenRacketPlayers::class, mappedBy="goldenRacket")
      */
     private $goldenRacketPlayers;
 
     /**
-     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="GoldenRacket")
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="goldenRacket")
      */
     private $games;
 

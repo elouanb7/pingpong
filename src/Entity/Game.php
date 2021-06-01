@@ -60,7 +60,7 @@ class Game
     private $scoreP2;
 
     /**
-     * @ORM\OneToMany(targetEntity=Jouer::class, mappedBy="Game")
+     * @ORM\OneToMany(targetEntity=Jouer::class, mappedBy="game")
      */
     private $jouers;
 
@@ -200,4 +200,6 @@ class Game
 
         return $this;
     }
+
+
 }

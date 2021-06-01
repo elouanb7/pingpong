@@ -20,12 +20,12 @@ class Tournament
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=TournamentPlayers::class, mappedBy="Tournament")
+     * @ORM\OneToMany(targetEntity=TournamentPlayers::class, mappedBy="tournament")
      */
     private $tournamentPlayers;
 
     /**
-     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="Tournament")
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="tournament")
      */
     private $games;
 

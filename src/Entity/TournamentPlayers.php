@@ -25,7 +25,7 @@ class TournamentPlayers
     private $tournament;
 
     /**
-     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="TournamentPlayers")
+     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="tournamentPlayers")
      */
     private $players;
 

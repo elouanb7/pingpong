@@ -20,7 +20,7 @@ class GoldenRacketPlayers
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="GoldenRacketPlayers")
+     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="goldenRacketPlayers")
      */
     private $players;
 

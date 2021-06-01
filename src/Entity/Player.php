@@ -126,9 +126,14 @@ class Player implements UserInterface
     private $goldenRacketAveragePlacement;
 
     /**
-     * @ORM\OneToMany(targetEntity=Jouer::class, mappedBy="Player")
+     * @ORM\OneToMany(targetEntity=Jouer::class, mappedBy="player")
      */
     private $jouers;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $matchRatio;
 
     public function __construct()
     {
@@ -421,6 +426,18 @@ class Player implements UserInterface
                 $jouer->setPlayer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMatchRatio(): ?float
+    {
+        return $this->matchRatio;
+    }
+
+    public function setMatchRatio(?float $matchRatio): self
+    {
+        $this->matchRatio = $matchRatio;
 
         return $this;
     }
