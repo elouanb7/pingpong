@@ -20,22 +20,27 @@ class Jouer
     /**
      * @ORM\ManyToOne(targetEntity=Game::class, inversedBy="jouers")
      */
-    private $Game;
+    private $game;
 
     /**
      * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="jouers")
      */
-    private $Player;
+    private $player;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $PlayedAt;
+    private $playedAt;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isWinner;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $score;
 
     public function getId(): ?int
     {
@@ -44,36 +49,36 @@ class Jouer
 
     public function getGame(): ?Game
     {
-        return $this->Game;
+        return $this->game;
     }
 
-    public function setGame(?Game $Game): self
+    public function setGame(?Game $game): self
     {
-        $this->Game = $Game;
+        $this->game = $game;
 
         return $this;
     }
 
     public function getPlayer(): ?Player
     {
-        return $this->Player;
+        return $this->player;
     }
 
-    public function setPlayer(?Player $Player): self
+    public function setPlayer(?Player $player): self
     {
-        $this->Player = $Player;
+        $this->player = $player;
 
         return $this;
     }
 
     public function getPlayedAt(): ?\DateTimeInterface
     {
-        return $this->PlayedAt;
+        return $this->playedAt;
     }
 
-    public function setPlayedAt(?\DateTimeInterface $PlayedAt): self
+    public function setPlayedAt(?\DateTimeInterface $playedAt): self
     {
-        $this->PlayedAt = $PlayedAt;
+        $this->playedAt = $playedAt;
 
         return $this;
     }
@@ -86,6 +91,18 @@ class Jouer
     public function setIsWinner(?bool $isWinner): self
     {
         $this->isWinner = $isWinner;
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(?int $score): self
+    {
+        $this->score = $score;
 
         return $this;
     }

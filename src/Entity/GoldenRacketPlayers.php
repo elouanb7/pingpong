@@ -27,7 +27,7 @@ class GoldenRacketPlayers
     /**
      * @ORM\ManyToOne(targetEntity=GoldenRacket::class, inversedBy="goldenRacketPlayers")
      */
-    private $GoldenRacket;
+    private $goldenRacket;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -76,12 +76,12 @@ class GoldenRacketPlayers
 
     public function getGoldenRacket(): ?GoldenRacket
     {
-        return $this->GoldenRacket;
+        return $this->goldenRacket;
     }
 
-    public function setGoldenRacket(?GoldenRacket $GoldenRacket): self
+    public function setGoldenRacket(?GoldenRacket $goldenRacket): self
     {
-        $this->GoldenRacket = $GoldenRacket;
+        $this->goldenRacket = $goldenRacket;
 
         return $this;
     }

@@ -33,11 +33,13 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        $games = $this->gameRepo->findAll();
+        $games = $this->gameRepo->findBy([],['playedAt' => 'DESC'], 6);
+        $allGames = $this->gameRepo->findBy([],['playedAt' => 'DESC']);
         $jouers = $this->jouerRepo->findAll();
         return $this->render('home/index.html.twig', [
             'games' => $games,
             'jouers' => $jouers,
+            'allGames' => $allGames,
 
         ]);
     }

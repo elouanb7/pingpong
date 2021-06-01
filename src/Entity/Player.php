@@ -26,12 +26,12 @@ class Player implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=TournamentPlayers::class, inversedBy="players")
      */
-    private $TournamentPlayers;
+    private $tournamentPlayers;
 
     /**
      * @ORM\ManyToOne(targetEntity=GoldenRacketPlayers::class, inversedBy="players")
      */
-    private $GoldenRacketPlayers;
+    private $goldenRacketPlayers;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -113,17 +113,17 @@ class Player implements UserInterface
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $GoldenRacketWon;
+    private $goldenRacketWon;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $GoldenRacketPlayed;
+    private $goldenRacketPlayed;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $GoldenRacketAveragePlacement;
+    private $goldenRacketAveragePlacement;
 
     /**
      * @ORM\OneToMany(targetEntity=Jouer::class, mappedBy="Player")
@@ -144,24 +144,24 @@ class Player implements UserInterface
 
     public function getTournamentPlayers(): ?TournamentPlayers
     {
-        return $this->TournamentPlayers;
+        return $this->tournamentPlayers;
     }
 
-    public function setTournamentPlayers(?TournamentPlayers $TournamentPlayers): self
+    public function setTournamentPlayers(?TournamentPlayers $tournamentPlayers): self
     {
-        $this->TournamentPlayers = $TournamentPlayers;
+        $this->tournamentPlayers = $tournamentPlayers;
 
         return $this;
     }
 
     public function getGoldenRacketPlayers(): ?GoldenRacketPlayers
     {
-        return $this->GoldenRacketPlayers;
+        return $this->goldenRacketPlayers;
     }
 
-    public function setGoldenRacketPlayers(?GoldenRacketPlayers $GoldenRacketPlayers): self
+    public function setGoldenRacketPlayers(?GoldenRacketPlayers $goldenRacketPlayers): self
     {
-        $this->GoldenRacketPlayers = $GoldenRacketPlayers;
+        $this->goldenRacketPlayers = $goldenRacketPlayers;
 
         return $this;
     }
@@ -341,36 +341,36 @@ class Player implements UserInterface
 
     public function getGoldenRacketWon(): ?int
     {
-        return $this->GoldenRacketWon;
+        return $this->goldenRacketWon;
     }
 
-    public function setGoldenRacketWon(?int $GoldenRacketWon): self
+    public function setGoldenRacketWon(?int $goldenRacketWon): self
     {
-        $this->GoldenRacketWon = $GoldenRacketWon;
+        $this->goldenRacketWon = $goldenRacketWon;
 
         return $this;
     }
 
     public function getGoldenRacketPlayed(): ?int
     {
-        return $this->GoldenRacketPlayed;
+        return $this->goldenRacketPlayed;
     }
 
-    public function setGoldenRacketPlayed(?int $GoldenRacketPlayed): self
+    public function setGoldenRacketPlayed(?int $goldenRacketPlayed): self
     {
-        $this->GoldenRacketPlayed = $GoldenRacketPlayed;
+        $this->goldenRacketPlayed = $goldenRacketPlayed;
 
         return $this;
     }
 
     public function getGoldenRacketAveragePlacement(): ?float
     {
-        return $this->GoldenRacketAveragePlacement;
+        return $this->goldenRacketAveragePlacement;
     }
 
-    public function setGoldenRacketAveragePlacement(?float $GoldenRacketAveragePlacement): self
+    public function setGoldenRacketAveragePlacement(?float $goldenRacketAveragePlacement): self
     {
-        $this->GoldenRacketAveragePlacement = $GoldenRacketAveragePlacement;
+        $this->goldenRacketAveragePlacement = $goldenRacketAveragePlacement;
 
         return $this;
     }

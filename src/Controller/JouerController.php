@@ -71,7 +71,7 @@ class JouerController extends AbstractController
                 'player1' => $player1,
             ]);
         }
-        return $this->render('jouer/player1.html.twig', [
+        return $this->render('jouer/Exhibition/player1.html.twig', [
             'form' => $form->createView(),
             'formD' => $form2->createView(),
 
@@ -79,17 +79,18 @@ class JouerController extends AbstractController
     }
 
     /**
-     * @Route("/game/newGame/player2", name="chooseP2")
+     * @Route("/game/newGame/{id}/player2", name="chooseP2")
      * @param Request $request
+     * @param $id
      * @return Response
      */
-    public function chooseP2(Request $request): Response
+    public function chooseP2(Request $request, $id): Response
     {
         $jouer = new Jouer();
 
-        $game = $this->gameRepo->findOneBy([], ['playedAt' => 'DESC']);
+        $game = $this->gameRepo->findOneBy(['id' => $id]);
 
-        $player1Jouer =  $this->jouerRepo->findOneBy(['Game' => $game->getId()]);
+        $player1Jouer =  $this->jouerRepo->findOneBy(['game' => $game->getId()]);
         $player1 = $this->playerRepo->findOneBy(['id' => $player1Jouer->getPlayer()]);
         $form = $this->createForm(JouerType::class, $jouer);
         $form->handleRequest($request);
@@ -113,14 +114,15 @@ class JouerController extends AbstractController
                 'success',
                 "Le joueur 2 à bien été enregistré !"
             );
-            return $this->redirectToRoute('home', [
-                'id' => $game->getId()
+            return $this->redirectToRoute('newGame', [
+                'id' => $game->getId(),
             ]);
         }
-        return $this->render('jouer/player2.html.twig', [
+        return $this->render('jouer/Exhibition/player2.html.twig', [
             'form' => $form->createView(),
             'formD' => $form2->createView(),
             'player1' => $player1,
         ]);
     }
+
 }

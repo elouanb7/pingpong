@@ -68,11 +68,13 @@
                                                                         {% endif %}
                                                                         {% if show == 2 %}
                                                                             VS
-                                                                            {% set show = false %}
+                                                                            {% set show = 0 %}
                                                                         {% endif %}
                                                                     {% endfor %}
+                                                                    ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
                                                                 </h5>
                                                             </a>
+
                                                             {#<p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p>#}
                                                             {#<small>Posté par <a
                                                                         href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
@@ -80,23 +82,24 @@
 
                                                         </div>
 
-                                                        {#<div class="col-md-3">
+                                                        <div class="col-md-3">
                                                             <div class="col-md-12 text-right">
-                                                                {% set myOlderDate = ticket.createdAt | date %}
-                                                                <small class="">{{ myOlderDate|ago }}</small>
+                                                                {% set date = game.playedAt | date %}
+                                                                <small class="">{{ date|ago }}</small>
                                                             </div>
-                                                        </div>#}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             {% endfor %}
-                                            {#{% if allTickets > 6 %}
+                                            {% if allGames | length > 6 %}
+
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
-                                                        <h5><a class="ml-3" href="{{ path('tickets') }}">Voir plus
+                                                        <h5><a class="ml-3" href="{{ path('games') }}">Voir plus
                                                                 >></a></h5>
                                                     </div>
                                                 </div>
-                                            {% endif %}#}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

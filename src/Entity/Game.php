@@ -22,12 +22,12 @@ class Game
     /**
      * @ORM\ManyToOne(targetEntity=GoldenRacket::class, inversedBy="games")
      */
-    private $GoldenRacket;
+    private $goldenRacket;
 
     /**
      * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="games")
      */
-    private $Tournament;
+    private $tournament;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -77,24 +77,24 @@ class Game
 
     public function getGoldenRacket(): ?GoldenRacket
     {
-        return $this->GoldenRacket;
+        return $this->goldenRacket;
     }
 
-    public function setGoldenRacket(?GoldenRacket $GoldenRacket): self
+    public function setGoldenRacket(?GoldenRacket $goldenRacket): self
     {
-        $this->GoldenRacket = $GoldenRacket;
+        $this->goldenRacket = $goldenRacket;
 
         return $this;
     }
 
     public function getTournament(): ?Tournament
     {
-        return $this->Tournament;
+        return $this->tournament;
     }
 
-    public function setTournament(?Tournament $Tournament): self
+    public function setTournament(?Tournament $tournament): self
     {
-        $this->Tournament = $Tournament;
+        $this->tournament = $tournament;
 
         return $this;
     }
