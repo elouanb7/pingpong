@@ -44,15 +44,19 @@ class HomeController extends AbstractController
 
         $player = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
         if ($this->getUser()){
-            $this->statsService->matchStats($player);
+           $this->statsService->matchStats($player);
+            return $this->render('home/index.html.twig', [
+                'games' => $games,
+                'jouers' => $jouers,
+                'allGames' => $allGames,
+                'player' => $player,
+            ]);
         }
 
         return $this->render('home/index.html.twig', [
             'games' => $games,
             'jouers' => $jouers,
             'allGames' => $allGames,
-
-
         ]);
     }
 }

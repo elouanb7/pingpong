@@ -86,7 +86,7 @@ class Player implements UserInterface
     private $matchLost;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $matchAveragePointsOf11;
 
@@ -135,12 +135,17 @@ class Player implements UserInterface
      */
     private $matchRatio;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
         $this->jouers = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -380,24 +385,53 @@ class Player implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        // TODO: Implement getRoles() method.
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function getSalt()
+    public function setRoles(array $roles): self
     {
-        // TODO: Implement getSalt() method.
+        $this->roles = $roles;
+
+        return $this;
     }
 
-    public function getUsername()
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        // TODO: Implement getUsername() method.
+        return (string)$this->email;
     }
 
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     /**

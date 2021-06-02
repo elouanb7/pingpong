@@ -20,6 +20,7 @@
 <body>
 
 {% include('partials/header.html.twig') %}
+{% include ('partials/modal_deconnexion.html.twig') %}
 {% for label, messages in app.flashes %}
     {% for message in messages %}
         {% set flashdate = date('now') %}

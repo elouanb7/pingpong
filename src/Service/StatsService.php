@@ -29,16 +29,30 @@ class StatsService extends AbstractController
 
     public function matchStats($player)
     {
-        $played = $this->jouerRepo->findBy(['player' => $player, 'score' => !null ]);
-        $won = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => true, 'score' => !null ]);
-        $lost = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => false, 'score' => !null ]);
-        if (!$won && !$lost){
-            $ratio = count($won)/count($won)+count($lost);
+        $null = null;
+        $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
+        $played = [];
+        $scores = 0;
+
+        foreach ($pands as $jouers){
+            if ($jouers->getScore()){
+                array_push($played, $jouers);
+                $scores = $scores + $jouers->getScore();
+            }
         }
-        $player->setMatchPlayed(count($played));
-        $player->setMatchWon(count($won));
-        $player->setMatchLost(count($lost));
-        $player->setMatchRatio($ratio);
+        if(!empty($played) || $scores!=0){
+            $pointsAverageOfEleven = $scores/count($played);
+            $player->setMatchPlayed(count($played));
+            $player->setMatchAveragePointsOf11($pointsAverageOfEleven);
+        }
+        $won = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => true]);
+        $lost = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => false]);
+        if (!empty($won) || !empty($lost)){
+            $ratio = count($won)/(count($won)+count($lost));
+            $player->setMatchRatio($ratio);
+            $player->setMatchWon(count($won));
+            $player->setMatchLost(count($lost));
+        }
         $this->manager->persist($player);
         $this->manager->flush();
     }
