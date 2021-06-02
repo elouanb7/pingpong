@@ -24,21 +24,6 @@ class Player implements UserInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TournamentPlayers::class, inversedBy="players")
-     */
-    private $tournamentPlayers;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=GoldenRacketPlayers::class, inversedBy="players")
-     */
-    private $goldenRacketPlayers;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $matchScore;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstName;
@@ -66,6 +51,11 @@ class Player implements UserInterface
     private $plainPassword;
 
     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
@@ -84,6 +74,11 @@ class Player implements UserInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $matchLost;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $matchRatio;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -131,49 +126,27 @@ class Player implements UserInterface
     private $jouers;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\OneToMany(targetEntity=GoldenRacketPlayers::class, mappedBy="player")
      */
-    private $matchRatio;
+    private $goldenRacketPlayers;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\OneToMany(targetEntity=TournamentPlayers::class, mappedBy="player")
      */
-    private $roles = [];
+    private $tournamentPlayers;
 
 
     public function __construct()
     {
         $this->games = new ArrayCollection();
         $this->jouers = new ArrayCollection();
+        $this->goldenRacketPlayers = new ArrayCollection();
+        $this->tournamentPlayers = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTournamentPlayers(): ?TournamentPlayers
-    {
-        return $this->tournamentPlayers;
-    }
-
-    public function setTournamentPlayers(?TournamentPlayers $tournamentPlayers): self
-    {
-        $this->tournamentPlayers = $tournamentPlayers;
-
-        return $this;
-    }
-
-    public function getGoldenRacketPlayers(): ?GoldenRacketPlayers
-    {
-        return $this->goldenRacketPlayers;
-    }
-
-    public function setGoldenRacketPlayers(?GoldenRacketPlayers $goldenRacketPlayers): self
-    {
-        $this->goldenRacketPlayers = $goldenRacketPlayers;
-
-        return $this;
     }
 
     public function getMatchScore(): ?int
@@ -472,6 +445,66 @@ class Player implements UserInterface
     public function setMatchRatio(?float $matchRatio): self
     {
         $this->matchRatio = $matchRatio;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GoldenRacketPlayers[]
+     */
+    public function getGoldenRacketPlayers(): Collection
+    {
+        return $this->goldenRacketPlayers;
+    }
+
+    public function addGoldenRacketPlayer(GoldenRacketPlayers $goldenRacketPlayer): self
+    {
+        if (!$this->goldenRacketPlayers->contains($goldenRacketPlayer)) {
+            $this->goldenRacketPlayers[] = $goldenRacketPlayer;
+            $goldenRacketPlayer->setPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGoldenRacketPlayer(GoldenRacketPlayers $goldenRacketPlayer): self
+    {
+        if ($this->goldenRacketPlayers->removeElement($goldenRacketPlayer)) {
+            // set the owning side to null (unless already changed)
+            if ($goldenRacketPlayer->getPlayer() === $this) {
+                $goldenRacketPlayer->setPlayer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TournamentPlayers[]
+     */
+    public function getTournamentPlayers(): Collection
+    {
+        return $this->tournamentPlayers;
+    }
+
+    public function addTournamentPlayer(TournamentPlayers $tournamentPlayer): self
+    {
+        if (!$this->tournamentPlayers->contains($tournamentPlayer)) {
+            $this->tournamentPlayers[] = $tournamentPlayer;
+            $tournamentPlayer->setPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournamentPlayer(TournamentPlayers $tournamentPlayer): self
+    {
+        if ($this->tournamentPlayers->removeElement($tournamentPlayer)) {
+            // set the owning side to null (unless already changed)
+            if ($tournamentPlayer->getPlayer() === $this) {
+                $tournamentPlayer->setPlayer(null);
+            }
+        }
 
         return $this;
     }

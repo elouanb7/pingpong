@@ -20,11 +20,6 @@ class GoldenRacket
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=GoldenRacketPlayers::class, mappedBy="goldenRacket")
-     */
-    private $goldenRacketPlayers;
-
-    /**
      * @ORM\OneToMany(targetEntity=Game::class, mappedBy="goldenRacket")
      */
     private $games;
@@ -39,45 +34,20 @@ class GoldenRacket
      */
     private $finishedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=GoldenRacketPlayers::class, mappedBy="goldenRacket")
+     */
+    private $goldenRacketPlayers;
+
     public function __construct()
     {
-        $this->goldenRacketPlayers = new ArrayCollection();
         $this->games = new ArrayCollection();
+        $this->goldenRacketPlayers = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|GoldenRacketPlayers[]
-     */
-    public function getGoldenRacketPlayers(): Collection
-    {
-        return $this->goldenRacketPlayers;
-    }
-
-    public function addGoldenRacketPlayer(GoldenRacketPlayers $goldenRacketPlayer): self
-    {
-        if (!$this->goldenRacketPlayers->contains($goldenRacketPlayer)) {
-            $this->goldenRacketPlayers[] = $goldenRacketPlayer;
-            $goldenRacketPlayer->setGoldenRacket($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGoldenRacketPlayer(GoldenRacketPlayers $goldenRacketPlayer): self
-    {
-        if ($this->goldenRacketPlayers->removeElement($goldenRacketPlayer)) {
-            // set the owning side to null (unless already changed)
-            if ($goldenRacketPlayer->getGoldenRacket() === $this) {
-                $goldenRacketPlayer->setGoldenRacket(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -130,6 +100,36 @@ class GoldenRacket
     public function setFinishedAt(?\DateTimeInterface $finishedAt): self
     {
         $this->finishedAt = $finishedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GoldenRacketPlayers[]
+     */
+    public function getGoldenRacketPlayers(): Collection
+    {
+        return $this->goldenRacketPlayers;
+    }
+
+    public function addGoldenRacketPlayer(GoldenRacketPlayers $goldenRacketPlayer): self
+    {
+        if (!$this->goldenRacketPlayers->contains($goldenRacketPlayer)) {
+            $this->goldenRacketPlayers[] = $goldenRacketPlayer;
+            $goldenRacketPlayer->setGoldenRacket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGoldenRacketPlayer(GoldenRacketPlayers $goldenRacketPlayer): self
+    {
+        if ($this->goldenRacketPlayers->removeElement($goldenRacketPlayer)) {
+            // set the owning side to null (unless already changed)
+            if ($goldenRacketPlayer->getGoldenRacket() === $this) {
+                $goldenRacketPlayer->setGoldenRacket(null);
+            }
+        }
 
         return $this;
     }

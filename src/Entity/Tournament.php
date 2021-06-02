@@ -20,11 +20,6 @@ class Tournament
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=TournamentPlayers::class, mappedBy="tournament")
-     */
-    private $tournamentPlayers;
-
-    /**
      * @ORM\OneToMany(targetEntity=Game::class, mappedBy="tournament")
      */
     private $games;
@@ -44,45 +39,20 @@ class Tournament
      */
     private $finishedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TournamentPlayers::class, mappedBy="tournament")
+     */
+    private $tournamentPlayers;
+
     public function __construct()
     {
-        $this->tournamentPlayers = new ArrayCollection();
         $this->games = new ArrayCollection();
+        $this->tournamentPlayers = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|TournamentPlayers[]
-     */
-    public function getTournamentPlayers(): Collection
-    {
-        return $this->tournamentPlayers;
-    }
-
-    public function addTournamentPlayer(TournamentPlayers $tournamentPlayer): self
-    {
-        if (!$this->tournamentPlayers->contains($tournamentPlayer)) {
-            $this->tournamentPlayers[] = $tournamentPlayer;
-            $tournamentPlayer->setTournament($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTournamentPlayer(TournamentPlayers $tournamentPlayer): self
-    {
-        if ($this->tournamentPlayers->removeElement($tournamentPlayer)) {
-            // set the owning side to null (unless already changed)
-            if ($tournamentPlayer->getTournament() === $this) {
-                $tournamentPlayer->setTournament(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -147,6 +117,36 @@ class Tournament
     public function setFinishedAt(?\DateTimeInterface $finishedAt): self
     {
         $this->finishedAt = $finishedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TournamentPlayers[]
+     */
+    public function getTournamentPlayers(): Collection
+    {
+        return $this->tournamentPlayers;
+    }
+
+    public function addTournamentPlayer(TournamentPlayers $tournamentPlayer): self
+    {
+        if (!$this->tournamentPlayers->contains($tournamentPlayer)) {
+            $this->tournamentPlayers[] = $tournamentPlayer;
+            $tournamentPlayer->setTournament($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournamentPlayer(TournamentPlayers $tournamentPlayer): self
+    {
+        if ($this->tournamentPlayers->removeElement($tournamentPlayer)) {
+            // set the owning side to null (unless already changed)
+            if ($tournamentPlayer->getTournament() === $this) {
+                $tournamentPlayer->setTournament(null);
+            }
+        }
 
         return $this;
     }

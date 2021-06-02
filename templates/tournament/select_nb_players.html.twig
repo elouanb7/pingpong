@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PingPong - NewTournament - Joueur 1{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Sélection du nombre de participants :</h1>
+                <p class="card-text">
+                <form class="form-group row" method="POST" action="{{ path('selectNbT') }}">
+                    <div class="col-md-10">
+                        <select class="form-control custom-select" name="nbJoueurs">
+                            <option value="null">---------Selectionnez une valeur---------</option>
+                            <option value="4">4 Joueurs</option>
+                            <option value="8">8 Joueurs</option>
+                            <option value="16">16 Joueurs</option>
+                            <option value="32">32 Joueurs</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="btn btn-info form-control" type="submit" value="Selectionner">
+                    </div>
+                </form>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

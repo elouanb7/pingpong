@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\GoldenRacketPlayersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,56 +18,45 @@ class GoldenRacketPlayers
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="goldenRacketPlayers")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $players;
+    private $rank;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="goldenRacketPlayers")
+     */
+    private $player;
 
     /**
      * @ORM\ManyToOne(targetEntity=GoldenRacket::class, inversedBy="goldenRacketPlayers")
      */
     private $goldenRacket;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $rank;
-
-    public function __construct()
-    {
-        $this->players = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection|Player[]
-     */
-    public function getPlayers(): Collection
+    public function getRank(): ?int
     {
-        return $this->players;
+        return $this->rank;
     }
 
-    public function addPlayer(Player $player): self
+    public function setRank(?int $rank): self
     {
-        if (!$this->players->contains($player)) {
-            $this->players[] = $player;
-            $player->setGoldenRacketPlayers($this);
-        }
+        $this->rank = $rank;
 
         return $this;
     }
 
-    public function removePlayer(Player $player): self
+    public function getPlayer(): ?Player
     {
-        if ($this->players->removeElement($player)) {
-            // set the owning side to null (unless already changed)
-            if ($player->getGoldenRacketPlayers() === $this) {
-                $player->setGoldenRacketPlayers(null);
-            }
-        }
+        return $this->player;
+    }
+
+    public function setPlayer(?Player $player): self
+    {
+        $this->player = $player;
 
         return $this;
     }
@@ -82,18 +69,6 @@ class GoldenRacketPlayers
     public function setGoldenRacket(?GoldenRacket $goldenRacket): self
     {
         $this->goldenRacket = $goldenRacket;
-
-        return $this;
-    }
-
-    public function getRank(): ?int
-    {
-        return $this->rank;
-    }
-
-    public function setRank(?int $rank): self
-    {
-        $this->rank = $rank;
 
         return $this;
     }

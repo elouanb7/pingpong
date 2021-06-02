@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\TournamentPlayersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,70 +18,23 @@ class TournamentPlayers
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="tournamentPlayers")
-     */
-    private $tournament;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="tournamentPlayers")
-     */
-    private $players;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $rank;
 
-    public function __construct()
-    {
-        $this->players = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="tournamentPlayers")
+     */
+    private $player;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="tournamentPlayers")
+     */
+    private $tournament;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTournament(): ?Tournament
-    {
-        return $this->tournament;
-    }
-
-    public function setTournament(?Tournament $tournament): self
-    {
-        $this->tournament = $tournament;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Player[]
-     */
-    public function getPlayers(): Collection
-    {
-        return $this->players;
-    }
-
-    public function addPlayer(Player $player): self
-    {
-        if (!$this->players->contains($player)) {
-            $this->players[] = $player;
-            $player->setTournamentPlayers($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlayer(Player $player): self
-    {
-        if ($this->players->removeElement($player)) {
-            // set the owning side to null (unless already changed)
-            if ($player->getTournamentPlayers() === $this) {
-                $player->setTournamentPlayers(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getRank(): ?int
@@ -94,6 +45,30 @@ class TournamentPlayers
     public function setRank(?int $rank): self
     {
         $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function getPlayer(): ?Player
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(?Player $player): self
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+
+    public function getTournament(): ?Tournament
+    {
+        return $this->tournament;
+    }
+
+    public function setTournament(?Tournament $tournament): self
+    {
+        $this->tournament = $tournament;
 
         return $this;
     }
