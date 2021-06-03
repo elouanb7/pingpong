@@ -32,36 +32,35 @@ class TournamentPlayersController extends AbstractController
      */
     public function index($nbJoueurs, Request $request): Response
     {
-        $form = $this->createForm(TournamentPlayersType::class, null, [
-            'nbJoueurs' => $nbJoueurs,
-        ]);
+        $tournament = new Tournament();
+        for ($i= 1 ; $i<$nbJoueurs ; $i++){
+            $tournamentPlayer = new TournamentPlayers();
+            $form = $this->createForm(TournamentPlayersType::class, $tournamentPlayer);
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $tournament = new Tournament();
-            $date = new \DateTime('now');
-            $tournament->setCreatedAt($date);
-            $tournamentPlayersDatas = $form->getData();
-                foreach ($tournamentPlayersDatas as $tournamentPlayerData) {
-                    $tournamentPlayer = new TournamentPlayers();
-                    $tournamentPlayer->setPlayer($tournamentPlayerData);
-                    $tournamentPlayer->setTournament($tournament)
-                        ->setRank(null);
-                    $this->manager->persist($tournamentPlayer);
-                }
-            $this->manager->persist($tournament);
-            $this->manager->flush();
-            $this->addflash(
-                'success',
-                "Les joueurs ont bien été enregistrés !"
-            );
-            return $this->redirectToRoute('grid', [
-                'id' => $tournament->getId(),
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $tournamentPlayer = $form->getData();
+                $tournamentPlayer->setTournament($tournament)
+                    ->setRank(null);
+                $date = new \DateTime('now');
+                $tournament->setCreatedAt($date);
+                $this->manager->persist($tournament);
+                $this->manager->persist($tournamentPlayer);
+                $this->manager->flush();
+                $this->addflash(
+                    'success',
+                    "Le joueur " . $i . " à bien été enregistré !"
+                );
+                $this->render('tournament_players/select_player.html.twig', [
+                    'nbJoueur' => $i,
+                    'form' => $form->createView(),
+                ]);
+            }
+            $this->render('tournament_players/select_player.html.twig', [
+                'controller_name' => 'TournamentPlayersController',
+                'form' => $form->createView(),
             ]);
         }
-        return $this->render('tournament_players/select_player.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('home',[]);
     }
 }
