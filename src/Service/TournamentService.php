@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class GameService extends AbstractController
 {
 
-    private GameRepository $gameRepo;
+
     private PlayerRepository $playerRepo;
     private JouerRepository $jouerRepo;
     private EntityManagerInterface $manager;
