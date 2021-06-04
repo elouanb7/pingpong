@@ -58,18 +58,24 @@ class TournamentController extends AbstractController
      */
     public function gridOfMatchs(Request $request, $id): Response
     {
-        $newRounds = $this->tournamentService->doTournament($id);
-        $rounds = $newRounds;
+
+        if (!$this->gameRepo->findOneBy(['tournament' => $id])) {
+            $newRounds = $this->tournamentService->doTournamentInit($id);
+         $rounds = $newRounds;
+        }
+        else{
+            $rounds = $this->gameRepo->findOneBy(['tournament' => $id], ['playedAt' => 'ASC']);
+            $rounds = $rounds->getRound();
+        }
         $games = $this->gameRepo->findBy(['tournament' => $id]);
-        /*foreach ($games as $game){
-            $jouers =$this->jouerRepo->findBy(['game' => $game->getId()]);
-        }*/
-
-
+        $jouers = $this->jouerRepo->findAll();
+        /*$abc =  $this->tournamentService->doTournamentRound($id,$rounds);*/
 
         return $this->render('tournament/grid_of_matchs.html.twig', [
             'games' => $games,
-            'tournament' => $this->tournamentRepo->findOneBy(['id' => $id])
+            'jouers' => $jouers,
+            'rounds' => $rounds,
+            'tournament' => $this->tournamentRepo->findOneBy(['id' => $id]),
         ]);
     }
 }

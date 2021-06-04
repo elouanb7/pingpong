@@ -41,7 +41,7 @@ class TournamentService extends AbstractController
      * @return int
      */
 
-    public function doTournament($tournament): int
+    public function doTournamentInit($tournament): int
     {
         $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['tournament' => $tournament], ['id' => 'ASC']);
         if (count($tournamentPlayers) == 4) {
@@ -79,9 +79,9 @@ class TournamentService extends AbstractController
             $this->manager->persist($game);
             $this->manager->flush();
 
-           array_splice($players, 0, count($players)-2);
+            array_splice($players, 0, count($players) - 2);
         }
-        $rounds=$rounds-1;
+        $rounds = $rounds - 1;
         $this->addflash(
             'success',
             "Les matchs du tournois on bien été générés !"
@@ -89,4 +89,62 @@ class TournamentService extends AbstractController
         return $rounds;
     }
 
+    /**
+     * @param $tournament
+     * @param $round
+     * @return array
+     */
+    public function doTournamentRound($tournament, $round): array
+    {
+        $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['tournament' => $tournament], ['id' => 'ASC']);
+        $previousRoundGames = $this->gameRepo->findBy(['tournament' => $tournament, 'round' => $round]);
+        $previousRoundPlayers = [];
+        foreach ($previousRoundGames as $previousRoundGame) {
+            $previousRoundJouers = $previousRoundGame->getJouers();
+            foreach ($previousRoundJouers as $previousRoundJouer) {
+                $previousRoundPlayer = $previousRoundJouer->getIsWinner();
+                if ($previousRoundPlayer == true){
+                    $previousRoundPlayer = $previousRoundJouer->getPlayer()->getId();
+                    $previousRoundPlayer = $this->playerRepo->findOneBy(['id' => $previousRoundPlayer]);
+                    array_push($previousRoundPlayers, $previousRoundPlayer);
+                }
+            }
+        }
+return $previousRoundPlayers;
+        /*
+         $players = [];
+         foreach ($tournamentPlayers as $tournamentPlayer) {
+             $playerId = $tournamentPlayer->getPlayer()->getId();
+             $player = $this->playerRepo->findOneBy(['id' => $playerId]);
+             array_push($players, $player);
+         }
+
+         for ($i = 0; $i < (count($tournamentPlayers) / 2); $i++) {
+             $game = new Game(); // je crée 1 game
+             $game->setTournament($this->tournamentRepo->findOneBy(['id' => $tournament])); // Je récup mon tournois
+             $game->setIsTournament(true);
+             $game->setIsGoldenRacket(false);
+             $game->setGoldenRacket(null);
+             $game->setRound($rounds);
+             $jouer = new Jouer(); // Je crée une participation
+             $jouer->setPlayer($players[0]); // Je défini le joueur qui participe
+             $jouer->setGame($game); // Je défini dans quelle game
+             $jouer2 = new Jouer();
+             $jouer2->setPlayer($players[1]);
+             $jouer2->setGame($game);
+
+             $this->manager->persist($jouer);
+             $this->manager->persist($jouer2);
+             $this->manager->persist($game);
+             $this->manager->flush();
+
+             array_splice($players, 0, count($players)-2);
+         }
+         $rounds=$rounds-1;
+         $this->addflash(
+             'success',
+             "Les matchs du tournois on bien été générés !"
+         );*/
+
+    }
 }
