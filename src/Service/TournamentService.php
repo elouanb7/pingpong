@@ -3,6 +3,8 @@
 namespace App\Service;
 
 
+use App\Entity\Game;
+use App\Entity\Jouer;
 use App\Entity\Tournament;
 use App\Repository\GameRepository;
 use App\Repository\JouerRepository;
@@ -11,6 +13,7 @@ use App\Repository\TournamentPlayersRepository;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -34,75 +37,56 @@ class TournamentService extends AbstractController
     }
 
     /**
-     * @param $game
-     * @return bool
+     * @param $tournament
+     * @return int
      */
-    public function gameInEleven($game): bool
-    {
-        $jouers = $this->jouerRepo->findBy(['game' => $game->getId()], ['id' => 'ASC']);
-        $player1 = $this->playerRepo->findOneBy(['id' => $jouers[0]->getPlayer()]);
-        $player2 = $this->playerRepo->findOneBy(['id' => $jouers[1]->getPlayer()]);
-        $scoreP1 = $game->getScoreP1();
-        $scoreP2 = $game->getScoreP2();
 
-        if ($scoreP1 == $scoreP2) {
-            $this->addflash(
-                'danger',
-                "Les scores de " . $player1->getFullName() . " et " . $player1->getFullName() . " sont identiques, jouez encore un peu, c'est bientôt fini..."
-            );
-            return false;
+    public function doTournament($tournament): int
+    {
+        $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['tournament' => $tournament], ['id' => 'ASC']);
+        if (count($tournamentPlayers) == 4) {
+            $rounds = 2;
+        } else if (count($tournamentPlayers) == 8) {
+            $rounds = 3;
+        } else if (count($tournamentPlayers) == 16) {
+            $rounds = 4;
+        } else if (count($tournamentPlayers) == 32) {
+            $rounds = 5;
         }
-        if ($scoreP1 > $scoreP2) {
-            if ($scoreP1 < 11) {
-                $this->addflash(
-                    'danger',
-                    "Le score de " . $player1->getFullName() . " est inférieur à 11"
-                );
-                return false;
-            }
-            if (($scoreP1 == 11 && $scoreP2 < 10) || ($scoreP1 >= 11 && ($scoreP1 - 2) == $scoreP2)) {
-                $jouers[0]->setIsWinner(true)
-                    ->setScore($scoreP1);
-                $jouers[1]->setIsWinner(false)
-                    ->setScore($scoreP2);
-                $this->manager->persist($jouers[0]);
-                $this->manager->persist($jouers[1]);
-                $this->manager->flush();
-                return true;
-            }
-            if ($scoreP1 >= 11 && ($scoreP1 - 2) != $scoreP2) {
-                $this->addflash(
-                    'danger',
-                    "Le score de " . $player1->getFullName() . " ne respecte pas les 2 points d'écart."
-                );
-                return false;
-            }
-        } else {
-            if ($scoreP2 < 11) {
-                $this->addflash(
-                    'danger',
-                    "Le score de " . $player2->getFullName() . " est inférieur à 11."
-                );
-                return false;
-            }
-            if (($scoreP2 == 11 && $scoreP1 < 10) || ($scoreP2 >= 11 && ($scoreP2 - 2) == $scoreP1)) {
-                $jouers[0]->setIsWinner(false)
-                    ->setScore($scoreP1);
-                $jouers[1]->setIsWinner(true)
-                    ->setScore($scoreP2);
-                $this->manager->persist($jouers[0]);
-                $this->manager->persist($jouers[1]);
-                $this->manager->flush();
-                return true;
-            }
-            if ($scoreP2 >= 11 && ($scoreP2 - 2) != $scoreP1) {
-                $this->addflash(
-                    'danger',
-                    "Le score de " . $player2->getFullName() . " ne respecte pas les 2 points d'écart."
-                );
-                return false;
-            }
+        $players = [];
+        foreach ($tournamentPlayers as $tournamentPlayer) {
+            $playerId = $tournamentPlayer->getPlayer()->getId();
+            $player = $this->playerRepo->findOneBy(['id' => $playerId]);
+            array_push($players, $player);
         }
-        return false;
+
+        for ($i = 0; $i < (count($tournamentPlayers) / 2); $i++) {
+            $game = new Game(); // je crée 1 game
+            $game->setTournament($this->tournamentRepo->findOneBy(['id' => $tournament])); // Je récup mon tournois
+            $game->setIsTournament(true);
+            $game->setIsGoldenRacket(false);
+            $game->setGoldenRacket(null);
+            $game->setRound($rounds);
+            $jouer = new Jouer(); // Je crée une participation
+            $jouer->setPlayer($players[0]); // Je défini le joueur qui participe
+            $jouer->setGame($game); // Je défini dans quelle game
+            $jouer2 = new Jouer();
+            $jouer2->setPlayer($players[1]);
+            $jouer2->setGame($game);
+
+            $this->manager->persist($jouer);
+            $this->manager->persist($jouer2);
+            $this->manager->persist($game);
+            $this->manager->flush();
+
+           array_splice($players, 0, count($players)-2);
+        }
+        $rounds=$rounds-1;
+        $this->addflash(
+            'success',
+            "Les matchs du tournois on bien été générés !"
+        );
+        return $rounds;
     }
+
 }

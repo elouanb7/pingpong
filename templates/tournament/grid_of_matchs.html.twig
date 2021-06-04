@@ -1,15 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PingPong - NewTournament - Joueur 1{% endblock %}
+{% block title %}PingPong - Tournament {{ tournament.id }}{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
         <div class="card">
             <div class="card-body">
                 <h1 class="card-title">Grille des matchs :</h1>
-               {# {% for  in  %}
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            {{ dump(games) }}
+                            {% for game in games %}
+                                <div class="card">
+                                    {% for jouer in game.jouers %}
+                                        {{ dump(jouer.id) }}
+                                        {{ jouer.player.fullName }} VS
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
 
-                {% endfor %}#}
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Matchs à jouer :</h5>
+                                <hr>
+                                <div class="card-text">
+                                    <div class="list-group {{ games|length>3 ? "dashboard" : "" }}">
+                                        {% for game in games %}
+
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="row">
+                                                    <div class="col-md-9 ">
+
+                                                        <a href="{# {{ path('detail',{'id':ticket.id}) }} #}">
+                                                            <h5 class="mb-1">
+                                                                {% set show = 1 %}
+                                                                {% for jouer in game.jouers %}
+                                                                    {% if jouer.game == game %}
+                                                                        {{ jouer.player.fullName }}
+                                                                        {% set show = show+1 %}
+                                                                    {% endif %}
+                                                                    {% if show == 2 %}
+                                                                        VS
+                                                                        {% set show = 0 %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                                ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
+                                                            </h5>
+                                                        </a>
+
+                                                        {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
+                                                        {# <small>Posté par <a
+                                                                        href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
+                                                            </small> #}
+
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-12 text-right">
+                                                            {% set date = game.playedAt | date %}
+                                                            <small class="">{{ date|ago }}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                </div>
                 <p class="card-text">
                 </p>
             </div>
