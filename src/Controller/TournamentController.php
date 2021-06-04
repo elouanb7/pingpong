@@ -14,14 +14,32 @@ class TournamentController extends AbstractController
      */
     public function selectNbT(Request $request): Response
     {
+
         $nbJoueurs = $request->request->getInt('nbJoueurs');
         if ($nbJoueurs){
             return $this->redirectToRoute('tournament_players',[
                 'nbJoueurs' => $nbJoueurs,
-                ]);
+            ]);
         }
+
         return $this->render('tournament/select_nb_players.html.twig', [
             'controller_name' => 'TournamentController',
         ]);
+    }
+
+    /**
+     * @Route("/tournament/{id}/grid", name="grid")
+     */
+    public function gridOfMatchs(Request $request, $id): Response
+    {
+
+        $nbJoueurs = $request->request->getInt('nbJoueurs');
+        if ($nbJoueurs){
+            return $this->redirectToRoute('tournament_players',[
+                'nbJoueurs' => $nbJoueurs,
+            ]);
+        }
+
+        return $this->render('tournament/grid_of_matchs.html.twig', []);
     }
 }

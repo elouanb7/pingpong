@@ -3,9 +3,12 @@
 namespace App\Service;
 
 
+use App\Entity\Tournament;
 use App\Repository\GameRepository;
 use App\Repository\JouerRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\TournamentPlayersRepository;
+use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,14 +16,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TournamentService extends AbstractController
 {
-
+    private TournamentPlayersRepository $tournamentPlayersRepo;
+    private TournamentRepository $tournamentRepo;
     private GameRepository $gameRepo;
     private PlayerRepository $playerRepo;
     private JouerRepository $jouerRepo;
     private EntityManagerInterface $manager;
 
-    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, EntityManagerInterface $manager)
+    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, EntityManagerInterface $manager, TournamentPlayersRepository $tournamentPlayersRepo, TournamentRepository $tournamentRepo)
     {
+        $this->tournamentRepo = $tournamentRepo;
+        $this->tournamentPlayersRepo = $tournamentPlayersRepo;
         $this->gameRepo = $gameRepo;
         $this->jouerRepo = $jouerRepo;
         $this->playerRepo = $playerRepo;
