@@ -42,8 +42,8 @@ class TournamentController extends AbstractController
     {
 
         $nbJoueurs = $request->request->getInt('nbJoueurs');
-        if ($nbJoueurs){
-            return $this->redirectToRoute('tournament_players',[
+        if ($nbJoueurs) {
+            return $this->redirectToRoute('tournament_players', [
                 'nbJoueurs' => $nbJoueurs,
             ]);
         }
@@ -58,23 +58,49 @@ class TournamentController extends AbstractController
      */
     public function gridOfMatchs(Request $request, $id): Response
     {
-
-        if (!$this->gameRepo->findOneBy(['tournament' => $id])) {
+        $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['id' => 'ASC']);
+        if (count($tournamentPlayers) == 4) {
+            $oldRounds = 2;
+        } else if (count($tournamentPlayers) == 8) {
+            $oldRounds = 3;
+        } else if (count($tournamentPlayers) == 16) {
+            $oldRounds = 4;
+        } else if (count($tournamentPlayers) == 32) {
+            $oldRounds = 5;
+        }
+        $tournament = $this->tournamentRepo->findOneBy(['id' => $id]);
+        if (!$this->gameRepo->findBy(['tournament' => $id])) {
             $newRounds = $this->tournamentService->doTournamentInit($id);
-         $rounds = $newRounds;
+            $tournament->setRound($newRounds);
+            $this->manager->persist($tournament);
+            $this->manager->flush();
+        } else {
+            $games = $this->gameRepo->findBy(['tournament' => $id], ['playedAt' => 'ASC']);
+            $jouers = $this->jouerRepo->findAll();
+            $round = $this->tournamentService->doTournamentRound($id, $tournament->getRound());
+            $round = $this->tournamentService->doLeaderboard($round, $id);
+            $tournament->setRound($round);
+            $this->manager->persist($tournament);
+            $this->manager->flush();
+            if ($round == 0) {
+                $leaderboard = $this->tournamentService->leaderboard($id);
+                return $this->render('tournament/grid_of_matchs.html.twig', [
+                    'games' => $games,
+                    'jouers' => $jouers,
+                    'leaderboard' => $leaderboard,
+                    'oldRounds' => $oldRounds,
+                    'tournament' => $this->tournamentRepo->findOneBy(['id' => $id]),
+                ]);
+            }
         }
-        else{
-            $rounds = $this->gameRepo->findOneBy(['tournament' => $id], ['playedAt' => 'ASC']);
-            $rounds = $rounds->getRound();
-        }
-        $games = $this->gameRepo->findBy(['tournament' => $id]);
+        $games = $this->gameRepo->findBy(['tournament' => $id], ['playedAt' => 'ASC']);
         $jouers = $this->jouerRepo->findAll();
-        /*$abc =  $this->tournamentService->doTournamentRound($id,$rounds);*/
 
         return $this->render('tournament/grid_of_matchs.html.twig', [
             'games' => $games,
             'jouers' => $jouers,
-            'rounds' => $rounds,
+            'oldRounds' => $oldRounds,
+            'leaderboard' => false,
             'tournament' => $this->tournamentRepo->findOneBy(['id' => $id]),
         ]);
     }

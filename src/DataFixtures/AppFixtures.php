@@ -41,14 +41,14 @@ class AppFixtures extends Fixture
         /*$roles = [["ROLE_ADMIN"], ["ROLE_USER"], ["ROLE_CONTRIBUTOR"], ["ROLE_SUPER_ADMIN"]];*/
         // 1 - Je crée mes utilisateurs
 
-        for ($i = 0; $i < 20; $i++){
+        for ($i = 0; $i < 40; $i++){
             $player = new Player();
             $player->setFirstName($faker->firstName())
                 ->setRoles(["ROLE_USER"])
                 ->setLastName($faker->lastName())
                 ->setEmail($faker->email())
                 ->setPassword($this->encoder->encodePassword($player, 'password'))
-                ->setCreatedAt($faker->dateTimeBetween('-2 years', 'now'));
+                ->setCreatedAt($faker->dateTimeBetween('-1 years', 'now'));
             $manager->persist($player);
         }
         $manager->flush();

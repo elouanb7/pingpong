@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Panne;
-use App\Entity\Categorie;
-use App\Repository\CategorieRepository;
 use App\Repository\GameRepository;
 use App\Repository\JouerRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\TournamentRepository;
 use App\Service\StatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +21,12 @@ class HomeController extends AbstractController
     private JouerRepository $jouerRepo;
     private StatsService $statsService;
     private PlayerRepository $playerRepo;
+    private TournamentRepository $tournamentRepo;
 
-    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, StatsService $statsService, PlayerRepository $playerRepo)
+    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, StatsService $statsService, PlayerRepository $playerRepo, TournamentRepository $tournamentRepo)
     {
         $this->gameRepo = $gameRepo;
+        $this->tournamentRepo = $tournamentRepo;
         $this->jouerRepo = $jouerRepo;
         $this->statsService = $statsService;
         $this->playerRepo = $playerRepo;
@@ -38,8 +38,12 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        $games = $this->gameRepo->findBy([],['playedAt' => 'DESC'], 6);
-        $allGames = $this->gameRepo->findBy([],['playedAt' => 'DESC']);
+        $games = $this->gameRepo->findBy(['isTournament' => null, 'isGoldenRacket' => null],['playedAt' => 'DESC'], 6);
+        $allGames = $this->gameRepo->findBy(['isTournament' => null, 'isGoldenRacket' => null],['playedAt' => 'DESC']);
+        $tournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC'], 6);
+        $allTournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC']);
+        $gGames = $this->gameRepo->findBy(['isGoldenRacket' => true],['playedAt' => 'DESC'], 6);
+        $gAllGames = $this->gameRepo->findBy(['isGoldenRacket' => true],['playedAt' => 'DESC']);
         $jouers = $this->jouerRepo->findAll();
 
         $player = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
@@ -47,16 +51,24 @@ class HomeController extends AbstractController
            $this->statsService->matchStats($player);
             return $this->render('home/index.html.twig', [
                 'games' => $games,
-                'jouers' => $jouers,
                 'allGames' => $allGames,
+                'tournaments' => $tournaments,
+                'allTournaments' => $allTournaments,
+                'gGames' => $gGames,
+                'gAllGames' => $gAllGames,
+                'jouers' => $jouers,
                 'player' => $player,
             ]);
         }
 
         return $this->render('home/index.html.twig', [
             'games' => $games,
-            'jouers' => $jouers,
             'allGames' => $allGames,
+            'tournaments' => $tournaments,
+            'allTournaments' => $allTournaments,
+            'gGames' => $gGames,
+            'gAllGames' => $gAllGames,
+            'jouers' => $jouers,
         ]);
     }
 }

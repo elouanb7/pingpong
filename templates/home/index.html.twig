@@ -58,16 +58,22 @@
                                                     <div class="row">
                                                         <div class="col-md-9 ">
 
-                                                            <a href="{# {{ path('detail',{'id':ticket.id}) }} #}">
+                                                            <a href="{{ path('detail',{'id':game.id}) }}">
                                                                 <h5 class="mb-1">
                                                                     {% set show = 1 %}
                                                                     {% for jouer in jouers %}
                                                                         {% if jouer.game == game %}
+                                                                            {% if jouer.isWinner == true and show == 1 %}
+                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
+                                                                            {% endif %}
                                                                             {{ jouer.player.fullName }}
+                                                                            {% if jouer.isWinner == true and show == 0 %}
+                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
+                                                                            {% endif %}
                                                                             {% set show = show+1 %}
                                                                         {% endif %}
                                                                         {% if show == 2 %}
-                                                                            VS
+                                                                            <span class="badge badge-secondary">VS</span>
                                                                             {% set show = 0 %}
                                                                         {% endif %}
                                                                     {% endfor %}
@@ -191,51 +197,32 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Historique des matchs</h5>
+                                    <h5 class="card-title">Historique des tournois</h5>
                                     <hr>
                                     <div class="card-text">
-                                        <div class="list-group {{ games|length>3 ? "dashboard" : "" }}">
-                                            {% for game in games %}
+                                        <div class="list-group {{ tournaments|length>3 ? "dashboard" : "" }}">
+                                            {% for tournament in tournaments %}
 
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
                                                         <div class="col-md-9 ">
-
-                                                            <a href="{# {{ path('detail',{'id':ticket.id}) }} #}">
+                                                            <a href="{{ path('grid',{'id':tournament.id}) }}">
                                                                 <h5 class="mb-1">
-                                                                    {% set show = 1 %}
-                                                                    {% for jouer in jouers %}
-                                                                        {% if jouer.game == game %}
-                                                                            {{ jouer.player.fullName }}
-                                                                            {% set show = show+1 %}
-                                                                        {% endif %}
-                                                                        {% if show == 2 %}
-                                                                            VS
-                                                                            {% set show = 0 %}
-                                                                        {% endif %}
-                                                                    {% endfor %}
-                                                                    ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
+                                                                        Tournoi n°{{ tournament.id }}
                                                                 </h5>
                                                             </a>
-
-                                                            {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
-                                                            {# <small>Posté par <a
-                                                                        href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
-                                                            </small> #}
-
                                                         </div>
 
                                                         <div class="col-md-3">
                                                             <div class="col-md-12 text-right">
-                                                                {% set date = game.playedAt | date %}
+                                                                {% set date = tournament.createdAt | date %}
                                                                 <small class="">{{ date|ago }}</small>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             {% endfor %}
-                                            {% if allGames | length > 6 %}
-
+                                            {% if allTournaments | length > 6 %}
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
                                                         <h5><a class="ml-3" href="{{ path('games') }}">Voir plus
@@ -336,23 +323,29 @@
                                     <h5 class="card-title">Historique des matchs</h5>
                                     <hr>
                                     <div class="card-text">
-                                        <div class="list-group {{ games|length>3 ? "dashboard" : "" }}">
-                                            {% for game in games %}
+                                        <div class="list-group {{ gGames|length>3 ? "dashboard" : "" }}">
+                                            {% for game in gGames %}
 
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
                                                         <div class="col-md-9 ">
 
-                                                            <a href="{# {{ path('detail',{'id':ticket.id}) }} #}">
+                                                            <a href="{{ path('detail',{'id':game.id}) }}">
                                                                 <h5 class="mb-1">
                                                                     {% set show = 1 %}
                                                                     {% for jouer in jouers %}
                                                                         {% if jouer.game == game %}
+                                                                            {% if jouer.isWinner == true and show == 1 %}
+                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
+                                                                            {% endif %}
                                                                             {{ jouer.player.fullName }}
+                                                                            {% if jouer.isWinner == true and show == 0 %}
+                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
+                                                                            {% endif %}
                                                                             {% set show = show+1 %}
                                                                         {% endif %}
                                                                         {% if show == 2 %}
-                                                                            VS
+                                                                            <span class="badge badge-secondary">VS</span>
                                                                             {% set show = 0 %}
                                                                         {% endif %}
                                                                     {% endfor %}
@@ -376,7 +369,7 @@
                                                     </div>
                                                 </div>
                                             {% endfor %}
-                                            {% if allGames | length > 6 %}
+                                            {% if gAllGames | length > 6 %}
 
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">

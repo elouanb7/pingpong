@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PingPong - {{ player1.fullName }} VS {{ player2.fullName }}{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row mt-3">
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">
+                            {{ player1.fullName }}
+                        </h1>
+                        <p class="card-text">
+                            Score :
+                            {% if not edit %}
+                                {{ jouers[0].score }}
+                                {% else %}
+                                n/a
+                            {% endif %}
+
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <h1 class="text-center">VS</h1>
+            </div>
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">
+                            {{ player2.fullName }}
+                        </h1>
+                        <p class="card-text">
+                            Score :
+                            {% if not edit %}
+                                {{ jouers[1].score }}
+                            {% else %}
+                                n/a
+                            {% endif %}
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4">
+                {% if edit %}
+                    <a href="{{ path('newGame',{'id':game.id}) }}" class="btn btn-warning btn-block mt-3">Ajouter un score</a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

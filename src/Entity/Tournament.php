@@ -44,6 +44,11 @@ class Tournament
      */
     private $tournamentPlayers;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $round;
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
@@ -147,6 +152,18 @@ class Tournament
                 $tournamentPlayer->setTournament(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRound(): ?int
+    {
+        return $this->round;
+    }
+
+    public function setRound(?int $round): self
+    {
+        $this->round = $round;
 
         return $this;
     }

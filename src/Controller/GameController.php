@@ -65,6 +65,8 @@ class GameController extends AbstractController
          if ($form->isSubmitted() && $form->isValid()) {
              $game = $form->getData();
              $isScoreValid = $this->gameService->gameInEleven($game);
+             $date = new \DateTime('now');
+             $game->setPlayedAt($date);
              if (!$isScoreValid){
                  return $this->render('game/newGame.html.twig', [
                      'form' => $form->createView(),
@@ -72,11 +74,6 @@ class GameController extends AbstractController
                      'player2' => $player2,
                  ]);
              }
-             $game->setIsTournament(false);
-             $game->setIsGoldenRacket(false);
-             $game->setRound(null);
-             $game->setGoldenRacket(null);
-             $game->setTournament(null);
              $this->manager->persist($game);
              $this->manager->flush();
              $this->addflash(
@@ -93,4 +90,31 @@ class GameController extends AbstractController
              'player2' => $player2,
          ]);
 }
+
+    /**
+     * @Route("/game/{id}/detail", name="detail")
+     * @param $id
+     * @return Response
+     */
+    public function detail( $id): Response
+    {
+
+        $game = $this->gameRepo->findOneBy(['id' => $id]);
+        $jouers = $this->jouerRepo->findBy(['game' => $game->getId()],['id' => 'ASC']);
+        $player1 = $this->playerRepo->findOneBy(['id' => $jouers[0]->getPlayer()]);
+        $player2 = $this->playerRepo->findOneBy(['id' => $jouers[1]->getPlayer()]);
+        $edit = true;
+        foreach ($jouers as $jouer){
+            if ($jouer->getScore()){
+                $edit = false;
+            }
+        }
+
+                return $this->render('game/detail.html.twig', [
+                    'edit' => $edit,
+                    'game' => $game,
+                    'jouers' => $jouers,
+                    'player1' => $player1,
+                    'player2' => $player2]);
+    }
 }

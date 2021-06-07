@@ -8,70 +8,150 @@
             <div class="card-body">
                 <h1 class="card-title">Grille des matchs :</h1>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Matchs à jouer :</h5>
                                 <hr>
-                                <div class="card-text">
-                                    {% for round in range(1,rounds) %}
-                                        {{ round }}
-                                    {% endfor %}
-                                    <h6>Matchs de Demi</h6>
-                                    <div class="list-group {{ games|length>3 ? "dashboard" : "" }}">
-                                        {% for game in games %}
-                                            <div class="list-group-item list-group-item-action">
-                                                <div class="row">
-                                                    <div class="col-md-9 ">
-                                                        <a class="text-decoration-none" href="{# {{ path('detail',{'id':ticket.id}) }} #}">
-                                                            <h5 class="mb-1">
-                                                                {% set show = 1 %}
-                                                                {% for jouer in jouers %}
-                                                                    {% if jouer.game == game %}
-                                                                        {% if jouer.isWinner == true and show == 1 %}
-                                                                            <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
-                                                                        {% endif %}
-                                                                        {{ jouer.player.fullName }}
-                                                                        {% if jouer.isWinner == true and show == 0 %}
-                                                                            <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
-                                                                        {% endif %}
-                                                                        {% set show = show+1 %}
-                                                                    {% endif %}
-                                                                    {% if show == 2 %}
-                                                                        <span class="badge badge-secondary">VS</span>
-                                                                        {% set show = 0 %}
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                                ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
-                                                            </h5>
-                                                        </a>
+                                <div class="card-text {{ games|length>3 ? "dashboard" : "" }}">
+                                    {% for round in range(1,oldRounds) %}
+                                        {% if round == 1 %}
+                                            <h6 class="mt-1">Finale</h6>
+                                        {% elseif round == 2 %}
+                                            <h6 class="mt-1">Demi-Finale</h6>
+                                        {% elseif round == 3 %}
+                                            <h6 class="mt-1">Quarts de Finale</h6>
+                                        {% elseif round == 4 %}
+                                            <h6 class="mt-1">Huitièmes de Finale</h6>
+                                        {% elseif round == 5 %}
+                                            <h6 class="mt-1">Seizièmes de Finale</h6>
+                                        {% endif %}
 
-                                                        {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
-                                                        {# <small>Posté par <a
+                                        <div class="list-group" >
+                                            {% for game in games %}
+                                                {% if game.round == round %}
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <div class="row">
+                                                            <div class="col-md-9 ">
+                                                                <a class="text-decoration-none"
+                                                                   href="{{ path('detail',{'id':game.id}) }}">
+                                                                    <h5 class="mb-1">
+                                                                        {% set show = 1 %}
+                                                                        {% for jouer in jouers %}
+                                                                            {% if jouer.game == game %}
+                                                                                {% if jouer.isWinner == true and show == 1 %}
+                                                                                    <span class="badge badge-secondary"><i
+                                                                                                class="fas fa-crown"></i></span>
+                                                                                {% endif %}
+                                                                                {{ jouer.player.fullName }}
+                                                                                {% if jouer.isWinner == true and show == 0 %}
+                                                                                    <span class="badge badge-secondary"><i
+                                                                                                class="fas fa-crown"></i></span>
+                                                                                {% endif %}
+                                                                                {% set show = show+1 %}
+                                                                            {% endif %}
+                                                                            {% if show == 2 %}
+                                                                                <span class="badge badge-secondary">VS</span>
+                                                                                {% set show = 0 %}
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
+                                                                    </h5>
+                                                                </a>
+
+                                                                {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
+                                                                {# <small>Posté par <a
                                                                         href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
                                                             </small> #}
 
-                                                    </div>
+                                                            </div>
 
-                                                    <div class="col-md-3">
-                                                        <div class="col-md-12 text-right">
-                                                            {% set date = game.playedAt | date %}
-                                                            <small class="">{{ date|ago }}</small>
+                                                            <div class="col-md-3">
+                                                                <div class="col-md-12 text-right">
+                                                                    {% set date = game.playedAt | date %}
+                                                                    <small class="">{{ date|ago }}</small>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4"></div>
-                    <div class="col-4"></div>
+                    <div class="col-md-12 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Match Suivant
+                                </h5>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% if leaderboard %}
+                    {% set count = 0 %}
+                    <div class="col-md-8 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Classement</h5>
+                                <p class="card-text">
+                                <div class="list-group">
+                                    {% for player in leaderboard %}
+                                    {% set count = count + 1 %}
+                                    {% if count == 1 %}
+                                    <div class="list-group-item list-group-item-action">
+                                        <div class="row">
+                                            <div class="col-md-3 ">
+                                                <a class="text-decoration-none"
+                                                   href="{# {{ path('detail',{'id':game.id}) }} #}">
+                                                    <h2><span class="badge badge-warning"><i
+                                                                    class="fas fa-dice-one"></i></span></h2>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9"><h5 class="mb-1">{{ player.fullName }}</h5></div>
+                                        </div>
+                                    </div>
+                                    {% elseif count == 2 %}
+                                    <div class="list-group-item list-group-item-action">
+                                        <div class="row">
+                                            <div class="col-md-3 ">
+                                                <a class="text-decoration-none"
+                                                   href="{# {{ path('detail',{'id':game.id}) }} #}">
+                                                    <h2><span class="badge badge-secondary"><i
+                                                                    class="fas fa-dice-two"></i></span></h2>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <h5 class="mb-1">{{ player.fullName }}</h5></div>
+                                            {% endif %}
+
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        <p class="card-text">
+                        </p>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Statistiques
+                                </h5>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-                <p class="card-text">
-                </p>
             </div>
         </div>
     </div>

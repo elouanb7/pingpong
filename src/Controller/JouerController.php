@@ -59,6 +59,10 @@ class JouerController extends AbstractController
             $jouer->setPlayedAt($date);
             $jouer->setGame($game);
             $game->setPlayedAt($date);
+            $game->setGoldenRacket(null);
+            $game->setisGoldenRacket(false);
+            $game->setTournament(null);
+            $game->setIsTournament(false);
             $this->manager->persist($game);
             $this->manager->persist($jouer);
             $this->manager->flush();
@@ -74,7 +78,6 @@ class JouerController extends AbstractController
         return $this->render('jouer/Exhibition/player1.html.twig', [
             'form' => $form->createView(),
             'formD' => $form2->createView(),
-
         ]);
     }
 
