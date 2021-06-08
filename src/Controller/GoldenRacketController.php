@@ -44,7 +44,6 @@ class GoldenRacketController extends AbstractController
      */
     public function selectNbG(Request $request): Response
     {
-
         $nbJoueurs = $request->request->getInt('nbJoueurs');
         if ($nbJoueurs) {
             $this->session->set('nbJoueurs', $nbJoueurs);
@@ -60,6 +59,7 @@ class GoldenRacketController extends AbstractController
      */
     public function gridOfMatchs(Request $request, $id): Response
     {
+        $this->session->set('goldenRacketId', $id);
         $games = $this->gameRepo->findBy(['goldenRacket' => $id], ['playedAt' => 'ASC']);
         $jouers = $this->jouerRepo->findAll();
         $goldenRacket = $this->goldenRacketRepo->findOneBy(['id' => $id]);

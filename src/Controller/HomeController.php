@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Repository\GameRepository;
+use App\Repository\GoldenRacketPlayersRepository;
+use App\Repository\GoldenRacketRepository;
 use App\Repository\JouerRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TournamentRepository;
 use App\Service\StatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -17,19 +20,26 @@ class HomeController extends AbstractController
 
 
     // Constructeur
+    private GoldenRacketPlayersRepository $goldenRacketPlayersRepo;
+    private GoldenRacketRepository $goldenRacketRepo;
     private GameRepository $gameRepo;
     private JouerRepository $jouerRepo;
     private StatsService $statsService;
     private PlayerRepository $playerRepo;
     private TournamentRepository $tournamentRepo;
+    private SessionInterface $session;
 
-    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, StatsService $statsService, PlayerRepository $playerRepo, TournamentRepository $tournamentRepo)
+
+    public function __construct(SessionInterface $session, GoldenRacketPlayersRepository $goldenRacketPlayersRepo, GoldenRacketRepository $goldenRacketRepo, GameRepository $gameRepo, JouerRepository $jouerRepo, StatsService $statsService, PlayerRepository $playerRepo, TournamentRepository $tournamentRepo)
     {
         $this->gameRepo = $gameRepo;
         $this->tournamentRepo = $tournamentRepo;
         $this->jouerRepo = $jouerRepo;
         $this->statsService = $statsService;
         $this->playerRepo = $playerRepo;
+        $this->goldenRacketRepo = $goldenRacketRepo;
+        $this->goldenRacketPlayersRepo = $goldenRacketPlayersRepo;
+        $this->session = $session;
     }
 
     /**
@@ -38,12 +48,13 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
+        $this->session->set('goldenRacketId', null);
         $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC'], 6);
         $allGames = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC']);
         $tournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC'], 6);
         $allTournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC']);
-        $gGames = $this->gameRepo->findBy(['isGoldenRacket' => true],['playedAt' => 'DESC'], 6);
-        $gAllGames = $this->gameRepo->findBy(['isGoldenRacket' => true],['playedAt' => 'DESC']);
+        $goldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC'], 6);
+        $allGoldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC']);
         $jouers = $this->jouerRepo->findAll();
 
         $player = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
@@ -54,8 +65,8 @@ class HomeController extends AbstractController
                 'allGames' => $allGames,
                 'tournaments' => $tournaments,
                 'allTournaments' => $allTournaments,
-                'gGames' => $gGames,
-                'gAllGames' => $gAllGames,
+                'goldenRackets' => $goldenRackets,
+                'allGoldenRackets' => $allGoldenRackets,
                 'jouers' => $jouers,
                 'player' => $player,
             ]);
@@ -66,8 +77,8 @@ class HomeController extends AbstractController
             'allGames' => $allGames,
             'tournaments' => $tournaments,
             'allTournaments' => $allTournaments,
-            'gGames' => $gGames,
-            'gAllGames' => $gAllGames,
+            'goldenRackets' => $goldenRackets,
+            'allGoldenRackets' => $allGoldenRackets,
             'jouers' => $jouers,
         ]);
     }

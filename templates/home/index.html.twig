@@ -132,18 +132,18 @@
                                                 Match Joués : n/a
                                             {% endif %} |
                                             {% if player.matchRatio != [] %}
-                                                Ratio G/P : {{ player.matchRatio }}
+                                                Ratio G/P : {{ player.matchRatio | number_format(2, ',', ' ') }}
                                             {% else %}
                                                 Ratio G/P : n/a
                                             {% endif %}
                                         <hr>
                                         {% if player.matchAveragePointsOf11 != [] %}
-                                            Moyenne de points (match en 11) : {{ player.matchAveragePointsOf11 }}
+                                            Moyenne de points (match en 11) : {{ player.matchAveragePointsOf11 | number_format(2, ',', ' ') }}
                                         {% else %}
                                             Moyenne de points (match en 11) : n/a
                                         {% endif %}
                                         {% if player.matchAveragePointsOf21 != [] %}
-                                            Moyenne de points (match en 21) : {{ player.matchAveragePointsOf21 }}
+                                            Moyenne de points (match en 21) : {{ player.matchAveragePointsOf21 | number_format(2, ',', ' ') }}
                                         {% else %}
                                             Moyenne de points (match en 21) : n/a
                                         {% endif %}
@@ -322,53 +322,29 @@
                                     <h5 class="card-title">Historique des Raquettes d'or</h5>
                                     <hr>
                                     <div class="card-text">
-                                        <div class="list-group {{ gGames|length>3 ? "dashboard" : "" }}">
-                                            {% for game in gGames %}
+                                        <div class="list-group {{ goldenRackets|length>3 ? "dashboard" : "" }}">
+                                            {% for goldenRacket in goldenRackets %}
 
-                                                <div class="list-group-item list-group-item-action">
-                                                    <div class="row">
-                                                        <div class="col-md-9 ">
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="row">
+                                                    <div class="col-md-9 ">
+                                                        <a href="{{ path('gridG',{'id':goldenRacket.id}) }}">
+                                                            <h5 class="mb-1">
+                                                                Raquette d'or n°{{ goldenRacket.id }}
+                                                            </h5>
+                                                        </a>
+                                                    </div>
 
-                                                            <a href="{{ path('detail',{'id':game.id}) }}">
-                                                                <h5 class="mb-1">
-                                                                    {% set show = 1 %}
-                                                                    {% for jouer in jouers %}
-                                                                        {% if jouer.game == game %}
-                                                                            {% if jouer.isWinner == true and show == 1 %}
-                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
-                                                                            {% endif %}
-                                                                            {{ jouer.player.fullName }}
-                                                                            {% if jouer.isWinner == true and show == 0 %}
-                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
-                                                                            {% endif %}
-                                                                            {% set show = show+1 %}
-                                                                        {% endif %}
-                                                                        {% if show == 2 %}
-                                                                            <span class="badge badge-secondary">VS</span>
-                                                                            {% set show = 0 %}
-                                                                        {% endif %}
-                                                                    {% endfor %}
-                                                                    ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
-                                                                </h5>
-                                                            </a>
-
-                                                            {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
-                                                            {# <small>Posté par <a
-                                                                        href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
-                                                            </small> #}
-
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <div class="col-md-12 text-right">
-                                                                {% set date = game.playedAt | date %}
-                                                                <small class="">{{ date|ago }}</small>
-                                                            </div>
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-12 text-right">
+                                                            {% set date = goldenRacket.createdAt | date %}
+                                                            <small class="">{{ date|ago }}</small>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
                                             {% endfor %}
-                                            {% if gAllGames | length > 6 %}
+                                            {% if allGoldenRackets | length > 6 %}
 
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
