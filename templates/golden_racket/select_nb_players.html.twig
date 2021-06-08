@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PingPong - Nouveau Tournoi - Joueurs% endblock %}
+{% block title %}PingPong - Nouvelle Raquette d'or - Joueurs{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
@@ -8,18 +8,18 @@
             <div class="card-body">
                 <h1 class="card-title">Sélection du nombre de participants :</h1>
                 <p class="card-text">
-                <form class="form-group row" method="POST" action="{{ path('selectNbT') }}">
+                <form class="form-group row" method="POST" action="{{ path('selectNbG') }}">
                     <div class="col-md-10">
                         <select class="form-control custom-select" name="nbJoueurs">
                             <option value="null">---------Selectionnez une valeur---------</option>
-                            <option value="4">4 Joueurs</option>
-                            <option value="8">8 Joueurs</option>
-                            <option value="16">16 Joueurs</option>
-                            <option value="32">32 Joueurs</option>
+                            <option value="1">1 Joueur</option>
+                            {% for players in range(2,10) %}
+                            <option value="{{ players }}">{{ players }} joueurs</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <input class="btn btn-info form-control" type="submit" value="Selectionner">
+                        <input class="btn btn-warning form-control" type="submit" value="Selectionner">
                     </div>
                 </form>
                 </p>

@@ -54,7 +54,7 @@ class TournamentController extends AbstractController
     }
 
     /**
-     * @Route("/tournament/{id}/grid", name="grid")
+     * @Route("/tournament/{id}/grid", name="gridT")
      */
     public function gridOfMatchs(Request $request, $id): Response
     {

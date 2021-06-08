@@ -32,6 +32,11 @@ class GoldenRacketPlayers
      */
     private $goldenRacket;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbGames;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class GoldenRacketPlayers
     public function setGoldenRacket(?GoldenRacket $goldenRacket): self
     {
         $this->goldenRacket = $goldenRacket;
+
+        return $this;
+    }
+
+    public function getNbGames(): ?int
+    {
+        return $this->nbGames;
+    }
+
+    public function setNbGames(?int $nbGames): self
+    {
+        $this->nbGames = $nbGames;
 
         return $this;
     }

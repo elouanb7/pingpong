@@ -56,7 +56,7 @@ class TournamentPlayersController extends AbstractController
                 'success',
                 "Les joueurs ont bien été enregistrés !"
             );
-            return $this->redirectToRoute('grid', [
+            return $this->redirectToRoute('gridT', [
                 'id' => $tournament->getId(),
             ]);
         }

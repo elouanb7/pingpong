@@ -39,6 +39,11 @@ class GoldenRacket
      */
     private $goldenRacketPlayers;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $day;
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
@@ -130,6 +135,18 @@ class GoldenRacket
                 $goldenRacketPlayer->setGoldenRacket(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDay(): ?int
+    {
+        return $this->day;
+    }
+
+    public function setDay(?int $day): self
+    {
+        $this->day = $day;
 
         return $this;
     }

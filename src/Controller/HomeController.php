@@ -38,8 +38,8 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        $games = $this->gameRepo->findBy(['isTournament' => null, 'isGoldenRacket' => null],['playedAt' => 'DESC'], 6);
-        $allGames = $this->gameRepo->findBy(['isTournament' => null, 'isGoldenRacket' => null],['playedAt' => 'DESC']);
+        $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC'], 6);
+        $allGames = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC']);
         $tournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC'], 6);
         $allTournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC']);
         $gGames = $this->gameRepo->findBy(['isGoldenRacket' => true],['playedAt' => 'DESC'], 6);

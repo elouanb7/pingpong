@@ -66,6 +66,7 @@ class TournamentService extends AbstractController
             $game->setIsTournament(true);
             $game->setIsGoldenRacket(false);
             $game->setGoldenRacket(null);
+            $game->setDay(null);
             $game->setRound($rounds);
             $jouer = new Jouer(); // Je crée une participation
             $jouer->setPlayer($players[0]); // Je défini le joueur qui participe
@@ -126,6 +127,7 @@ class TournamentService extends AbstractController
                 $game->setIsTournament(true);
                 $game->setIsGoldenRacket(false);
                 $game->setGoldenRacket(null);
+                $game->setDay(null);
                 $game->setRound($round);
                 $jouer = new Jouer(); // Je crée une participation
                 $jouer->setPlayer($previousRoundPlayers[0]); // Je défini le joueur qui participe
@@ -200,6 +202,10 @@ class TournamentService extends AbstractController
                if ($round==0){
                    return $round;
                }
+               $tournament = $this->tournamentRepo->findOneBy(['id' => $tournament]);
+               $tournament->setFinishedAt(new \DateTime('now'));
+               $this->manager->persist($tournament);
+               $this->manager->flush();
                return $round - 1;
            }
            else {

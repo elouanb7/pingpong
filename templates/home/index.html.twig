@@ -53,7 +53,6 @@
                                     <div class="card-text">
                                         <div class="list-group {{ games|length>3 ? "dashboard" : "" }}">
                                             {% for game in games %}
-
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
                                                         <div class="col-md-9 ">
@@ -206,7 +205,7 @@
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
                                                         <div class="col-md-9 ">
-                                                            <a href="{{ path('grid',{'id':tournament.id}) }}">
+                                                            <a href="{{ path('gridT',{'id':tournament.id}) }}">
                                                                 <h5 class="mb-1">
                                                                         Tournoi n°{{ tournament.id }}
                                                                 </h5>
@@ -309,7 +308,7 @@
                                             </p>
                                         </div>
                                         <div class="col-3 my-auto">
-                                            <a href="{{ path('chooseP1') }}" class="btn btn-warning">Commencer une raquette d'or</a>
+                                            <a href="{{ path('selectNbG') }}" class="btn btn-warning">Commencer une raquette d'or</a>
                                         </div>
                                     </div>
 
@@ -320,7 +319,7 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Historique des matchs</h5>
+                                    <h5 class="card-title">Historique des Raquettes d'or</h5>
                                     <hr>
                                     <div class="card-text">
                                         <div class="list-group {{ gGames|length>3 ? "dashboard" : "" }}">
