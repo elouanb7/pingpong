@@ -75,8 +75,12 @@ class GameController extends AbstractController
      public function newGame(Request $request, $id): Response
      {
          $goldenRacketId = null;
+         $tournamentId = null;
          if ($this->session->get('goldenRacketId')!=null){
              $goldenRacketId = $this->session->get('goldenRacketId');
+         }
+         else if ($this->session->get('tournamentId')!=null){
+             $tournamentId = $this->session->get('tournamentId');
          }
          $game = $this->gameRepo->findOneBy(['id' => $id]);
          $jouers = $this->jouerRepo->findBy(['game' => $game->getId()],['id' => 'ASC']);
@@ -108,6 +112,12 @@ class GameController extends AbstractController
                      'id' => $goldenRacketId,
                  ]);
              }
+             else if ($tournamentId!=null) {
+                 return $this->redirectToRoute('gridT', [
+                     'id' => $tournamentId,
+                 ]);
+             }
+
              return $this->redirectToRoute('home', [
                  'id' => $game->getId()
              ]);

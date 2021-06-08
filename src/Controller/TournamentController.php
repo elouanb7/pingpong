@@ -12,10 +12,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TournamentController extends AbstractController
 {
+    private SessionInterface $session;
     private TournamentPlayersRepository $tournamentPlayersRepo;
     private TournamentRepository $tournamentRepo;
     private GameRepository $gameRepo;
@@ -24,7 +26,7 @@ class TournamentController extends AbstractController
     private EntityManagerInterface $manager;
     private TournamentService $tournamentService;
 
-    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, EntityManagerInterface $manager, TournamentPlayersRepository $tournamentPlayersRepo, TournamentRepository $tournamentRepo, TournamentService $tournamentService)
+    public function __construct(SessionInterface $session, GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, EntityManagerInterface $manager, TournamentPlayersRepository $tournamentPlayersRepo, TournamentRepository $tournamentRepo, TournamentService $tournamentService)
     {
         $this->tournamentService = $tournamentService;
         $this->tournamentRepo = $tournamentRepo;
@@ -33,6 +35,7 @@ class TournamentController extends AbstractController
         $this->jouerRepo = $jouerRepo;
         $this->playerRepo = $playerRepo;
         $this->manager = $manager;
+        $this->session = $session;
     }
 
     /**
@@ -58,6 +61,7 @@ class TournamentController extends AbstractController
      */
     public function gridOfMatchs(Request $request, $id): Response
     {
+        $this->session->set('tournamentId', $id);
         $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['id' => 'ASC']);
         if (count($tournamentPlayers) == 4) {
             $oldRounds = 2;

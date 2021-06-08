@@ -3,7 +3,7 @@
 {% block title %}PingPong - Tournament {{ tournament.id }}{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <div class="card">
             <div class="card-body">
                 <h1 class="card-title">Grille des matchs :</h1>
@@ -27,7 +27,7 @@
                                             <h6 class="mt-1">Seizièmes de Finale</h6>
                                         {% endif %}
 
-                                        <div class="list-group" >
+                                        <div class="list-group">
                                             {% for game in games %}
                                                 {% if game.round == round %}
                                                     <div class="list-group-item list-group-item-action">
@@ -104,43 +104,41 @@
                                     {% set count = count + 1 %}
                                     {% if count == 1 %}
                                     <div class="list-group-item list-group-item-action">
-                                        <div class="row">
-                                            <div class="col-md-3 ">
-                                                <a class="text-decoration-none"
-                                                   href="{# {{ path('detail',{'id':game.id}) }} #}">
+                                        <a class="text-decoration-none"
+                                           href="{# {{ path('detail',{'id':game.id}) }} #}">
+                                            <div class="row">
+                                                <div class="col-md-3 ">
                                                     <h2><span class="badge badge-warning"><i
                                                                     class="fas fa-dice-one"></i></span></h2>
-                                                </a>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <h5 class="mb-1">{{ player.fullName }}</h5></div>
                                             </div>
-                                            <div class="col-md-9"><h5 class="mb-1">{{ player.fullName }}</h5></div>
-                                        </div>
+                                        </a>
                                     </div>
                                     {% elseif count == 2 %}
                                     <div class="list-group-item list-group-item-action">
-                                        <div class="row">
-                                            <div class="col-md-3 ">
-                                                <a class="text-decoration-none"
-                                                   href="{# {{ path('detail',{'id':game.id}) }} #}">
+                                        <a class="text-decoration-none"
+                                           href="{# {{ path('detail',{'id':game.id}) }} #}">
+                                            <div class="row">
+                                                <div class="col-md-3 ">
                                                     <h2><span class="badge badge-secondary"><i
                                                                     class="fas fa-dice-two"></i></span></h2>
-                                                </a>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <h5 class="mb-1">{{ player.fullName }}</h5></div>
                                             </div>
-                                            <div class="col-md-9">
-                                                <h5 class="mb-1">{{ player.fullName }}</h5></div>
-                                            {% endif %}
+                                        </a>
+                                    </div>
+                                        {% endif %}
 
-                                            {% endfor %}
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
-
                             </div>
-                            {% endif %}
 
                         </div>
-                        <p class="card-text">
-                        </p>
-                    </div>
+                        {% endif %}
                     <div class="col-md-4 mt-3">
                         <div class="card">
                             <div class="card-body">
@@ -151,9 +149,12 @@
 
                         </div>
                     </div>
+                    </div>
                 </div>
+
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
 

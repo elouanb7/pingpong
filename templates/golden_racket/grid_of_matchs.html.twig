@@ -4,12 +4,18 @@
 
 
 {% block body %}
+    {% include ('partials/modal_end_golden_racket.html.twig') %}
     <div class="container mt-5">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6"><h1 class="card-title">Grille des matchs :</h1></div>
-                    <div class="col-md-6 text-center "><a href="{{ path('newDay', {'id' : goldenRacket.id}) }}" class="btn btn-warning ">Commencer une nouvelle journée</a></div>
+                    <div class="col-md-4 text-center "><a href="{{ path('newDay', {'id' : goldenRacket.id}) }}"
+                                                          class="btn btn-warning {{ goldenRacket.finishedAt != null ? " disabled" : "" }}">Commencer
+                            une nouvelle journée</a>
+                    </div>
+                    <div class="col-md-2 text-center "><a class="btn btn-danger" data-toggle="modal" data-target="#fin"
+                                                          role="button">Terminée ?</a></div>
                 </div>
 
                 <div class="row">
@@ -23,73 +29,82 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="dropdown show">
-                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false">
                                                 Journées
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                 {% for day in range(1,days) %}
-                                                   <a class="dropdown-item" href="#jour{{ day }}">Jour {{ day }}</a>
+                                                    <a class="dropdown-item" href="#jour{{ day }}">Jour {{ day }}</a>
                                                 {% endfor %}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <hr>
                                 <div class="card-text {{ games|length>3 ? "dashboard" : "" }}">
-                                    {% for day in range(1,days) %}
-                                        <h6 class="mt-1" id="jour{{ day }}">Jour {{ day }}</h6>
-                                        <div class="list-group">
-                                            {% for game in games %}
-                                                {% if game.day == day %}
-                                                    <div class="list-group-item list-group-item-action">
-                                                        <div class="row">
-                                                            <div class="col-md-9 ">
-                                                                <a class="text-decoration-none"
-                                                                   href="{{ path('detail',{'id':game.id}) }}">
-                                                                    <h5 class="mb-1">
-                                                                        {% set show = 1 %}
-                                                                        {% for jouer in jouers %}
-                                                                            {% if jouer.game == game %}
-                                                                                {% if jouer.isWinner == true and show == 1 %}
-                                                                                    <span class="badge badge-secondary"><i
-                                                                                                class="fas fa-crown"></i></span>
-                                                                                {% endif %}
-                                                                                {{ jouer.player.fullName }}
-                                                                                {% if jouer.isWinner == true and show == 0 %}
-                                                                                    <span class="badge badge-secondary"><i
-                                                                                                class="fas fa-crown"></i></span>
-                                                                                {% endif %}
-                                                                                {% set show = show+1 %}
-                                                                            {% endif %}
-                                                                            {% if show == 2 %}
-                                                                                <span class="badge badge-secondary">VS</span>
-                                                                                {% set show = 0 %}
-                                                                            {% endif %}
-                                                                        {% endfor %}
-                                                                        ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
-                                                                    </h5>
-                                                                </a>
+                                    {% if days != null %}
+                                        {% for day in range(1,days) %}
+                                            <h6 class="mt-1" id="jour{{ day }}">Jour {{ day }}</h6>
+                                            <div class="list-group">
+                                                {% for game in games %}
+                                                    {% if game.day == day %}
+                                                        <div class="list-group-item list-group-item-action">
+                                                            <div class="row">
+                                                                <div class="col-md-9 ">
+                                                                    {% if goldenRacket.finishedAt != null %}
+                                                                    <a class="text-decoration-none disabled">
+                                                                        {% else %}
+                                                                        <a href="{{ path('detail',{'id':game.id}) }}"
+                                                                           class="text-decoration-none">
+                                                                    {% endif %}
 
-                                                                {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
-                                                                {# <small>Posté par <a
+                                                                        <h5 class="mb-1">
+                                                                            {% set show = 1 %}
+                                                                            {% for jouer in jouers %}
+                                                                                {% if jouer.game == game %}
+                                                                                    {% if jouer.isWinner == true and show == 1 %}
+                                                                                        <span class="badge badge-secondary"><i
+                                                                                                    class="fas fa-crown"></i></span>
+                                                                                    {% endif %}
+                                                                                    {{ jouer.player.fullName }}
+                                                                                    {% if jouer.isWinner == true and show == 0 %}
+                                                                                        <span class="badge badge-secondary"><i
+                                                                                                    class="fas fa-crown"></i></span>
+                                                                                    {% endif %}
+                                                                                    {% set show = show+1 %}
+                                                                                {% endif %}
+                                                                                {% if show == 2 %}
+                                                                                    <span class="badge badge-secondary">VS</span>
+                                                                                    {% set show = 0 %}
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                            ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
+                                                                        </h5>
+                                                                    </a>
+
+                                                                    {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
+                                                                    {# <small>Posté par <a
                                                                         href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
                                                             </small> #}
 
-                                                            </div>
-
-                                                            <div class="col-md-3">
-                                                                <div class="col-md-12 text-right">
-                                                                    {% set date = game.playedAt | date %}
-                                                                    <small class="">{{ date|ago }}</small>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="col-md-12 text-right">
+                                                                        {% set date = game.playedAt | date %}
+                                                                        <small class="">{{ date|ago }}</small>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                    {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                        {% else %}
+                                        <h5>Il n'y a pas encore de matchs programmés, mais vous pouvez commencer une nouvelle journée</h5>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -148,21 +163,20 @@
 </div></div>
                                 </div>
                                 {% endif %} #}
+                    <div class="col-md-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Statistiques
+                                </h5>
+                            </div>
 
-                </div>
-                <p class="card-text">
-                </p>
-            </div>
-            <div class="col-md-4 mt-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Statistiques
-                        </h5>
+                        </div>
                     </div>
-
                 </div>
+
             </div>
+
         </div>
     </div>
 {% endblock %}

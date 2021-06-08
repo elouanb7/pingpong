@@ -83,5 +83,19 @@ class GoldenRacketController extends AbstractController
             'id' => $id,
         ]);
     }
+
+    /**
+     * @Route("/goldenRacket/{id}/endGoldenRacket", name="endGoldenRacket")
+     */
+    public function endGoldenRacket($id): Response
+    {
+        $goldenRacket = $this->goldenRacketRepo->findOneBy(['id' => $id]);
+        $goldenRacket->setFinishedAt(new \DateTime('now'));
+        $this->manager->persist($goldenRacket);
+        $this->manager->flush();
+        return $this->redirectToRoute('home', [
+            'id' => $id,
+        ]);
+    }
 }
 

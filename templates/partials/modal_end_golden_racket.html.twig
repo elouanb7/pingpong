@@ -1,0 +1,22 @@
+{#
+Il s'agit du modal de fin de tournoi
+#}
+<div class="modal fade" tabindex="-1" role="dialog" id="fin">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title">Attention !!!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Vous êtes sur le point de terminer la Raquette d'or n°{{ goldenRacket.id }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Annuler</button>
+                <a href="{{ path('endGoldenRacket', {'id' : goldenRacket.id }) }}" class="btn btn-danger">Terminer la Raquette d'or</a>
+            </div>
+        </div>
+    </div>
+</div>

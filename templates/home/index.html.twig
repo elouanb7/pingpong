@@ -204,14 +204,22 @@
 
                                                 <div class="list-group-item list-group-item-action">
                                                     <div class="row">
-                                                        <div class="col-md-9 ">
+                                                        <div class="col-md-6 ">
                                                             <a href="{{ path('gridT',{'id':tournament.id}) }}">
                                                                 <h5 class="mb-1">
                                                                         Tournoi n°{{ tournament.id }}
                                                                 </h5>
                                                             </a>
                                                         </div>
-
+                                                        <div class="col-md-3">
+                                                            <div class="col-md-12 text-right">
+                                                                {% if tournament.finishedAt != null %}
+                                                                    <h5><span class="badge badge-pill badge-danger">Terminée</span></h5>
+                                                                {% else %}
+                                                                    <h5><span class="badge badge-pill badge-info">En cours</span></h5>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
                                                         <div class="col-md-3">
                                                             <div class="col-md-12 text-right">
                                                                 {% set date = tournament.createdAt | date %}
@@ -327,14 +335,22 @@
 
                                             <div class="list-group-item list-group-item-action">
                                                 <div class="row">
-                                                    <div class="col-md-9 ">
+                                                    <div class="col-md-6 ">
                                                         <a href="{{ path('gridG',{'id':goldenRacket.id}) }}">
                                                             <h5 class="mb-1">
                                                                 Raquette d'or n°{{ goldenRacket.id }}
                                                             </h5>
                                                         </a>
                                                     </div>
-
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-12 text-right">
+                                                            {% if goldenRacket.finishedAt != null %}
+                                                                <h5><span class="badge badge-pill badge-danger">Terminée</span></h5>
+                                                                {% else %}
+                                                                    <h5><span class="badge badge-pill badge-warning">En cours</span></h5>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-3">
                                                         <div class="col-md-12 text-right">
                                                             {% set date = goldenRacket.createdAt | date %}
