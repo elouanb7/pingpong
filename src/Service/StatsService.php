@@ -4,30 +4,46 @@ namespace App\Service;
 
 
 use App\Repository\GameRepository;
+use App\Repository\GoldenRacketPlayersRepository;
+use App\Repository\GoldenRacketRepository;
 use App\Repository\JouerRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\TournamentPlayersRepository;
+use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 class StatsService extends AbstractController
 {
 
+    private GoldenRacketPlayersRepository $goldenRacketPlayersRepo;
+    private GoldenRacketRepository $goldenRacketRepo;
     private GameRepository $gameRepo;
-    private PlayerRepository $playerRepo;
     private JouerRepository $jouerRepo;
+    private PlayerRepository $playerRepo;
+    private TournamentRepository $tournamentRepo;
+    private TournamentPlayersRepository $tournamentPlayersRepo;
+    private SessionInterface $session;
     private EntityManagerInterface $manager;
 
-    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, EntityManagerInterface $manager)
+
+    public function __construct(TournamentPlayersRepository $tournamentPlayersRepo, EntityManagerInterface $manager, SessionInterface $session, GoldenRacketPlayersRepository $goldenRacketPlayersRepo, GoldenRacketRepository $goldenRacketRepo, GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, TournamentRepository $tournamentRepo)
     {
         $this->gameRepo = $gameRepo;
+        $this->tournamentRepo = $tournamentRepo;
+        $this->tournamentPlayersRepo = $tournamentPlayersRepo;
         $this->jouerRepo = $jouerRepo;
         $this->playerRepo = $playerRepo;
+        $this->goldenRacketRepo = $goldenRacketRepo;
+        $this->goldenRacketPlayersRepo = $goldenRacketPlayersRepo;
+        $this->session = $session;
         $this->manager = $manager;
     }
 
-    public function matchStats($player)
+    public function matchsStats($player)
     {
         $null = null;
         $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
@@ -89,6 +105,7 @@ class StatsService extends AbstractController
 
     public function tournamentStats($player)
     {
+
         $null = null;
         $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
         $played = [];
@@ -100,19 +117,52 @@ class StatsService extends AbstractController
                 $scores = $scores + $jouers->getScore();
             }
         }
+        /*$gamesIds = [];
+        $games = [];
+        $gamesTournament = [];
+        $jouersTournament = [];
+        foreach ($played as $item){
+             $gameId = $item->getGame()->getId();
+             array_push($gamesIds,$gameId);
+        }
+        foreach ($gamesIds as $gameId){
+            $game = $this->gameRepo->findOneBy(['id' => $gameId]);
+            array_push($games,$game);
+        }
+        foreach ($games as $game){
+            if($game->getIsTournament() == true){
+                array_push($gamesTournament, $game);
+            }
+        }
+        foreach ($gamesTournament as $gameTournament){
+            foreach ($pands as $jouerTournament){
+                if ($jouerTournament->getGame()==$gameTournament){
+                    array_push($jouersTournament, $jouerTournament);
+                }
+        }
+        }*/
+
+        $tournamentsPlayed = $this->tournamentPlayersRepo->findBy(['player' => $player->getId()]);
+        $tournamentWon = $this->tournamentPlayersRepo->findBy(['player' => $player->getId(), 'rank' => 1]);
+        $ranks = [];
+        $rankAverage = 0;
+        foreach ($tournamentsPlayed as $tournamentPlayed){
+            $rank = $tournamentPlayed->getRank();
+            array_push($ranks,$rank);
+            $rankAverage = $rankAverage + $rank;
+        }
+        if (count($ranks)!=null){
+            $tournamentAveragePlacement = $rankAverage/(count($ranks));
+            $player->setTournamentAveragePlacement($tournamentAveragePlacement);
+        }
+
+
         if(!empty($played) || $scores!=0){
-            $pointsAverageOfEleven = $scores/count($played);
-            $player->setMatchPlayed(count($played));
-            $player->setMatchAveragePointsOf11($pointsAverageOfEleven);
+            $player->setTournamentPlayed(count($tournamentsPlayed));
+            $player->setTournamentWon(count($tournamentWon));
+
         }
-        $won = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => true]);
-        $lost = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => false]);
-        if (!empty($won) || !empty($lost)){
-            $ratio = count($won)/(count($won)+count($lost));
-            $player->setMatchRatio($ratio);
-            $player->setMatchWon(count($won));
-            $player->setMatchLost(count($lost));
-        }
+
         $this->manager->persist($player);
         $this->manager->flush();
     }

@@ -2,3 +2,6 @@
     overflow-y:scroll;
     height: 213px;
 }
+.card-columns{
+    column-count: 2;
+}

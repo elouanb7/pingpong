@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PlayerController!{% endblock %}
+
+{% block body %}
+<div class="row ml-3 mr-3 mt-5 mb-3 ">
+    <div class="col-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-stats-tab" data-toggle="pill" href="#v-pills-stats"
+               role="tab"
+               aria-controls="v-pills-stats" aria-selected="true">Stats</a>
+            <a class="nav-link" id="v-pills-participation-tab" data-toggle="pill" href="#v-pills-participation"
+               role="tab" aria-controls="v-pills-participation" aria-selected="false">Participations</a>
+            <a class="nav-link" id="v-pills-success-tab" data-toggle="pill" href="#v-pills-success" role="tab"
+               aria-controls="v-pills-success" aria-selected="false">Succès</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
+               aria-controls="v-pills-settings" aria-selected="false">Paramètres</a>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-stats" role="tabpanel"
+                 aria-labelledby="v-pills-stats-tab">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 my-auto ml-2"><h2
+                                            class="card-title">{{ player.fullName }}</h2>
+                                </div>
+                                <div class="col-md-5 my-auto text-right"><h5 class="card-title ">Membre depuis
+                                        le {{ player.createdAt | date('d/m/Y') }}</h5></div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="card-columns ml-3 mr-3">
+                                    {# <div class="col-6 mb-3"> #}
+                                    <div class="card alert-success">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Matchs : </h5>
+                                            <p class="card-text">
+                                                Nombre de matchs joués : <span
+                                                        class="h6">{{ player.matchPlayed }}</span>
+                                                <br>
+                                                Victoires : <span class="h6">{{ player.matchWon }}</span>
+                                                <br>
+                                                Défaites : <span class="h6">{{ player.matchLost }}</span>
+                                                <br>
+                                                Victoires en 2 points d'écart : <span
+                                                        class="h6">{{ player.matchLost }}</span>
+                                                <br>
+                                                Défaites en 2 points d'écart : <span
+                                                        class="h6">{{ player.matchLost }}</span>
+                                                <br>
+                                                Ratio Victoires / Défaites : <span
+                                                        class="h6">{{ player.matchRatio | number_format(2, ',', ' ') }}</span>
+                                                <br>
+                                                Moyenne de points (matchs en 11) : <span
+                                                        class="h6">{{ player.matchAveragePointsOf11 | number_format(2, ',', ' ') }}</span>
+                                                <br>
+                                                Moyenne de points (matchs en 21) : <span
+                                                        class="h6">{{ player.matchAveragePointsOf21 | number_format(2, ',', ' ') }}</span>
+
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                    {# <div class="col-6 mb-3"> #}
+                                    <div class="card alert-info">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Tournois :</h5>
+                                            <p class="card-text">
+                                                Nombre de tournois joués : <span
+                                                        class="h6">{{ player.tournamentPlayed }}</span>
+                                                <br>
+                                                Victoires : <span class="h6">{{ player.tournamentWon }}</span>
+                                                <br>
+                                                Moyenne de placement : <span
+                                                        class="h6">{{ player.tournamentAveragePlacement }}</span>
+                                                <br>
+
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {#<div class="col-6 mb-3">#}
+                                        <div class="card alert-warning">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Raquettes d'or :</h5>
+                                                <p class="card-text">
+                                                    Nombre de Raquettes d'or jouées : <span
+                                                            class="h6">{{ player.goldenRacketPlayed }}</span>
+                                                    <br>
+                                                    Victoires : <span class="h6">{{ player.goldenRacketWon }}</span>
+                                                    <br>
+                                                    Moyenne de placement : <span
+                                                            class="h6">{{ player.goldenRacketAveragePlacement }}</span>
+                                                    <br>
+
+
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-participation" role="tabpanel"
+                     aria-labelledby="v-pills-participation-tab">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 my-auto ml-2"><h2
+                                                class="card-title">{{ player.fullName }}</h2>
+                                    </div>
+                                    <div class="col-md-5 my-auto text-right"><h5 class="card-title ">Membre depuis
+                                            le {{ player.createdAt | date('d/m/Y') }}</h5></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"></h5>
+                                                <p class="card-text"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"></h5>
+                                                <p class="card-text"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"></h5>
+                                                <p class="card-text"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"></h5>
+                                                <p class="card-text"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-success" role="tabpanel"
+                     aria-labelledby="v-pills-success-tab">
+                    ...
+                </div>
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
+                     aria-labelledby="v-pills-settings-tab">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

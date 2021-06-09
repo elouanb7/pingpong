@@ -11,6 +11,7 @@ use App\Repository\JouerRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TournamentPlayersRepository;
 use App\Repository\TournamentRepository;
+use App\Service\GeneralService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Integer;
@@ -19,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TournamentService extends AbstractController
 {
+    private GeneralService $generalService;
     private TournamentPlayersRepository $tournamentPlayersRepo;
     private TournamentRepository $tournamentRepo;
     private GameRepository $gameRepo;
@@ -26,8 +28,9 @@ class TournamentService extends AbstractController
     private JouerRepository $jouerRepo;
     private EntityManagerInterface $manager;
 
-    public function __construct(GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, EntityManagerInterface $manager, TournamentPlayersRepository $tournamentPlayersRepo, TournamentRepository $tournamentRepo)
+    public function __construct(GeneralService $generalService, GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo, EntityManagerInterface $manager, TournamentPlayersRepository $tournamentPlayersRepo, TournamentRepository $tournamentRepo)
     {
+        $this->generalService = $generalService;
         $this->tournamentRepo = $tournamentRepo;
         $this->tournamentPlayersRepo = $tournamentPlayersRepo;
         $this->gameRepo = $gameRepo;
@@ -151,41 +154,6 @@ class TournamentService extends AbstractController
         }
 
         return $round;
-        /*
-         $players = [];
-         foreach ($tournamentPlayers as $tournamentPlayer) {
-             $playerId = $tournamentPlayer->getPlayer()->getId();
-             $player = $this->playerRepo->findOneBy(['id' => $playerId]);
-             array_push($players, $player);
-         }
-
-         for ($i = 0; $i < (count($tournamentPlayers) / 2); $i++) {
-             $game = new Game(); // je crée 1 game
-             $game->setTournament($this->tournamentRepo->findOneBy(['id' => $tournament])); // Je récup mon tournois
-             $game->setIsTournament(true);
-             $game->setIsGoldenRacket(false);
-             $game->setGoldenRacket(null);
-             $game->setRound($rounds);
-             $jouer = new Jouer(); // Je crée une participation
-             $jouer->setPlayer($players[0]); // Je défini le joueur qui participe
-             $jouer->setGame($game); // Je défini dans quelle game
-             $jouer2 = new Jouer();
-             $jouer2->setPlayer($players[1]);
-             $jouer2->setGame($game);
-
-             $this->manager->persist($jouer);
-             $this->manager->persist($jouer2);
-             $this->manager->persist($game);
-             $this->manager->flush();
-
-             array_splice($players, 0, count($players)-2);
-         }
-         $rounds=$rounds-1;
-         $this->addflash(
-             'success',
-             "Les matchs du tournois on bien été générés !"
-         );*/
-
     }
 
     /**
@@ -196,39 +164,63 @@ class TournamentService extends AbstractController
 
     public function doLeaderboard(int $round, int $tournament): int
     {
-       $finale = $this->gameRepo->findOneBy(['round' => 1, 'tournament' => $tournament]);
-       if ($finale){
-           if ($finale->getScoreP1() != null && $finale->getScoreP2() != null){
-               if ($round==0){
-                   return $round;
-               }
-               $tournament = $this->tournamentRepo->findOneBy(['id' => $tournament]);
-               $tournament->setFinishedAt(new \DateTime('now'));
-               $this->manager->persist($tournament);
-               $this->manager->flush();
-               return $round - 1;
-           }
-           else {
-              /* $previousRoundGames = $this->gameRepo->findBy(['tournament' => $tournament, 'round' => $round]);
-               $previousRoundPlayers = [];
-               foreach ($previousRoundGames as $previousRoundGame) {
-                   $previousRoundJouers = $previousRoundGame->getJouers();
-                   foreach ($previousRoundJouers as $previousRoundJouer) {
-                       $previousRoundPlayer = $previousRoundJouer->getIsWinner();
-                       if ($previousRoundPlayer == false) {
-                           $previousRoundPlayer = $previousRoundJouer->getPlayer()->getId();
-                           $previousRoundPlayer = $this->playerRepo->findOneBy(['id' => $previousRoundPlayer]);
-                           array_push($previousRoundPlayers, $previousRoundPlayer);
-                       }
-                   }
-               }
-               $averageOnEleven1 = $previousRoundPlayers[0];
-               $averageOnEleven2 = $previousRoundPlayers[1];*/
+        $finale = $this->gameRepo->findOneBy(['round' => 1, 'tournament' => $tournament]);
+        if ($finale) {
+            if ($finale->getScoreP1() != null && $finale->getScoreP2() != null) {
+                if ($round == 0) {
+                    return $round;
+                }
+                $tournament = $this->tournamentRepo->findOneBy(['id' => $tournament]);
+                $tournament->setFinishedAt(new \DateTime('now'));
+                $this->manager->persist($tournament);
+                $this->manager->flush();
+                return $round - 1;
+            } else {
+                return $round;
+            }
+        }
+        return $round;
+    }
 
-               return $round;
-           }
-       }
-       return $round;
+    /**
+     * @param int $player
+     * @param int $tournament
+     * @return bool
+     */
+
+    public function updateStats(int $player, int $tournament): bool
+    {
+        $tournamentPlayer = $this->tournamentPlayersRepo->findOneBy(['player' => $player, 'tournament' => $tournament]);
+        $tournamentJouers = [];
+        $validJouers = [];
+        $jouers = $this->jouerRepo->findBy(['player' => $player]);
+        foreach ($jouers as $jouer) {
+            if ($jouer->getScore()) {
+                array_push($validJouers, $jouer);
+            }
+        }
+        $jouers = $validJouers;
+        $games = $this->gameRepo->findBy(['tournament' => $tournament]);
+        foreach ($jouers as $jouer) {
+            foreach ($games as $game) {
+                if ($jouer->getGame()->getId() == $game->getId()) {
+                    array_push($tournamentJouers, $jouer);
+                }
+            }
+        }
+        $tournamentScore = 0;
+        if (count($tournamentJouers) != null) {
+            foreach ($tournamentJouers as $tournamentJouer) {
+                $tournamentScore = $tournamentScore + $tournamentJouer->getScore();
+            }
+            $tournamentPointsRatio = $tournamentScore / (count($tournamentJouers));
+            $tournamentPlayer->setPointsAverage($tournamentPointsRatio);
+            $this->manager->persist($tournamentPlayer);
+            $this->manager->flush();
+        } else {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -242,25 +234,60 @@ class TournamentService extends AbstractController
         $finale = $this->gameRepo->findOneBy(['round' => 1, 'tournament' => $tournament]);
         $gagnant = $this->jouerRepo->findOneBy(['game' => $finale->getId(), 'isWinner' => true]);
         $gagnant = $this->playerRepo->findOneBy(['id' => $gagnant->getPlayer()->getId()]);
+        $tournamentPlayerGagnant = $this->tournamentPlayersRepo->findOneBy(['tournament' => $tournament, 'player' => $gagnant->getId()]);
+        $tournamentPlayerGagnant->setRank(1);
+        $this->manager->persist($tournamentPlayerGagnant);
         array_push($podium, $gagnant);
         $finaliste = $this->jouerRepo->findOneBy(['game' => $finale->getId(), 'isWinner' => false]);
         $finaliste = $this->playerRepo->findOneBy(['id' => $finaliste->getPlayer()->getId()]);
+        $tournamentPlayerFinaliste = $this->tournamentPlayersRepo->findOneBy(['tournament' => $tournament, 'player' => $finaliste->getId()]);
+        $tournamentPlayerFinaliste->setRank(2);
+        $this->manager->persist($tournamentPlayerFinaliste);
         array_push($podium, $finaliste);
-                /* $previousRoundGames = $this->gameRepo->findBy(['tournament' => $tournament, 'round' => $round]);
-                 $previousRoundPlayers = [];
-                 foreach ($previousRoundGames as $previousRoundGame) {
-                     $previousRoundJouers = $previousRoundGame->getJouers();
-                     foreach ($previousRoundJouers as $previousRoundJouer) {
-                         $previousRoundPlayer = $previousRoundJouer->getIsWinner();
-                         if ($previousRoundPlayer == false) {
-                             $previousRoundPlayer = $previousRoundJouer->getPlayer()->getId();
-                             $previousRoundPlayer = $this->playerRepo->findOneBy(['id' => $previousRoundPlayer]);
-                             array_push($previousRoundPlayers, $previousRoundPlayer);
-                         }
-                     }
+        $this->manager->flush();
+
+//TODO: Finir de faire le classement pour d'autres joueurs
+
+       /* $Perdants = [];
+        $loserPlayers = [];
+
+        for ($i = 5; $i > 1; $i--) {
+            $games = $this->gameRepo->findBy(['round' => $i, 'tournament' => $tournament]);
+            foreach ($games as $game) {
+                $perdant = $this->jouerRepo->findOneBy(['game' => $game->getId(), 'isWinner' => false]);
+                $perdant = $this->playerRepo->findOneBy(['id' => $perdant->getPlayer()->getId()]);
+                array_push($Perdants, $perdant);
+            }
+
+            foreach ($Perdants as $perdant) {
+                $tournamentPlayer = $this->tournamentPlayersRepo->findOneBy(['player' => $perdant->getId(), 'tournament' => $tournament]);
+                $tournamentPlayerRatio = $tournamentPlayer->getPointsAverage();
+                $loserPlayers ['joueur'] = ["id" => $perdant->getId(), "ratio" => $tournamentPlayerRatio];
+
+            }
+
+        }
+
+        dd($loserPlayers);*/
+
+//TODO : Fin du todo
+
+
+        /* $previousRoundGames = $this->gameRepo->findBy(['tournament' => $tournament, 'round' => $round]);
+         $previousRoundPlayers = [];
+         foreach ($previousRoundGames as $previousRoundGame) {
+             $previousRoundJouers = $previousRoundGame->getJouers();
+             foreach ($previousRoundJouers as $previousRoundJouer) {
+                 $previousRoundPlayer = $previousRoundJouer->getIsWinner();
+                 if ($previousRoundPlayer == false) {
+                     $previousRoundPlayer = $previousRoundJouer->getPlayer()->getId();
+                     $previousRoundPlayer = $this->playerRepo->findOneBy(['id' => $previousRoundPlayer]);
+                     array_push($previousRoundPlayers, $previousRoundPlayer);
                  }
-                 $averageOnEleven1 = $previousRoundPlayers[0];
-                 $averageOnEleven2 = $previousRoundPlayers[1];*/
-return $podium;
+             }
+         }
+         $averageOnEleven1 = $previousRoundPlayers[0];
+         $averageOnEleven2 = $previousRoundPlayers[1];*/
+        return $podium;
     }
 }

@@ -32,6 +32,11 @@ class TournamentPlayers
      */
     private $tournament;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pointsAverage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class TournamentPlayers
     public function setTournament(?Tournament $tournament): self
     {
         $this->tournament = $tournament;
+
+        return $this;
+    }
+
+    public function getPointsAverage(): ?float
+    {
+        return $this->pointsAverage;
+    }
+
+    public function setPointsAverage(?float $pointsAverage): self
+    {
+        $this->pointsAverage = $pointsAverage;
 
         return $this;
     }

@@ -79,6 +79,10 @@ class TournamentController extends AbstractController
             $this->manager->persist($tournament);
             $this->manager->flush();
         } else {
+            $players = $this->playerRepo->findAll();
+            foreach ($players as $player){
+                $this->tournamentService->updateStats($player->getId(), $id);
+            }
             $games = $this->gameRepo->findBy(['tournament' => $id], ['playedAt' => 'ASC']);
             $jouers = $this->jouerRepo->findAll();
             $round = $this->tournamentService->doTournamentRound($id, $tournament->getRound());

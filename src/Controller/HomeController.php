@@ -58,9 +58,15 @@ class HomeController extends AbstractController
         $allGoldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC']);
         $jouers = $this->jouerRepo->findAll();
 
-        $player = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
+        $playerLogged = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
+        $players = $this->playerRepo->findAll();
+        foreach ($players as $player){
+            $this->statsService->matchsStats($player);
+            $this->statsService->tournamentStats($player);
+        }
+
         if ($this->getUser()){
-           $this->statsService->matchStats($player);
+
             return $this->render('home/index.html.twig', [
                 'games' => $games,
                 'allGames' => $allGames,
@@ -69,7 +75,7 @@ class HomeController extends AbstractController
                 'goldenRackets' => $goldenRackets,
                 'allGoldenRackets' => $allGoldenRackets,
                 'jouers' => $jouers,
-                'player' => $player,
+                'player' => $playerLogged,
             ]);
         }
 

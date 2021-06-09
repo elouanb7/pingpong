@@ -58,37 +58,38 @@
                                                                         {% else %}
                                                                         <a href="{{ path('detail',{'id':game.id}) }}"
                                                                            class="text-decoration-none">
-                                                                    {% endif %}
+                                                                            {% endif %}
 
-                                                                        <h5 class="mb-1">
-                                                                            {% set show = 1 %}
-                                                                            {% for jouer in jouers %}
-                                                                                {% if jouer.game == game %}
-                                                                                    {% if jouer.isWinner == true and show == 1 %}
-                                                                                        <span class="badge badge-secondary"><i
-                                                                                                    class="fas fa-crown"></i></span>
+                                                                            <h5 class="mb-1">
+                                                                                {% set show = 1 %}
+                                                                                {% for jouer in jouers %}
+                                                                                    {% if jouer.game == game %}
+                                                                                        {% if jouer.isWinner == true and show == 1 %}
+                                                                                            <span class="badge badge-secondary"><i
+                                                                                                        class="fas fa-crown"></i></span>
+                                                                                        {% endif %}
+                                                                                        {{ jouer.player.fullName }}
+                                                                                        {% if jouer.isWinner == true and show == 0 %}
+                                                                                            <span class="badge badge-secondary"><i
+                                                                                                        class="fas fa-crown"></i></span>
+                                                                                        {% endif %}
+                                                                                        {% set show = show+1 %}
                                                                                     {% endif %}
-                                                                                    {{ jouer.player.fullName }}
-                                                                                    {% if jouer.isWinner == true and show == 0 %}
-                                                                                        <span class="badge badge-secondary"><i
-                                                                                                    class="fas fa-crown"></i></span>
+                                                                                    {% if show == 2 %}
+                                                                                        <span class="badge badge-secondary">VS</span>
+                                                                                        {% set show = 0 %}
                                                                                     {% endif %}
-                                                                                    {% set show = show+1 %}
-                                                                                {% endif %}
-                                                                                {% if show == 2 %}
-                                                                                    <span class="badge badge-secondary">VS</span>
-                                                                                    {% set show = 0 %}
-                                                                                {% endif %}
-                                                                            {% endfor %}
-                                                                            ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
-                                                                        </h5>
-                                                                    </a>
+                                                                                {% endfor %}
+                                                                                ( {{ game.scoreP1 }}
+                                                                                - {{ game.scoreP2 }} )
+                                                                            </h5>
+                                                                        </a>
 
-                                                                    {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
-                                                                    {# <small>Posté par <a
+                                                                        {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
+                                                                        {# <small>Posté par <a
                                                                         href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
                                                             </small> #}
-
+                                                                    </a>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="col-md-12 text-right">
@@ -102,8 +103,9 @@
                                                 {% endfor %}
                                             </div>
                                         {% endfor %}
-                                        {% else %}
-                                        <h5>Il n'y a pas encore de matchs programmés, mais vous pouvez commencer une nouvelle journée</h5>
+                                    {% else %}
+                                        <h5>Il n'y a pas encore de matchs programmés, mais vous pouvez commencer une
+                                            nouvelle journée</h5>
                                     {% endif %}
                                 </div>
                             </div>
