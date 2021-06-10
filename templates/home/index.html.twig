@@ -63,11 +63,13 @@
                                                                     {% for jouer in jouers %}
                                                                         {% if jouer.game == game %}
                                                                             {% if jouer.isWinner == true and show == 1 %}
-                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
+                                                                                <span class="badge badge-secondary"><i
+                                                                                            class="fas fa-crown"></i></span>
                                                                             {% endif %}
                                                                             {{ jouer.player.fullName }}
                                                                             {% if jouer.isWinner == true and show == 0 %}
-                                                                                <span class="badge badge-secondary"><i class="fas fa-crown"></i></span>
+                                                                                <span class="badge badge-secondary"><i
+                                                                                            class="fas fa-crown"></i></span>
                                                                             {% endif %}
                                                                             {% set show = show+1 %}
                                                                         {% endif %}
@@ -151,7 +153,8 @@
                                     {% else %}
 
                                         <div class="row">
-                                            <div class="col-12"><h5 class="card-title">Pour avoir accès au statistiques : </h5></div>
+                                            <div class="col-12"><h5 class="card-title">Pour avoir accès au statistiques
+                                                    : </h5></div>
                                             <div class="col-2"></div>
                                             <div class="col-8 text-center mt-5 mb-5">
                                                 <a href="{{ path('app_login') }}"
@@ -180,7 +183,8 @@
                                                 Nouveau Tournoi
                                             </h1>
                                             <p class="card-text">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, labore.
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto,
+                                                labore.
                                             </p>
                                         </div>
                                         <div class="col-3 my-auto">
@@ -207,16 +211,18 @@
                                                         <div class="col-md-6 ">
                                                             <a href="{{ path('gridT',{'id':tournament.id}) }}">
                                                                 <h5 class="mb-1">
-                                                                        Tournoi n°{{ tournament.id }}
+                                                                    Tournoi n°{{ tournament.id }}
                                                                 </h5>
                                                             </a>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="col-md-12 text-right">
                                                                 {% if tournament.finishedAt != null %}
-                                                                    <h5><span class="badge badge-pill badge-danger">Terminé</span></h5>
+                                                                    <h5><span class="badge badge-pill badge-danger">Terminé</span>
+                                                                    </h5>
                                                                 {% else %}
-                                                                    <h5><span class="badge badge-pill badge-info">En cours</span></h5>
+                                                                    <h5><span class="badge badge-pill badge-info">En cours</span>
+                                                                    </h5>
                                                                 {% endif %}
                                                             </div>
                                                         </div>
@@ -247,43 +253,30 @@
                                 <div class="card-body">
                                     {% if app.user %}
                                         <h1 class="card-title">{{ player.fullName }}</h1>
-                                        <p class="card-text">{% if player.matchWon != [] %}
-                                                Victoires : {{ player.matchWon }}
+                                        <p class="card-text">
+                                            {% if player.tournamentPlayed != [] %}
+                                                Nombre de tournois joués : {{ player.tournamentPlayed }}
                                             {% else %}
-                                                Victoires : n/a
-                                            {% endif %} |
-                                            {% if player.matchLost != [] %}
-                                                Défaites : {{ player.matchLost }}
-                                            {% else %}
-                                                Défaites : n/a
+                                                Nombre de tournois joués : n/a
                                             {% endif %}
                                             <br>
-                                            {% if player.matchPlayed != [] %}
-                                                Match Joués : {{ player.matchPlayed }}
+                                            {% if player.tournamentWon != [] %}
+                                                Victoires : {{ player.tournamentWon }}
                                             {% else %}
-                                                Match Joués : n/a
-                                            {% endif %} |
-                                            {% if player.matchRatio != [] %}
-                                                Ratio G/P : {{ player.matchRatio }}
-                                            {% else %}
-                                                Ratio G/P : n/a
+                                                Victoires : n/a
                                             {% endif %}
-                                        <hr>
-                                        {% if player.matchAveragePointsOf11 != [] %}
-                                            Moyenne de points (match en 11) : {{ player.matchAveragePointsOf11 }}
-                                        {% else %}
-                                            Moyenne de points (match en 11) : n/a
-                                        {% endif %}
-                                        {% if player.matchAveragePointsOf21 != [] %}
-                                            Moyenne de points (match en 21) : {{ player.matchAveragePointsOf21 }}
-                                        {% else %}
-                                            Moyenne de points (match en 21) : n/a
-                                        {% endif %}
+                                            <br>
+                                            {% if player.tournamentAveragePlacement != [] %}
+                                                Moyenne de placement : {{ player.tournamentAveragePlacement | number_format(2, ',', ' ') }}
+                                            {% else %}
+                                                Moyenne de placement : n/a
+                                            {% endif %}
                                         </p>
                                     {% else %}
 
                                         <div class="row">
-                                            <div class="col-12"><h5 class="card-title">Pour avoir accès au statistiques : </h5></div>
+                                            <div class="col-12"><h5 class="card-title">Pour avoir accès au statistiques
+                                                    : </h5></div>
                                             <div class="col-2"></div>
                                             <div class="col-8 text-center mt-5 mb-5">
                                                 <a href="{{ path('app_login') }}"
@@ -302,7 +295,8 @@
             </div>
 
 
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="raquette-tab"><div class="mt-3">
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="raquette-tab">
+                <div class="mt-3">
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="card alert-warning">
@@ -312,11 +306,13 @@
                                                 Nouvelle Raquette d'or
                                             </h1>
                                             <p class="card-text">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, neque.
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate,
+                                                neque.
                                             </p>
                                         </div>
                                         <div class="col-3 my-auto">
-                                            <a href="{{ path('selectNbG') }}" class="btn btn-warning">Commencer une raquette d'or</a>
+                                            <a href="{{ path('selectNbG') }}" class="btn btn-warning">Commencer une
+                                                raquette d'or</a>
                                         </div>
                                     </div>
 
@@ -333,32 +329,34 @@
                                         <div class="list-group {{ goldenRackets|length>3 ? "dashboard" : "" }}">
                                             {% for goldenRacket in goldenRackets %}
 
-                                            <div class="list-group-item list-group-item-action">
-                                                <div class="row">
-                                                    <div class="col-md-6 ">
-                                                        <a href="{{ path('gridG',{'id':goldenRacket.id}) }}">
-                                                            <h5 class="mb-1">
-                                                                Raquette d'or n°{{ goldenRacket.id }}
-                                                            </h5>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="col-md-12 text-right">
-                                                            {% if goldenRacket.finishedAt != null %}
-                                                                <h5><span class="badge badge-pill badge-danger">Terminée</span></h5>
-                                                                {% else %}
-                                                                    <h5><span class="badge badge-pill badge-warning">En cours</span></h5>
-                                                            {% endif %}
+                                                <div class="list-group-item list-group-item-action">
+                                                    <div class="row">
+                                                        <div class="col-md-6 ">
+                                                            <a href="{{ path('gridG',{'id':goldenRacket.id}) }}">
+                                                                <h5 class="mb-1">
+                                                                    Raquette d'or n°{{ goldenRacket.id }}
+                                                                </h5>
+                                                            </a>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="col-md-12 text-right">
-                                                            {% set date = goldenRacket.createdAt | date %}
-                                                            <small class="">{{ date|ago }}</small>
+                                                        <div class="col-md-3">
+                                                            <div class="col-md-12 text-right">
+                                                                {% if goldenRacket.finishedAt != null %}
+                                                                    <h5><span class="badge badge-pill badge-danger">Terminée</span>
+                                                                    </h5>
+                                                                {% else %}
+                                                                    <h5><span class="badge badge-pill badge-warning">En cours</span>
+                                                                    </h5>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="col-md-12 text-right">
+                                                                {% set date = goldenRacket.createdAt | date %}
+                                                                <small class="">{{ date|ago }}</small>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             {% endfor %}
                                             {% if allGoldenRackets | length > 6 %}
 
@@ -379,43 +377,30 @@
                                 <div class="card-body">
                                     {% if app.user %}
                                         <h1 class="card-title">{{ player.fullName }}</h1>
-                                        <p class="card-text">{% if player.matchWon != [] %}
-                                                Victoires : {{ player.matchWon }}
+                                        <p class="card-text">
+                                            {% if player.goldenRacketPlayed != [] %}
+                                                Nombre de Raquettes d'or joués : {{ player.goldenRacketPlayed }}
                                             {% else %}
-                                                Victoires : n/a
-                                            {% endif %} |
-                                            {% if player.matchLost != [] %}
-                                                Défaites : {{ player.matchLost }}
-                                            {% else %}
-                                                Défaites : n/a
+                                                Nombre de Raquettes d'or joués : n/a
                                             {% endif %}
                                             <br>
-                                            {% if player.matchPlayed != [] %}
-                                                Match Joués : {{ player.matchPlayed }}
+                                            {% if player.goldenRacketWon != [] %}
+                                                Victoires : {{ player.goldenRacketWon }}
                                             {% else %}
-                                                Match Joués : n/a
-                                            {% endif %} |
-                                            {% if player.matchRatio != [] %}
-                                                Ratio G/P : {{ player.matchRatio }}
-                                            {% else %}
-                                                Ratio G/P : n/a
+                                                Victoires : n/a
                                             {% endif %}
-                                        <hr>
-                                        {% if player.matchAveragePointsOf11 != [] %}
-                                            Moyenne de points (match en 11) : {{ player.matchAveragePointsOf11 }}
-                                        {% else %}
-                                            Moyenne de points (match en 11) : n/a
-                                        {% endif %}
-                                        {% if player.matchAveragePointsOf21 != [] %}
-                                            Moyenne de points (match en 21) : {{ player.matchAveragePointsOf21 }}
-                                        {% else %}
-                                            Moyenne de points (match en 21) : n/a
-                                        {% endif %}
+                                            <br>
+                                            {% if player.goldenRacketAveragePlacement != [] %}
+                                                Moyenne de placement : {{ player.goldenRacketAveragePlacement | number_format(2, ',', ' ') }}
+                                            {% else %}
+                                                Moyenne de placement : n/a
+                                            {% endif %}
                                         </p>
                                     {% else %}
 
                                         <div class="row">
-                                            <div class="col-12"><h5 class="card-title">Pour avoir accès au statistiques : </h5></div>
+                                            <div class="col-12"><h5 class="card-title">Pour avoir accès au statistiques
+                                                    : </h5></div>
                                             <div class="col-2"></div>
                                             <div class="col-8 text-center mt-5 mb-5">
                                                 <a href="{{ path('app_login') }}"

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PlayerController!{% endblock %}
+{% block title %}PingPong - {{ player.fullName }}{% endblock %}
 
 {% block body %}
 <div class="row ml-3 mr-3 mt-5 mb-3 ">
@@ -40,27 +40,53 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Matchs : </h5>
                                             <p class="card-text">
+                                                {% if player.matchPlayed != [] %}
                                                 Nombre de matchs joués : <span
                                                         class="h6">{{ player.matchPlayed }}</span>
+                                                {% else %}
+                                                    Nombre de matchs joués : n/a
+                                                {% endif %}
                                                 <br>
+                                                {% if player.matchWon != [] %}
                                                 Victoires : <span class="h6">{{ player.matchWon }}</span>
+                                                {% else %}
+                                                    Victoires : n/a
+                                                {% endif %}
                                                 <br>
+                                                {% if player.matchLost != [] %}
                                                 Défaites : <span class="h6">{{ player.matchLost }}</span>
+                                                {% else %}
+                                                    Défaites : n/a
+                                                {% endif %}
                                                 <br>
+                                                {#{% if player.matchPlayed != [] %}
                                                 Victoires en 2 points d'écart : <span
                                                         class="h6">{{ player.matchLost }}</span>
                                                 <br>
+                                                {% if player.matchPlayed != [] %}
                                                 Défaites en 2 points d'écart : <span
                                                         class="h6">{{ player.matchLost }}</span>
-                                                <br>
+                                                <br>#}
+                                                {% if player.matchRatio != [] %}
                                                 Ratio Victoires / Défaites : <span
                                                         class="h6">{{ player.matchRatio | number_format(2, ',', ' ') }}</span>
+                                                {% else %}
+                                                    Ratio Victoires / Défaites : n/a
+                                                {% endif %}
                                                 <br>
+                                                {% if player.matchAveragePointsOf11 != [] %}
                                                 Moyenne de points (matchs en 11) : <span
                                                         class="h6">{{ player.matchAveragePointsOf11 | number_format(2, ',', ' ') }}</span>
+                                                {% else %}
+                                                    Moyenne de points (matchs en 11) : n/a
+                                                {% endif %}
                                                 <br>
+                                                {% if player.matchAveragePointsOf21 != [] %}
                                                 Moyenne de points (matchs en 21) : <span
                                                         class="h6">{{ player.matchAveragePointsOf21 | number_format(2, ',', ' ') }}</span>
+                                                {% else %}
+                                                    Moyenne de points (matchs en 21) : n/a
+                                                {% endif %}
 
                                             </p>
                                         </div>
@@ -71,15 +97,26 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Tournois :</h5>
                                             <p class="card-text">
-                                                Nombre de tournois joués : <span
-                                                        class="h6">{{ player.tournamentPlayed }}</span>
-                                                <br>
-                                                Victoires : <span class="h6">{{ player.tournamentWon }}</span>
-                                                <br>
-                                                Moyenne de placement : <span
-                                                        class="h6">{{ player.tournamentAveragePlacement }}</span>
-                                                <br>
 
+                                                {% if player.tournamentPlayed != [] %}
+                                                    Nombre de tournois joués : <span
+                                                        class="h6">{{ player.tournamentPlayed }}</span>
+                                                {% else %}
+                                                    Nombre de tournois joués : n/a
+                                                {% endif %}
+                                                <br>
+                                                {% if player.tournamentWon != [] %}
+                                                    Victoires : <span class="h6">{{ player.tournamentWon }}</span>
+                                                {% else %}
+                                                    Victoires : n/a
+                                                {% endif %}
+                                                <br>
+                                                {% if player.tournamentAveragePlacement != [] %}
+                                                    Moyenne de placement : <span
+                                                        class="h6">{{ player.tournamentAveragePlacement | number_format(2, ',', ' ') }}</span>
+                                                {% else %}
+                                                    Moyenne de placement : n/a
+                                                {% endif %}
 
                                             </p>
                                         </div>
@@ -89,15 +126,25 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">Raquettes d'or :</h5>
                                                 <p class="card-text">
-                                                    Nombre de Raquettes d'or jouées : <span
+                                                    {% if player.goldenRacketPlayed != [] %}
+                                                        Nombre de Raquettes d'or joués : <span
                                                             class="h6">{{ player.goldenRacketPlayed }}</span>
+                                                    {% else %}
+                                                        Nombre de Raquettes d'or joués : n/a
+                                                    {% endif %}
                                                     <br>
-                                                    Victoires : <span class="h6">{{ player.goldenRacketWon }}</span>
+                                                    {% if player.goldenRacketWon != [] %}
+                                                        Victoires : <span class="h6">{{ player.goldenRacketWon }}</span>
+                                                    {% else %}
+                                                        Victoires : n/a
+                                                    {% endif %}
                                                     <br>
-                                                    Moyenne de placement : <span
-                                                            class="h6">{{ player.goldenRacketAveragePlacement }}</span>
-                                                    <br>
-
+                                                    {% if player.goldenRacketAveragePlacement != [] %}
+                                                        Moyenne de placement : <span
+                                                            class="h6">{{ player.goldenRacketAveragePlacement | number_format(2, ',', ' ') }}</span>
+                                                    {% else %}
+                                                        Moyenne de placement : n/a
+                                                    {% endif %}
 
                                                 </p>
                                             </div>

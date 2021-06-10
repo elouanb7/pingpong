@@ -63,9 +63,26 @@ class GoldenRacketController extends AbstractController
         $games = $this->gameRepo->findBy(['goldenRacket' => $id], ['playedAt' => 'ASC']);
         $jouers = $this->jouerRepo->findAll();
         $goldenRacket = $this->goldenRacketRepo->findOneBy(['id' => $id]);
+        $players = $this->playerRepo->findAll();
+        foreach ($players as $player){
+            $this->goldenRacketService->updateStats($player->getId(), $id);
+        }
+        $this->goldenRacketService->leaderboard($id);
+
+
+        $leaderboardP = $this->goldenRacketPlayersRepo->findBy(['goldenRacket' => $id], ['rank' => 'ASC']);
+        $playersl = [];
+        foreach ($leaderboardP as $playerl){
+            $playerl = $playerl->getPlayer()->getId();
+            $playerl = $this->playerRepo->findOneBy(['id' => $playerl]);
+            array_push($playersl,$playerl);
+        }
+        $leaderboard = $playersl;
         $days = $goldenRacket->getDay();
         /* $this->goldenRacketService->doGoldenRacketDay($id);*/
         return $this->render('golden_racket/grid_of_matchs.html.twig', [
+            'leaderboard' => $leaderboard,
+            'leaderboardP' => $leaderboardP,
             'goldenRacket' => $goldenRacket,
             'games' => $games,
             'jouers' => $jouers,

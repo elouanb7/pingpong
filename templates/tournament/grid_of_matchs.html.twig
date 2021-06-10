@@ -130,6 +130,19 @@
                                             </div>
                                         </a>
                                     </div>
+                                        {% else %}
+                                            <div class="list-group-item list-group-item-action">
+                                                <a class="text-decoration-none"
+                                                   href="{# {{ path('detail',{'id':game.id}) }} #}">
+                                                    <div class="row">
+                                                        <div class="col-md-3 ">
+                                                            <h2><span class="badge badge-secondary">{{ count }}</span></h2>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <h5 class="mb-1">{{ player.fullName }}</h5></div>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         {% endif %}
 
                                         {% endfor %}

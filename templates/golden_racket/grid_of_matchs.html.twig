@@ -121,7 +121,7 @@
 
                         </div>
                     </div>
-                    {# {% if leaderboard %}
+                    {% if leaderboard %}
                         {% set count = 0 %}
                         <div class="col-md-8 mt-3">
                             <div class="card">
@@ -129,42 +129,69 @@
                                     <h5 class="card-title">Classement</h5>
                                     <p class="card-text">
                                     <div class="list-group">
-                                        {% for player in leaderboard %}
-                                        {% set count = count + 1 %}
-                                        {% if count == 1 %}
-                                        <div class="list-group-item list-group-item-action">
-                                            <div class="row">
-                                                <div class="col-md-3 ">
-                                                    <a class="text-decoration-none"
-                                                       href=" #}{# {{ path('detail',{'id':game.id}) }} #}{# ">
-                                                        <h2><span class="badge badge-warning"><i
-                                                                        class="fas fa-dice-one"></i></span></h2>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-9"><h5 class="mb-1">{{ player.fullName }}</h5></div>
-                                            </div>
-                                        </div>
-                                        {% elseif count == 2 %}
-                                        <div class="list-group-item list-group-item-action">
-                                            <div class="row">
-                                                <div class="col-md-3 ">
-                                                    <a class="text-decoration-none"
-                                                       href=" #}{# {{ path('detail',{'id':game.id}) }} #}{# ">
-                                                        <h2><span class="badge badge-secondary"><i
-                                                                        class="fas fa-dice-two"></i></span></h2>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <h5 class="mb-1">{{ player.fullName }}</h5></div>
-                                                {% endif %}
 
-                                                {% endfor %}
-                                            </div>
-                                        </div>
+                                        {% for player in leaderboard %}
+
+                                                {% set count = count + 1 %}
+                                                {% if count == 1 %}
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <a class="text-decoration-none"
+                                                           href="{{ path('profile',{'id':player.id}) }} ">
+                                                            <div class="row">
+                                                                <div class="col-md-3 ">
+                                                                    <h2><span class="badge badge-warning"><i
+                                                                                    class="fas fa-dice-one"></i></span>
+                                                                    </h2>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <h5 class="mb-1">{{ player.fullName }}</h5></div>
+                                                                <div class="col-md-3">
+                                                                    <h5 class="mb-1">{{ leaderboardP[loop.index-1].pointsAverage }}</h5></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                {% elseif count == 2 %}
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <a class="text-decoration-none"
+                                                           href="{{ path('profile',{'id':player.id}) }}">
+                                                            <div class="row">
+                                                                <div class="col-md-3 ">
+                                                                    <h2><span class="badge badge-secondary"><i
+                                                                                    class="fas fa-dice-two"></i></span>
+                                                                    </h2>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <h5 class="mb-1">{{ player.fullName }}</h5></div>
+                                                                <div class="col-md-3">
+                                                                    <h5 class="mb-1">{{ leaderboardP[loop.index-1].pointsAverage }}</h5></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <a class="text-decoration-none"
+                                                           href="{{ path('profile',{'id':player.id}) }}">
+                                                            <div class="row">
+                                                                <div class="col-md-3 ">
+                                                                    <h2>
+                                                                        <span class="badge badge-secondary">{{ count }}</span>
+                                                                    </h2>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <h5 class="mb-1">{{ player.fullName }}</h5></div>
+                                                                <div class="col-md-3">
+                                                                    <h5 class="mb-1">{{ leaderboardP[loop.index-1].pointsAverage }}</h5></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                        {% endfor %}
                                     </div>
-</div></div>
                                 </div>
-                                {% endif %} #}
+                            </div>
+
+                        </div>
+                    {% endif %}
                     <div class="col-md-4 mt-3">
                         <div class="card">
                             <div class="card-body">

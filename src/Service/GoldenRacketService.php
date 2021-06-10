@@ -16,6 +16,7 @@ use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Integer;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -85,5 +86,68 @@ class GoldenRacketService extends AbstractController
             "Les matchs du tournois on bien été générés !"
         );
         return false;
+    }
+
+    /**
+     * @param int $player
+     * @param int $goldenRacket
+     * @return bool
+     */
+
+    public function updateStats(int $player, int $goldenRacket): bool
+    {
+        $goldenRacketPlayer = $this->goldenRacketPlayersRepo->findOneBy(['player' => $player, 'goldenRacket' => $goldenRacket]);
+        $goldenRacketJouers = [];
+        $validJouers = [];
+        $jouers = $this->jouerRepo->findBy(['player' => $player]);
+        foreach ($jouers as $jouer) {
+            if ($jouer->getScore()) {
+                array_push($validJouers, $jouer);
+            }
+        }
+        $jouers = $validJouers;
+        $games = $this->gameRepo->findBy(['goldenRacket' => $goldenRacket]);
+        foreach ($jouers as $jouer) {
+            foreach ($games as $game) {
+                if ($jouer->getGame()->getId() == $game->getId()) {
+                    array_push($goldenRacketJouers, $jouer);
+                }
+            }
+        }
+        $goldenRacketScore = 0;
+        if (count($goldenRacketJouers) != null) {
+            foreach ($goldenRacketJouers as $goldenRacketJouer) {
+                $goldenRacketScore = $goldenRacketScore + $goldenRacketJouer->getScore();
+            }
+            $goldenRacketPointsRatio = $goldenRacketScore / (count($goldenRacketJouers));
+            $goldenRacketPlayer->setPointsAverage($goldenRacketPointsRatio);
+            $goldenRacketPlayer->setNbGames(count($goldenRacketJouers));
+            $this->manager->persist($goldenRacketPlayer);
+            $this->manager->flush();
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param int $goldenRacket
+     * @return bool
+     */
+
+    public function leaderboard(int $goldenRacket): bool
+    {
+        // Tri en fonction du ratio de pts
+
+        $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['goldenRacket' => $goldenRacket], ['pointsAverage' => 'ASC']);
+        $countGoldenRacketPlayers = count($goldenRacketPlayers);
+        foreach ($goldenRacketPlayers as $goldenRacketPlayer) {
+            $goldenRacketPlayer->setRank($countGoldenRacketPlayers);
+            $this->manager->persist($goldenRacketPlayer);
+            $this->manager->flush();
+            $countGoldenRacketPlayers--;
+        }
+
+        return true;
     }
 }

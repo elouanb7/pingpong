@@ -37,6 +37,11 @@ class GoldenRacketPlayers
      */
     private $nbGames;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pointsAverage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class GoldenRacketPlayers
     public function setNbGames(?int $nbGames): self
     {
         $this->nbGames = $nbGames;
+
+        return $this;
+    }
+
+    public function getPointsAverage(): ?float
+    {
+        return $this->pointsAverage;
+    }
+
+    public function setPointsAverage(?float $pointsAverage): self
+    {
+        $this->pointsAverage = $pointsAverage;
 
         return $this;
     }

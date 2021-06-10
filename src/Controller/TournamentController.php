@@ -91,7 +91,15 @@ class TournamentController extends AbstractController
             $this->manager->persist($tournament);
             $this->manager->flush();
             if ($round == 0) {
-                $leaderboard = $this->tournamentService->leaderboard($id);
+                $this->tournamentService->leaderboard($id);
+                $leaderboard = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['rank' => 'ASC']);
+                $playersl = [];
+                foreach ($leaderboard as $playerl){
+                    $playerl = $playerl->getPlayer()->getId();
+                    $playerl = $this->playerRepo->findOneBy(['id' => $playerl]);
+                    array_push($playersl,$playerl);
+                }
+                $leaderboard = $playersl;
                 return $this->render('tournament/grid_of_matchs.html.twig', [
                     'games' => $games,
                     'jouers' => $jouers,

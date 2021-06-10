@@ -73,35 +73,6 @@ class StatsService extends AbstractController
         $this->manager->flush();
     }
 
-    public function oneTournamentStats($player)
-    {
-        $null = null;
-        $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
-        $played = [];
-        $scores = 0;
-
-        foreach ($pands as $jouers){
-            if ($jouers->getScore()){
-                array_push($played, $jouers);
-                $scores = $scores + $jouers->getScore();
-            }
-        }
-        if(!empty($played) || $scores!=0){
-            $pointsAverageOfEleven = $scores/count($played);
-            $player->setMatchPlayed(count($played));
-            $player->setMatchAveragePointsOf11($pointsAverageOfEleven);
-        }
-        $won = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => true]);
-        $lost = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => false]);
-        if (!empty($won) || !empty($lost)){
-            $ratio = count($won)/(count($won)+count($lost));
-            $player->setMatchRatio($ratio);
-            $player->setMatchWon(count($won));
-            $player->setMatchLost(count($lost));
-        }
-        $this->manager->persist($player);
-        $this->manager->flush();
-    }
 
     public function tournamentStats($player)
     {
@@ -117,30 +88,6 @@ class StatsService extends AbstractController
                 $scores = $scores + $jouers->getScore();
             }
         }
-        /*$gamesIds = [];
-        $games = [];
-        $gamesTournament = [];
-        $jouersTournament = [];
-        foreach ($played as $item){
-             $gameId = $item->getGame()->getId();
-             array_push($gamesIds,$gameId);
-        }
-        foreach ($gamesIds as $gameId){
-            $game = $this->gameRepo->findOneBy(['id' => $gameId]);
-            array_push($games,$game);
-        }
-        foreach ($games as $game){
-            if($game->getIsTournament() == true){
-                array_push($gamesTournament, $game);
-            }
-        }
-        foreach ($gamesTournament as $gameTournament){
-            foreach ($pands as $jouerTournament){
-                if ($jouerTournament->getGame()==$gameTournament){
-                    array_push($jouersTournament, $jouerTournament);
-                }
-        }
-        }*/
 
         $tournamentsPlayed = $this->tournamentPlayersRepo->findBy(['player' => $player->getId()]);
         $tournamentWon = $this->tournamentPlayersRepo->findBy(['player' => $player->getId(), 'rank' => 1]);
