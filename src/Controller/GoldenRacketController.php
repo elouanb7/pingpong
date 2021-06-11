@@ -60,6 +60,7 @@ class GoldenRacketController extends AbstractController
      */
     public function gridOfMatchs(Request $request, $id): Response
     {
+        $nextGames = $this->gameRepo->findBy(['goldenRacket' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
         $this->session->set('goldenRacketId', $id);
         $games = $this->gameRepo->findBy(['goldenRacket' => $id], ['playedAt' => 'ASC']);
         $jouers = $this->jouerRepo->findAll();
@@ -85,6 +86,7 @@ class GoldenRacketController extends AbstractController
             'leaderboard' => $leaderboard,
             'leaderboardP' => $leaderboardP,
             'goldenRacket' => $goldenRacket,
+            'nextGames' => $nextGames,
             'games' => $games,
             'jouers' => $jouers,
             'days' => $days

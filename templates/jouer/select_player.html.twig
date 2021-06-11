@@ -1,23 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PingPong - Nouveau Match - Joueur 1{% endblock %}
+{% block title %}PingPong - Nouveau Match - {% endblock %}
 
 {% block body %}
     <div class="container mt-5">
         <div class="row">
+
             <div class="col-5">
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title">
                             Joueur 1 :
                         </h1>
+                        {{ form_start(form) }}
                         <p class="card-text">
-                            {{ form_start(form) }}
-                            {{ form_widget(form.player) }}
-                            <button type="submit" class="btn btn-success mt-3 btn-block">Valider</button>
 
-
-                            {{ form_end(form) }}
+                            {{ form_widget(form.player1) }}
                         </p>
                     </div>
                 </div>
@@ -32,14 +30,16 @@
                             Joueur 2 :
                         </h1>
                         <p class="card-text">
-                            {{ form_start(formD) }}
-                            {{ form_widget(formD.player) }}
-                            <button type="submit" class="btn btn-success mt-3 btn-block" disabled>Valider</button>
-                            {{ form_end(formD) }}
+                            {{ form_widget(form.player2) }}
                         </p>
                     </div>
                 </div>
             </div>
+            <div class="col-3"></div>
+            <div class="col-6"><button type="submit" class="btn btn-success mt-3 btn-block">Valider</button></div>
+            <div class="col-3"></div>
+
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

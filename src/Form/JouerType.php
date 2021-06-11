@@ -12,18 +12,20 @@ class JouerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('player', EntityType::class, [
-            'class' => Player::class,
-            'choice_label' => function ($player) {
-                return $player->getFullName();
-            }
-        ]);
+        for ($i = 0; $i < 2; $i++) {
+            $j = $i + 1;
+            $builder
+                ->add('player' . $j, EntityType::class, [
+                    'label' => 'Joueur ' . $j,
+                    'class' => Player::class,
+                    'choice_label' => function ($player) {
+                        return $player->getFullName();
+                    }]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            // Configure your form options here
-        ]);
+        $resolver->setDefaults([]);
     }
 }

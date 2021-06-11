@@ -5,3 +5,8 @@
 .card-columns{
     column-count: 2;
 }
+
+.badge-bronze {
+    color: #fff !important;
+    background-color: #C9673B !important;
+}

@@ -169,38 +169,97 @@
                                     <div class="col-md-1"></div>
                                 </div>
                                 <hr>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="matchs-tab" data-toggle="tab" href="#home" role="tab"
+                                           aria-controls="home" aria-selected="true">Matchs</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="tournois-tab" data-toggle="tab" href="#profile" role="tab"
+                                           aria-controls="profile" aria-selected="false">Tournois</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="raquette-tab" data-toggle="tab" href="#contact" role="tab"
+                                           aria-controls="contact" aria-selected="false">Raquette d'or</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="matchs-tab">
+
+                                        <div class="card alert-success">
                                             <div class="card-body">
-                                                <h5 class="card-title"></h5>
-                                                <p class="card-text"></p>
+                                                <h1 class="card-title">Liste des matchs :</h1>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="card-text">
+                                                                    <div class="list-group">
+                                                                        {% for game in games %}
+                                                                            <div class="list-group-item list-group-item-action">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-9 ">
+                                                                                        <a class="text-decoration-none"
+                                                                                           href="{{ path('detail',{'id':game.id}) }}">
+                                                                                            <h5 class="mb-1">
+                                                                                                {% set show = 1 %}
+                                                                                                {% for jouer in jouers %}
+                                                                                                    {% if jouer.game == game %}
+                                                                                                        {% if jouer.isWinner == true and show == 1 %}
+                                                                                                            <span class="badge badge-secondary"><i
+                                                                                                                        class="fas fa-crown"></i></span>
+                                                                                                        {% endif %}
+                                                                                                        {{ jouer.player.fullName }}
+                                                                                                        {% if jouer.isWinner == true and show == 0 %}
+                                                                                                            <span class="badge badge-secondary"><i
+                                                                                                                        class="fas fa-crown"></i></span>
+                                                                                                        {% endif %}
+                                                                                                        {% set show = show+1 %}
+                                                                                                    {% endif %}
+                                                                                                    {% if show == 2 %}
+                                                                                                        <span class="badge badge-secondary">VS</span>
+                                                                                                        {% set show = 0 %}
+                                                                                                    {% endif %}
+                                                                                                {% endfor %}
+                                                                                                ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
+                                                                                            </h5>
+                                                                                        </a>
+
+                                                                                        {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
+                                                                                        {# <small>Posté par <a
+                                                                        href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
+                                                            </small> #}
+
+                                                                                    </div>
+
+                                                                                    <div class="col-md-3">
+                                                                                        <div class="col-md-12 text-right">
+                                                                                            {% set date = game.playedAt | date %}
+                                                                                            <small class="">{{ date|ago }}</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title"></h5>
-                                                <p class="card-text"></p>
-                                            </div>
-                                        </div>
+
+
+                                    <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="tournois-tab">
+                                      b
                                     </div>
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title"></h5>
-                                                <p class="card-text"></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title"></h5>
-                                                <p class="card-text"></p>
-                                            </div>
-                                        </div>
+
+
+                                    <div class="tab-pane fade show" id="contact" role="tabpanel" aria-labelledby="raquette-tab">
+                                        c
                                     </div>
                                 </div>
 

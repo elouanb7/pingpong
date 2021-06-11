@@ -85,15 +85,16 @@ class TournamentController extends AbstractController
                 $this->tournamentService->updateStats($player->getId(), $id);
             }
             $games = $this->gameRepo->findBy(['tournament' => $id], ['playedAt' => 'ASC']);
+            $nextGames = $this->gameRepo->findBy(['tournament' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
             $jouers = $this->jouerRepo->findAll();
             $round = $this->tournamentService->doTournamentRound($id, $tournament->getRound());
             $round = $this->tournamentService->doLeaderboard($round, $id);
-            $leaderboardP = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['rank' => 'ASC']);
             $tournament->setRound($round);
             $this->manager->persist($tournament);
             $this->manager->flush();
             if ($round == 0) {
                 $this->tournamentService->leaderboard($id);
+                $leaderboardP = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['rank' => 'ASC']);
                 $leaderboard = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['rank' => 'ASC']);
                 $playersl = [];
                 foreach ($leaderboard as $playerl){
@@ -104,6 +105,7 @@ class TournamentController extends AbstractController
                 $leaderboard = $playersl;
                 return $this->render('tournament/grid_of_matchs.html.twig', [
                     'games' => $games,
+                    'nextGames' => $nextGames,
                     'jouers' => $jouers,
                     'leaderboard' => $leaderboard,
                     'leaderboardP' => $leaderboardP,
@@ -112,11 +114,13 @@ class TournamentController extends AbstractController
                 ]);
             }
         }
+        $nextGames = $this->gameRepo->findBy(['tournament' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
         $games = $this->gameRepo->findBy(['tournament' => $id], ['playedAt' => 'ASC']);
         $jouers = $this->jouerRepo->findAll();
 
         return $this->render('tournament/grid_of_matchs.html.twig', [
             'games' => $games,
+            'nextGames' => $nextGames,
             'jouers' => $jouers,
             'oldRounds' => $oldRounds,
             'leaderboard' => false,

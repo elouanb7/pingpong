@@ -50,6 +50,20 @@ class GoldenRacketPlayersController extends AbstractController
             $date = new \DateTime('now');
             $goldenRacket->setCreatedAt($date);
             $goldenRacketPlayersDatas = $form->getData();
+            $countGoldenRacketPlayersDatas = count($goldenRacketPlayersDatas) + 1;
+            for ($i = 1; $i < $countGoldenRacketPlayersDatas ; $i++) {
+                for ($j = $i + 1; $j < $countGoldenRacketPlayersDatas; $j++) {
+                    if (($goldenRacketPlayersDatas["player" . $i]->getId()) == ($goldenRacketPlayersDatas["player" . $j]->getId())) {
+                        $this->addflash(
+                            'danger',
+                            "Un même joueur est sélectionné au moins deux fois !"
+                        );
+                        return $this->render('golden_racket_players/select_player.html.twig', [
+                            'form' => $form->createView(),
+                        ]);
+                    }
+                }
+            }
             foreach ($goldenRacketPlayersDatas as $goldenRacketPlayerData) {
                 $goldenRacketPlayer = new GoldenRacketPlayers();
                 $goldenRacketPlayer->setPlayer($goldenRacketPlayerData);

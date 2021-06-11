@@ -12,8 +12,9 @@
                         <h1 class="card-title">
                             {{ player1.fullName }}
                         </h1>
+                        {{ form_start(form) }}
                         <p class="card-text">
-                            {{ form_start(form) }}
+
                             {{ form_widget(form.scoreP1) }}
 
                         </p>
@@ -36,8 +37,13 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success mt-3 btn-block">Valider</button>
-            {{ form_end(form) }}
+            <div class="col-3"></div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-success mt-3 btn-block">Valider</button>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-3"></div>
+
         </div>
     </div>
 {% endblock %}

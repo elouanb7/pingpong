@@ -12,8 +12,7 @@
                     <div class="col-md-10">
                         <select class="form-control custom-select" name="nbJoueurs">
                             <option value="null">---------Selectionnez une valeur---------</option>
-                            <option value="1">1 Joueur</option>
-                            {% for players in range(2,10) %}
+                            {% for players in range(3,10) %}
                             <option value="{{ players }}">{{ players }} joueurs</option>
                             {% endfor %}
                         </select>

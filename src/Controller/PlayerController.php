@@ -43,10 +43,35 @@ class PlayerController extends AbstractController
      * @Route("/profile/{id}", name="profile")
      */
     public function index($id): Response
-    {
+    {   $games = [];
+        /*$jouers = $this->jouerRepo->findBy(['player' => $id],['playedAt' => 'DESC'], );*/
+        $jouers = $this->jouerRepo->findAll();
+        $validJouers = [];
+        foreach ($jouers as $jouer){
+            if (!$jouer->getScore()==null){
+                array_push($validJouers, $jouer);
+            }
+        }
+        $jouers = $validJouers;
+        foreach ($jouers as $jouer){
+            $game = $jouer->getGame()->getId();
+            $game = $this->gameRepo->findOneBy(['id' => $game]);
+            if (($game->getIsTournament()==true)){
+
+            }
+            elseif ($game->getIsGoldenRacket()==true){
+
+            }
+            else{
+                array_push($games,$game);
+            }
+        }
         $player = $this->playerRepo->findOneBy(['id' => $id]);
+
         return $this->render('player/profile.html.twig', [
             'player' => $player,
+            'games' => $games,
+            'jouers' => $jouers
         ]);
     }
 }

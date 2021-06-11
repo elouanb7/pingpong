@@ -146,7 +146,7 @@ class StatsService extends AbstractController
 
         if(!empty($played) || $scores!=0){
             $player->setGoldenRacketPlayed(count($goldenRacketsPlayed));
-            $player->setGoldenRacketPlayed(count($goldenRacketWon));
+            $player->setGoldenRacketWon(count($goldenRacketWon));
 
         }
 
