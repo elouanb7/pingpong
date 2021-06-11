@@ -46,7 +46,7 @@ class GameController extends AbstractController
      */
     public function games(PaginatorInterface $paginator, Request $request): Response
     {
-        $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC'], 6);
+        $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC']);
         $jouers = $this->jouerRepo->findAll();
         $pagination = $paginator->paginate(
             $games,

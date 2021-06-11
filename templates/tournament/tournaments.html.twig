@@ -1,60 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PingPong - Liste des matchs{% endblock %}
+{% block title %}PingPong - Liste des tournois{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
-        <div class="card">
+        <div class="card alert-info">
             <div class="card-body">
-                <h1 class="card-title">Liste des matchs :</h1>
+                <h1 class="card-title">Liste des tournois :</h1>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Matchs :</h5>
-                                <hr>
                                 <div class="card-text">
                                     <div class="list-group">
-                                        {% for game in pagination %}
+                                        {% for tournament in pagination %}
                                             <div class="list-group-item list-group-item-action">
                                                 <div class="row">
-                                                    <div class="col-md-9 ">
-                                                        <a class="text-decoration-none"
-                                                           href="{{ path('detail',{'id':game.id}) }}">
+                                                    <div class="col-md-6 ">
+                                                        <a href="{{ path('gridT',{'id':tournament.id}) }}">
                                                             <h5 class="mb-1">
-                                                                {% set show = 1 %}
-                                                                {% for jouer in jouers %}
-                                                                    {% if jouer.game == game %}
-                                                                        {% if jouer.isWinner == true and show == 1 %}
-                                                                            <span class="badge badge-secondary"><i
-                                                                                        class="fas fa-crown"></i></span>
-                                                                        {% endif %}
-                                                                        {{ jouer.player.fullName }}
-                                                                        {% if jouer.isWinner == true and show == 0 %}
-                                                                            <span class="badge badge-secondary"><i
-                                                                                        class="fas fa-crown"></i></span>
-                                                                        {% endif %}
-                                                                        {% set show = show+1 %}
-                                                                    {% endif %}
-                                                                    {% if show == 2 %}
-                                                                        <span class="badge badge-secondary">VS</span>
-                                                                        {% set show = 0 %}
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                                ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
+                                                                Tournoi n°{{ tournament.id }}
                                                             </h5>
                                                         </a>
-
-                                                        {# <p class="mb-1">{{ ticket.description  | u.truncate(50, '...', false) }}</p> #}
-                                                        {# <small>Posté par <a
-                                                                        href="{{ path('profil',{'id':ticket.user.id}) }}">{{ ticket.user.firstName }} {{ ticket.user.lastName }}</a>
-                                                            </small> #}
-
                                                     </div>
-
                                                     <div class="col-md-3">
                                                         <div class="col-md-12 text-right">
-                                                            {% set date = game.playedAt | date %}
+                                                            {% if tournament.finishedAt != null %}
+                                                                <h5><span class="badge badge-pill badge-danger">Terminé</span>
+                                                                </h5>
+                                                            {% else %}
+                                                                <h5><span class="badge badge-pill badge-info">En cours</span>
+                                                                </h5>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-12 text-right">
+                                                            {% set date = tournament.createdAt | date %}
                                                             <small class="">{{ date|ago }}</small>
                                                         </div>
                                                     </div>

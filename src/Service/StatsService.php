@@ -114,4 +114,44 @@ class StatsService extends AbstractController
         $this->manager->flush();
     }
 
+    public function goldenRacketStats($player)
+    {
+
+        $null = null;
+        $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
+        $played = [];
+        $scores = 0;
+
+        foreach ($pands as $jouers){
+            if ($jouers->getScore()){
+                array_push($played, $jouers);
+                $scores = $scores + $jouers->getScore();
+            }
+        }
+
+        $goldenRacketsPlayed = $this->goldenRacketPlayersRepo->findBy(['player' => $player->getId()]);
+        $goldenRacketWon = $this->goldenRacketPlayersRepo->findBy(['player' => $player->getId(), 'rank' => 1]);
+        $ranks = [];
+        $rankAverage = 0;
+        foreach ($goldenRacketsPlayed as $goldenRacketPlayed){
+            $rank = $goldenRacketPlayed->getRank();
+            array_push($ranks,$rank);
+            $rankAverage = $rankAverage + $rank;
+        }
+        if (count($ranks)!=null){
+            $goldenRacketAveragePlacement = $rankAverage/(count($ranks));
+            $player->setGoldenRacketAveragePlacement($goldenRacketAveragePlacement);
+        }
+
+
+        if(!empty($played) || $scores!=0){
+            $player->setGoldenRacketPlayed(count($goldenRacketsPlayed));
+            $player->setGoldenRacketPlayed(count($goldenRacketWon));
+
+        }
+
+        $this->manager->persist($player);
+        $this->manager->flush();
+    }
+
 }

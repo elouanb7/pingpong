@@ -9,6 +9,7 @@ use App\Repository\JouerRepository;
 use App\Repository\PlayerRepository;
 use App\Service\GoldenRacketService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -112,6 +113,29 @@ class GoldenRacketController extends AbstractController
         $this->manager->flush();
         return $this->redirectToRoute('home', [
             'id' => $id,
+        ]);
+    }
+
+    /**
+     * @Route("/goldenRacket/liste", name="goldenRackets")
+     */
+    public function goldenRackets(PaginatorInterface $paginator, Request $request): Response
+    {
+        $goldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC']);
+        $pagination = $paginator->paginate(
+            $goldenRackets,
+            $request->query->getInt('page', 1),
+            8
+        );
+        $pagination->setTemplate('ressources/twitter_bootstrap_v4_pagination.html.twig');
+        $pagination->setCustomParameters([
+            'align' => 'center', # center|right (for template: twitter_bootstrap_v4_pagination and foundation_v6_pagination)
+            'style' => 'bottom',
+            'span_class' => 'whatever',
+        ]);
+        return $this->render('golden_racket/golden_rackets.html.twig', [
+            '$goldenRackets' => $goldenRackets,
+            'pagination' => $pagination,
         ]);
     }
 }

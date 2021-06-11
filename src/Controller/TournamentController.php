@@ -9,6 +9,7 @@ use App\Repository\PlayerRepository;
 use App\Repository\TournamentPlayersRepository;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,6 +88,7 @@ class TournamentController extends AbstractController
             $jouers = $this->jouerRepo->findAll();
             $round = $this->tournamentService->doTournamentRound($id, $tournament->getRound());
             $round = $this->tournamentService->doLeaderboard($round, $id);
+            $leaderboardP = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['rank' => 'ASC']);
             $tournament->setRound($round);
             $this->manager->persist($tournament);
             $this->manager->flush();
@@ -104,6 +106,7 @@ class TournamentController extends AbstractController
                     'games' => $games,
                     'jouers' => $jouers,
                     'leaderboard' => $leaderboard,
+                    'leaderboardP' => $leaderboardP,
                     'oldRounds' => $oldRounds,
                     'tournament' => $this->tournamentRepo->findOneBy(['id' => $id]),
                 ]);
@@ -120,23 +123,29 @@ class TournamentController extends AbstractController
             'tournament' => $this->tournamentRepo->findOneBy(['id' => $id]),
         ]);
     }
+
+    /**
+     * @Route("/tournament/liste", name="tournaments")
+     */
+    public function tournaments(PaginatorInterface $paginator, Request $request): Response
+    {
+
+        $tournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC']);
+        $pagination = $paginator->paginate(
+            $tournaments,
+            $request->query->getInt('page', 1),
+            8
+        );
+        $pagination->setTemplate('ressources/twitter_bootstrap_v4_pagination.html.twig');
+        $pagination->setCustomParameters([
+            'align' => 'center', # center|right (for template: twitter_bootstrap_v4_pagination and foundation_v6_pagination)
+            'style' => 'bottom',
+            'span_class' => 'whatever',
+        ]);
+        return $this->render('tournament/tournaments.html.twig', [
+            'tournaments' => $tournaments,
+            'pagination' => $pagination,
+        ]);
+    }
+
 }
-
-
-
-
-
-
-
-
-/* foreach ($games as $game)
-        {
-            if ($game->getScoreP1()!=null || $game->getScoreP2()!=null){
-                   }
-            else{
-                $nextRound = false;
-            }
-        }
-        if (!$nextRound){
-           $newRounds =  $this->tournamentService->doTournament($id, $rounds);
-        }*/

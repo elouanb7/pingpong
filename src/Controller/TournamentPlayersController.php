@@ -43,6 +43,20 @@ class TournamentPlayersController extends AbstractController
             $date = new \DateTime('now');
             $tournament->setCreatedAt($date);
             $tournamentPlayersDatas = $form->getData();
+            $countTournamentPlayersDatas = count($tournamentPlayersDatas) + 1;
+            for ($i = 1; $i < $countTournamentPlayersDatas ; $i++) {
+                for ($j = $i + 1; $j < $countTournamentPlayersDatas; $j++) {
+                    if (($tournamentPlayersDatas["player" . $i]->getId()) == ($tournamentPlayersDatas["player" . $j]->getId())) {
+                        $this->addflash(
+                            'danger',
+                            "Un même joueur est sélectionné au moins deux fois !"
+                        );
+                        return $this->render('tournament_players/select_player.html.twig', [
+                            'form' => $form->createView(),
+                        ]);
+                    }
+                }
+            }
             foreach ($tournamentPlayersDatas as $tournamentPlayerData) {
                 $tournamentPlayer = new TournamentPlayers();
                 $tournamentPlayer->setPlayer($tournamentPlayerData);

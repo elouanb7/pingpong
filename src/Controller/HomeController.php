@@ -63,6 +63,7 @@ class HomeController extends AbstractController
         foreach ($players as $player){
             $this->statsService->matchsStats($player);
             $this->statsService->tournamentStats($player);
+            $this->statsService->goldenRacketStats($player);
         }
 
         if ($this->getUser()){
