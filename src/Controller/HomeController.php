@@ -7,6 +7,7 @@ use App\Repository\GoldenRacketPlayersRepository;
 use App\Repository\GoldenRacketRepository;
 use App\Repository\JouerRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\TournamentPlayersRepository;
 use App\Repository\TournamentRepository;
 use App\Service\StatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,11 +29,13 @@ class HomeController extends AbstractController
     private PlayerRepository $playerRepo;
     private TournamentRepository $tournamentRepo;
     private SessionInterface $session;
+    private TournamentPlayersRepository $tournamentPlayersRepo;
 
 
-    public function __construct(SessionInterface $session, GoldenRacketPlayersRepository $goldenRacketPlayersRepo, GoldenRacketRepository $goldenRacketRepo, GameRepository $gameRepo, JouerRepository $jouerRepo, StatsService $statsService, PlayerRepository $playerRepo, TournamentRepository $tournamentRepo)
+    public function __construct(TournamentPlayersRepository $tournamentPlayersRepo, SessionInterface $session, GoldenRacketPlayersRepository $goldenRacketPlayersRepo, GoldenRacketRepository $goldenRacketRepo, GameRepository $gameRepo, JouerRepository $jouerRepo, StatsService $statsService, PlayerRepository $playerRepo, TournamentRepository $tournamentRepo)
     {
         $this->gameRepo = $gameRepo;
+        $this->tournamentPlayersRepo = $tournamentPlayersRepo;
         $this->tournamentRepo = $tournamentRepo;
         $this->jouerRepo = $jouerRepo;
         $this->statsService = $statsService;
@@ -50,6 +53,7 @@ class HomeController extends AbstractController
     {
         $this->session->set('goldenRacketId', null);
         $this->session->set('tournamentId', null);
+
         $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC'], 6);
         $allGames = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC']);
         $tournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC'], 6);
@@ -57,8 +61,6 @@ class HomeController extends AbstractController
         $goldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC'], 6);
         $allGoldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC']);
         $jouers = $this->jouerRepo->findAll();
-
-        $playerLogged = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
         $players = $this->playerRepo->findAll();
         foreach ($players as $player){
             $this->statsService->matchsStats($player);
@@ -67,13 +69,17 @@ class HomeController extends AbstractController
         }
 
         if ($this->getUser()){
-
+            $playerLogged = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
+            $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['player' => $playerLogged->getId()]);
+            $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['player' => $playerLogged->getId()]);
             return $this->render('home/index.html.twig', [
                 'games' => $games,
                 'allGames' => $allGames,
                 'tournaments' => $tournaments,
+                'tournamentPlayers' => $tournamentPlayers,
                 'allTournaments' => $allTournaments,
                 'goldenRackets' => $goldenRackets,
+                'goldenRacketPlayers' => $goldenRacketPlayers,
                 'allGoldenRackets' => $allGoldenRackets,
                 'jouers' => $jouers,
                 'player' => $playerLogged,
