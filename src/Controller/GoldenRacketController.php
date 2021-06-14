@@ -58,7 +58,7 @@ class GoldenRacketController extends AbstractController
     /**
      * @Route("/goldenRacket/{id}/grid", name="gridG")
      */
-    public function gridOfMatchs(Request $request, $id): Response
+    public function gridOfMatchs($id): Response
     {
         $nextGames = $this->gameRepo->findBy(['goldenRacket' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
         $this->session->set('goldenRacketId', $id);

@@ -24,7 +24,7 @@ class GoldenRacketPlayersController extends AbstractController
     private SessionInterface $session;
     private EntityManagerInterface $manager;
 
-    public function __construct(SessionInterface $session, EntityManagerInterface $manager, GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo)
+    public function __construct(SessionInterface $session, EntityManagerInterface $manager, PlayerRepository $playerRepo)
     {
         $this->session = $session;
         $this->manager = $manager;

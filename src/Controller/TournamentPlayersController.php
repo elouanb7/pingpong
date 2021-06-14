@@ -21,7 +21,7 @@ class TournamentPlayersController extends AbstractController
 {
     private EntityManagerInterface $manager;
 
-    public function __construct(EntityManagerInterface $manager, GameRepository $gameRepo, JouerRepository $jouerRepo, PlayerRepository $playerRepo)
+    public function __construct(EntityManagerInterface $manager, PlayerRepository $playerRepo)
     {
         $this->manager = $manager;
         $this->playerRepo = $playerRepo;

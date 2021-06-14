@@ -60,7 +60,7 @@ class TournamentController extends AbstractController
     /**
      * @Route("/tournament/{id}/grid", name="gridT")
      */
-    public function gridOfMatchs(Request $request, $id): Response
+    public function gridOfMatchs($id): Response
     {
         $this->session->set('tournamentId', $id);
         $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['tournament' => $id], ['id' => 'ASC']);

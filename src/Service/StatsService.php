@@ -116,8 +116,6 @@ class StatsService extends AbstractController
 
     public function goldenRacketStats($player)
     {
-
-        $null = null;
         $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
         $played = [];
         $scores = 0;

@@ -99,8 +99,6 @@ class TournamentService extends AbstractController
      */
     public function doTournamentRound($tournament, $round): int
     {
-
-        $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['tournament' => $tournament], ['id' => 'ASC']);
         $previousRoundGames = $this->gameRepo->findBy(['tournament' => $tournament, 'round' => $round]);
         $previousRoundPlayers = [];
         foreach ($previousRoundGames as $previousRoundGame) {

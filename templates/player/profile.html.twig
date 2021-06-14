@@ -768,28 +768,6 @@
                                                                                     !</h5>
                                                                             {% endif %}
                                                                         {% endif %}
-                                                                        {% if goldenRackets | length == 0 %}
-                                                                            <div class="list-group-item list-group-item-action">
-                                                                                <div class="row">
-                                                                                    <div class="col-md-12">
-                                                                                        {% if app.user.id == player.id %}
-                                                                                            <h5>Vous n'avez pas encore
-                                                                                                participé à une raquette
-                                                                                                d'or ! Allez à l'<a
-                                                                                                        class="text-decoration-none"
-                                                                                                        href="{{ path('home') }}">accueil</a>
-                                                                                                pour en commencer une !
-                                                                                            </h5>
-                                                                                        {% else %}
-                                                                                            <h5>{{ player.fullName }}
-                                                                                                n'a pas encore participé
-                                                                                                à une raquette d'or
-                                                                                                !</h5>
-                                                                                        {% endif %}
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        {% endif %}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -800,10 +778,7 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
-
                         </div>
                     </div>
                 </div>
