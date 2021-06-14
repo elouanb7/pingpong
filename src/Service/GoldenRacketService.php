@@ -137,6 +137,8 @@ class GoldenRacketService extends AbstractController
 
     public function leaderboard(int $goldenRacket): bool
     {
+        //TODO : CHANGER LE MODE DE CLASSEMENT "RAQUETTE OR" ET CLASSER PAR VICTOIRES AVANT DE CLASSER PAR RATIO
+
         // Tri en fonction du ratio de pts
 
         $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['goldenRacket' => $goldenRacket], ['pointsAverage' => 'ASC']);

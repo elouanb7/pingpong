@@ -3,125 +3,125 @@
 {% block title %}PingPong - {{ player.fullName }}{% endblock %}
 
 {% block body %}
-<div class="row ml-3 mr-3 mt-5 mb-3 ">
-    <div class="col-3">
-        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-stats-tab" data-toggle="pill" href="#v-pills-stats"
-               role="tab"
-               aria-controls="v-pills-stats" aria-selected="true">Stats</a>
-            <a class="nav-link" id="v-pills-participation-tab" data-toggle="pill" href="#v-pills-participation"
-               role="tab" aria-controls="v-pills-participation" aria-selected="false">Participations</a>
-            <a class="nav-link" id="v-pills-success-tab" data-toggle="pill" href="#v-pills-success" role="tab"
-               aria-controls="v-pills-success" aria-selected="false">Succès</a>
-            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-               aria-controls="v-pills-settings" aria-selected="false">Paramètres</a>
+    <div class="row ml-3 mr-3 mt-5 mb-3 ">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-stats-tab" data-toggle="pill" href="#v-pills-stats"
+                   role="tab"
+                   aria-controls="v-pills-stats" aria-selected="true">Stats</a>
+                <a class="nav-link" id="v-pills-participation-tab" data-toggle="pill" href="#v-pills-participation"
+                   role="tab" aria-controls="v-pills-participation" aria-selected="false">Participations</a>
+                <a class="nav-link" id="v-pills-success-tab" data-toggle="pill" href="#v-pills-success" role="tab"
+                   aria-controls="v-pills-success" aria-selected="false">Succès</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
+                   aria-controls="v-pills-settings" aria-selected="false">Paramètres</a>
+            </div>
         </div>
-    </div>
-    <div class="col-9">
-        <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="v-pills-stats" role="tabpanel"
-                 aria-labelledby="v-pills-stats-tab">
-                <div class="container">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 my-auto ml-2"><h2
-                                            class="card-title">{{ player.fullName }}</h2>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-stats" role="tabpanel"
+                     aria-labelledby="v-pills-stats-tab">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 my-auto ml-2"><h2
+                                                class="card-title">{{ player.fullName }}</h2>
+                                    </div>
+                                    <div class="col-md-5 my-auto text-right"><h5 class="card-title ">Membre depuis
+                                            le {{ player.createdAt | date('d/m/Y') }}</h5></div>
+                                    <div class="col-md-1"></div>
                                 </div>
-                                <div class="col-md-5 my-auto text-right"><h5 class="card-title ">Membre depuis
-                                        le {{ player.createdAt | date('d/m/Y') }}</h5></div>
-                                <div class="col-md-1"></div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="card-columns ml-3 mr-3">
-                                    {# <div class="col-6 mb-3"> #}
-                                    <div class="card alert-success">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Matchs : </h5>
-                                            <p class="card-text">
-                                                {% if player.matchPlayed != [] %}
-                                                Nombre de matchs joués : <span
-                                                        class="h6">{{ player.matchPlayed }}</span>
-                                                {% else %}
-                                                    Nombre de matchs joués : n/a
-                                                {% endif %}
-                                                <br>
-                                                {% if player.matchWon != [] %}
-                                                Victoires : <span class="h6">{{ player.matchWon }}</span>
-                                                {% else %}
-                                                    Victoires : n/a
-                                                {% endif %}
-                                                <br>
-                                                {% if player.matchLost != [] %}
-                                                Défaites : <span class="h6">{{ player.matchLost }}</span>
-                                                {% else %}
-                                                    Défaites : n/a
-                                                {% endif %}
-                                                <br>
-                                                {#{% if player.matchPlayed != [] %}
+                                <hr>
+                                <div class="row">
+                                    <div class="card-columns ml-3 mr-3">
+                                        {# <div class="col-6 mb-3"> #}
+                                        <div class="card alert-success">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Matchs : </h5>
+                                                <p class="card-text">
+                                                    {% if player.matchPlayed != [] %}
+                                                        Nombre de matchs joués : <span
+                                                            class="h6">{{ player.matchPlayed }}</span>
+                                                    {% else %}
+                                                        Nombre de matchs joués : n/a
+                                                    {% endif %}
+                                                    <br>
+                                                    {% if player.matchWon != [] %}
+                                                        Victoires : <span class="h6">{{ player.matchWon }}</span>
+                                                    {% else %}
+                                                        Victoires : n/a
+                                                    {% endif %}
+                                                    <br>
+                                                    {% if player.matchLost != [] %}
+                                                        Défaites : <span class="h6">{{ player.matchLost }}</span>
+                                                    {% else %}
+                                                        Défaites : n/a
+                                                    {% endif %}
+                                                    <br>
+                                                    {# {% if player.matchPlayed != [] %}
                                                 Victoires en 2 points d'écart : <span
                                                         class="h6">{{ player.matchLost }}</span>
                                                 <br>
                                                 {% if player.matchPlayed != [] %}
                                                 Défaites en 2 points d'écart : <span
                                                         class="h6">{{ player.matchLost }}</span>
-                                                <br>#}
-                                                {% if player.matchRatio != [] %}
-                                                Ratio Victoires / Défaites : <span
-                                                        class="h6">{{ player.matchRatio | number_format(2, ',', ' ') }}</span>
-                                                {% else %}
-                                                    Ratio Victoires / Défaites : n/a
-                                                {% endif %}
-                                                <br>
-                                                {% if player.matchAveragePointsOf11 != [] %}
-                                                Moyenne de points (matchs en 11) : <span
-                                                        class="h6">{{ player.matchAveragePointsOf11 | number_format(2, ',', ' ') }}</span>
-                                                {% else %}
-                                                    Moyenne de points (matchs en 11) : n/a
-                                                {% endif %}
-                                                <br>
-                                                {% if player.matchAveragePointsOf21 != [] %}
-                                                Moyenne de points (matchs en 21) : <span
-                                                        class="h6">{{ player.matchAveragePointsOf21 | number_format(2, ',', ' ') }}</span>
-                                                {% else %}
-                                                    Moyenne de points (matchs en 21) : n/a
-                                                {% endif %}
+                                                <br> #}
+                                                    {% if player.matchRatio != [] %}
+                                                        Ratio Victoires / Défaites : <span
+                                                            class="h6">{{ player.matchRatio | number_format(2, ',', ' ') }}</span>
+                                                    {% else %}
+                                                        Ratio Victoires / Défaites : n/a
+                                                    {% endif %}
+                                                    <br>
+                                                    {% if player.matchAveragePointsOf11 != [] %}
+                                                        Moyenne de points (matchs en 11) : <span
+                                                            class="h6">{{ player.matchAveragePointsOf11 | number_format(2, ',', ' ') }}</span>
+                                                    {% else %}
+                                                        Moyenne de points (matchs en 11) : n/a
+                                                    {% endif %}
+                                                    <br>
+                                                    {% if player.matchAveragePointsOf21 != [] %}
+                                                        Moyenne de points (matchs en 21) : <span
+                                                            class="h6">{{ player.matchAveragePointsOf21 | number_format(2, ',', ' ') }}</span>
+                                                    {% else %}
+                                                        Moyenne de points (matchs en 21) : n/a
+                                                    {% endif %}
 
-                                            </p>
+                                                </p>
+                                            </div>
+
                                         </div>
+                                        {# <div class="col-6 mb-3"> #}
+                                        <div class="card alert-info">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Tournois :</h5>
+                                                <p class="card-text">
 
-                                    </div>
-                                    {# <div class="col-6 mb-3"> #}
-                                    <div class="card alert-info">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Tournois :</h5>
-                                            <p class="card-text">
+                                                    {% if player.tournamentPlayed != [] %}
+                                                        Nombre de tournois joués : <span
+                                                            class="h6">{{ player.tournamentPlayed }}</span>
+                                                    {% else %}
+                                                        Nombre de tournois joués : n/a
+                                                    {% endif %}
+                                                    <br>
+                                                    {% if player.tournamentWon != [] %}
+                                                        Victoires : <span class="h6">{{ player.tournamentWon }}</span>
+                                                    {% else %}
+                                                        Victoires : n/a
+                                                    {% endif %}
+                                                    <br>
+                                                    {% if player.tournamentAveragePlacement != [] %}
+                                                        Moyenne de placement : <span
+                                                            class="h6">{{ player.tournamentAveragePlacement | number_format(2, ',', ' ') }}</span>
+                                                    {% else %}
+                                                        Moyenne de placement : n/a
+                                                    {% endif %}
 
-                                                {% if player.tournamentPlayed != [] %}
-                                                    Nombre de tournois joués : <span
-                                                        class="h6">{{ player.tournamentPlayed }}</span>
-                                                {% else %}
-                                                    Nombre de tournois joués : n/a
-                                                {% endif %}
-                                                <br>
-                                                {% if player.tournamentWon != [] %}
-                                                    Victoires : <span class="h6">{{ player.tournamentWon }}</span>
-                                                {% else %}
-                                                    Victoires : n/a
-                                                {% endif %}
-                                                <br>
-                                                {% if player.tournamentAveragePlacement != [] %}
-                                                    Moyenne de placement : <span
-                                                        class="h6">{{ player.tournamentAveragePlacement | number_format(2, ',', ' ') }}</span>
-                                                {% else %}
-                                                    Moyenne de placement : n/a
-                                                {% endif %}
-
-                                            </p>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {#<div class="col-6 mb-3">#}
+                                        {# <div class="col-6 mb-3"> #}
                                         <div class="card alert-warning">
                                             <div class="card-body">
                                                 <h5 class="card-title">Raquettes d'or :</h5>
@@ -171,20 +171,24 @@
                                 <hr>
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <a class="nav-link active" id="matchs-tab" data-toggle="tab" href="#home" role="tab"
+                                        <a class="nav-link active" id="matchs-tab" data-toggle="tab" href="#home"
+                                           role="tab"
                                            aria-controls="home" aria-selected="true">Matchs</a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <a class="nav-link" id="tournois-tab" data-toggle="tab" href="#profile" role="tab"
+                                        <a class="nav-link" id="tournois-tab" data-toggle="tab" href="#profile"
+                                           role="tab"
                                            aria-controls="profile" aria-selected="false">Tournois</a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <a class="nav-link" id="raquette-tab" data-toggle="tab" href="#contact" role="tab"
+                                        <a class="nav-link" id="raquette-tab" data-toggle="tab" href="#contact"
+                                           role="tab"
                                            aria-controls="contact" aria-selected="false">Raquette d'or</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="matchs-tab">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel"
+                                         aria-labelledby="matchs-tab">
 
                                         <div class="card alert-success">
                                             <div class="card-body">
@@ -221,7 +225,8 @@
                                                                                                         {% set show = 0 %}
                                                                                                     {% endif %}
                                                                                                 {% endfor %}
-                                                                                                ( {{ game.scoreP1 }} - {{ game.scoreP2 }} )
+                                                                                                ( {{ game.scoreP1 }}
+                                                                                                - {{ game.scoreP2 }} )
                                                                                             </h5>
                                                                                         </a>
 
@@ -241,6 +246,22 @@
                                                                                 </div>
                                                                             </div>
                                                                         {% endfor %}
+                                                                        {% if games | length == 0 %}
+                                                                            {% if app.user.id == player.id %}
+                                                                                <h5>Vous n'avez pas encore
+                                                                                    participé à un match !
+                                                                                    Allez à l'<a
+                                                                                            class="text-decoration-none"
+                                                                                            href="{{ path('home') }}">accueil</a>
+                                                                                    pour en commencer un !
+                                                                                </h5>
+                                                                            {% else %}
+                                                                                <h5>{{ player.fullName }}
+                                                                                    n'a pas encore participé
+                                                                                    à un match
+                                                                                    !</h5>
+                                                                            {% endif %}
+                                                                        {% endif %}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -253,13 +274,202 @@
                                     </div>
 
 
-                                    <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="tournois-tab">
-                                      b
+                                    <div class="tab-pane fade show" id="profile" role="tabpanel"
+                                         aria-labelledby="tournois-tab">
+                                        <div class="card alert-info">
+                                            <div class="card-body">
+                                                <h1 class="card-title">Liste des tournois :</h1>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="card-text">
+                                                                    <div class="list-group">
+                                                                        {% for tournament in tournaments %}
+                                                                            <div class="list-group-item list-group-item-action">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-3 ">
+                                                                                        <a href="{{ path('gridT',{'id':tournament.id}) }}">
+                                                                                            <h5 class="mb-1">
+                                                                                                Tournoi
+                                                                                                n°{{ tournament.id }}
+                                                                                            </h5>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div class="col-md-3">
+                                                                                        {% if tournament.finishedAt != null %}
+                                                                                            {% for tournamentPlayer in tournamentPlayers %}
+                                                                                                {% if tournament.id == tournamentPlayer.tournament.id %}
+                                                                                                    {% if tournamentPlayer.rank == 1 %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-warning"><i
+                                                                                                                        class="fad fa-trophy"></i> 1ère place</span>
+                                                                                                        </h5>
+                                                                                                    {% elseif tournamentPlayer.rank == 2 %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-secondary"><i
+                                                                                                                        class="fad fa-medal"></i> 2ème place</span>
+                                                                                                        </h5>
+                                                                                                    {% elseif tournamentPlayer.rank == 3 %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-bronze"><i
+                                                                                                                        class="fad fa-medal"></i> 3ème place</span>
+                                                                                                        </h5>
+                                                                                                    {% else %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-info">{{ tournamentPlayer.rank }}ème place</span>
+                                                                                                        </h5>
+                                                                                                    {% endif %}
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                        {% endif %}
+                                                                                    </div>
+
+                                                                                    <div class="col-md-3">
+                                                                                        <div class="col-md-12 text-right">
+                                                                                            {% if tournament.finishedAt != null %}
+                                                                                                <h5>
+                                                                                                    <span class="badge badge-pill badge-danger">Terminé</span>
+                                                                                                </h5>
+                                                                                            {% else %}
+                                                                                                <h5>
+                                                                                                    <span class="badge badge-pill badge-info">En cours</span>
+                                                                                                </h5>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-3">
+                                                                                        <div class="col-md-12 text-right">
+                                                                                            {% set date = tournament.createdAt | date %}
+                                                                                            <small class="">{{ date|ago }}</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                        {% if tournaments | length == 0 %}
+                                                                            {% if app.user.id == player.id %}
+                                                                                <h5>Vous n'avez pas encore
+                                                                                    participé à un tournoi !
+                                                                                    Allez à l'<a
+                                                                                            class="text-decoration-none"
+                                                                                            href="{{ path('home') }}">accueil</a>
+                                                                                    pour en commencer un !
+                                                                                </h5>
+                                                                            {% else %}
+                                                                                <h5>{{ player.fullName }}
+                                                                                    n'a pas encore participé
+                                                                                    à un tournoi
+                                                                                    !</h5>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
 
-                                    <div class="tab-pane fade show" id="contact" role="tabpanel" aria-labelledby="raquette-tab">
-                                        c
+                                    <div class="tab-pane fade show" id="contact" role="tabpanel"
+                                         aria-labelledby="raquette-tab">
+                                        <div class="card alert-warning">
+                                            <div class="card-body">
+                                                <h1 class="card-title">Liste des Raquettes d'or :</h1>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="card-text">
+                                                                    <div class="list-group">
+                                                                        {% for goldenRacket in goldenRackets %}
+                                                                            <div class="list-group-item list-group-item-action">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-4 ">
+                                                                                        <a href="{{ path('gridG',{'id':goldenRacket.id}) }}">
+                                                                                            <h5 class="mb-1">
+                                                                                                Raquette d'or
+                                                                                                n°{{ goldenRacket.id }}
+                                                                                            </h5>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        {% if goldenRacket.finishedAt != null %}
+                                                                                            {% for goldenRacketPlayer in goldenRacketPlayers %}
+                                                                                                {% if goldenRacket.id == goldenRacketPlayer.goldenRacket.id %}
+                                                                                                    {% if goldenRacketPlayer.rank == 1 %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-warning"><i
+                                                                                                                        class="fad fa-trophy"></i> 1ère place</span>
+                                                                                                        </h5>
+                                                                                                    {% elseif goldenRacketPlayer.rank == 2 %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-secondary"><i
+                                                                                                                        class="fad fa-medal"></i> 2ème place</span>
+                                                                                                        </h5>
+                                                                                                    {% elseif goldenRacketPlayer.rank == 3 %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-bronze"><i
+                                                                                                                        class="fad fa-medal"></i> 3ème place</span>
+                                                                                                        </h5>
+                                                                                                    {% else %}
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-info">{{ goldenRacketPlayer.rank }}ème place</span>
+                                                                                                        </h5>
+                                                                                                    {% endif %}
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                        {% endif %}
+                                                                                    </div>
+                                                                                    <div class="col-md-3">
+                                                                                        <div class="col-md-12 text-right">
+                                                                                            {% if goldenRacket.finishedAt != null %}
+                                                                                                <h5>
+                                                                                                    <span class="badge badge-pill badge-danger">Terminé</span>
+                                                                                                </h5>
+                                                                                            {% else %}
+                                                                                                <h5>
+                                                                                                    <span class="badge badge-pill badge-info">En cours</span>
+                                                                                                </h5>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-3">
+                                                                                        <div class="col-md-12 text-right">
+                                                                                            {% set date = goldenRacket.createdAt | date %}
+                                                                                            <small class="">{{ date|ago }}</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                        {% if goldenRackets | length == 0 %}
+                                                                            {% if app.user.id == player.id %}
+                                                                                <h5>Vous n'avez pas encore
+                                                                                    participé à une raquette
+                                                                                    d'or ! Allez à l'<a
+                                                                                            class="text-decoration-none"
+                                                                                            href="{{ path('home') }}">accueil</a>
+                                                                                    pour en commencer une !
+                                                                                </h5>
+                                                                            {% else %}
+                                                                                <h5>{{ player.fullName }}
+                                                                                    n'a pas encore participé
+                                                                                    à une raquette d'or
+                                                                                    !</h5>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -271,7 +481,331 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-success" role="tabpanel"
                      aria-labelledby="v-pills-success-tab">
-                    ...
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 my-auto ml-2"><h2
+                                                class="card-title">{{ player.fullName }}</h2>
+                                    </div>
+                                    <div class="col-md-5 my-auto text-right"><h5 class="card-title ">Membre depuis
+                                            le {{ player.createdAt | date('d/m/Y') }}</h5></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <hr>
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="matchs-tab" data-toggle="tab" href="#match"
+                                           role="tab"
+                                           aria-controls="home" aria-selected="true">Matchs</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="tournois-tab" data-toggle="tab" href="#tournament"
+                                           role="tab"
+                                           aria-controls="profile" aria-selected="false">Tournois</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="raquette-tab" data-toggle="tab" href="#racket"
+                                           role="tab"
+                                           aria-controls="contact" aria-selected="false">Raquette d'or</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="match" role="tabpanel"
+                                         aria-labelledby="matchs-tab">
+
+                                        <div class="card alert-success">
+                                            <div class="card-body">
+                                                <h1 class="card-title">Liste des matchs remportés :</h1>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="card-text">
+                                                                    <div class="list-group">
+                                                                        {% for game in games %}
+                                                                            {% set show = 1 %}
+                                                                            {% for jouerP in jouersP %}
+                                                                                {% if jouerP.isWinner == true and jouerP.game == game %}
+                                                                                    <div class="list-group-item list-group-item-action">
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-9 ">
+                                                                                                <a class="text-decoration-none"
+                                                                                                   href="{{ path('detail',{'id':game.id}) }}">
+                                                                                                    <h5 class="mb-1">
+
+                                                                                                        {% for jouer in jouers %}
+                                                                                                            {% if jouer.game == game %}
+                                                                                                                {% if jouer.isWinner == true and show == 1 %}
+                                                                                                                    <span class="badge badge-secondary"><i
+                                                                                                                                class="fas fa-crown"></i></span>
+                                                                                                                {% endif %}
+                                                                                                                {{ jouer.player.fullName }}
+                                                                                                                {% if jouer.isWinner == true and show == 0 %}
+                                                                                                                    <span class="badge badge-secondary"><i
+                                                                                                                                class="fas fa-crown"></i></span>
+                                                                                                                {% endif %}
+                                                                                                                {% set show = show+1 %}
+                                                                                                            {% endif %}
+                                                                                                            {% if show == 2 %}
+                                                                                                                <span class="badge badge-secondary">VS</span>
+                                                                                                                {% set show = 0 %}
+                                                                                                            {% endif %}
+                                                                                                        {% endfor %}
+                                                                                                        ( {{ game.scoreP1 }}
+                                                                                                        - {{ game.scoreP2 }}
+                                                                                                        )
+                                                                                                    </h5>
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div class="col-md-3">
+                                                                                                <div class="col-md-12 text-right">
+                                                                                                    {% set date = game.playedAt | date %}
+                                                                                                    <small class="">{{ date|ago }}</small>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        {% endfor %}
+                                                                        {% if player.matchWon == 0 %}
+                                                                            {% if app.user.id == player.id %}
+                                                                                <h5>Vous n'avez pas
+                                                                                    encore
+                                                                                    remporté de
+                                                                                    match ! Allez à
+                                                                                    l'<a
+                                                                                            class="text-decoration-none"
+                                                                                            href="{{ path('home') }}">accueil</a>
+                                                                                    pour en jouer
+                                                                                    une
+                                                                                    autre !
+                                                                                </h5>
+                                                                            {% else %}
+                                                                                <h5>{{ player.fullName }}
+                                                                                    n'a pas encore
+                                                                                    remporté
+                                                                                    de match !</h5>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="tab-pane fade show" id="tournament" role="tabpanel"
+                                         aria-labelledby="tournois-tab">
+                                        <div class="card alert-info">
+                                            <div class="card-body">
+                                                <h1 class="card-title">Liste des tournois remportés :</h1>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="card-text">
+                                                                    <div class="list-group">
+                                                                        {% for tournament in tournaments %}
+                                                                            {% for tournamentPlayer in tournamentPlayers %}
+                                                                                {% if tournament.id == tournamentPlayer.tournament.id %}
+                                                                                    {% if tournament.finishedAt != null %}
+                                                                                        {% if tournamentPlayer.rank == 1 %}
+                                                                                            <div class="list-group-item list-group-item-action">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-3 ">
+                                                                                                        <a href="{{ path('gridT',{'id':tournament.id}) }}">
+                                                                                                            <h5 class="mb-1">
+                                                                                                                Tournoi
+                                                                                                                n°{{ tournament.id }}
+                                                                                                            </h5>
+                                                                                                        </a>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <h5>
+                                                                                                        <span class="badge badge-warning"><i
+                                                                                                                    class="fad fa-trophy"></i> 1ère place</span>
+                                                                                                        </h5>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="col-md-12 text-right">
+
+                                                                                                            <h5>
+                                                                                                                <span class="badge badge-pill badge-danger">Terminé</span>
+                                                                                                            </h5>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="col-md-12 text-right">
+                                                                                                            {% set date = tournament.createdAt | date %}
+                                                                                                            <small class="">{{ date|ago }}</small>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        {% endfor %}
+                                                                        {% if player.tournamentWon == 0 %}
+                                                                            {% if app.user.id == player.id %}
+                                                                                <h5>Vous
+                                                                                    n'avez
+                                                                                    pas
+                                                                                    encore
+                                                                                    remporté de
+                                                                                    tournoi
+                                                                                    !
+                                                                                    Allez à
+                                                                                    l'<a
+                                                                                            class="text-decoration-none"
+                                                                                            href="{{ path('home') }}">accueil</a>
+                                                                                    pour en
+                                                                                    jouer
+                                                                                    un autre !
+                                                                                </h5>
+                                                                            {% else %}
+                                                                                <h5>{{ player.fullName }}
+                                                                                    n'a pas
+                                                                                    encore
+                                                                                    remporté de
+                                                                                    tournoi
+                                                                                    !</h5>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="tab-pane fade show" id="racket" role="tabpanel"
+                                         aria-labelledby="raquette-tab">
+                                        <div class="card alert-warning">
+                                            <div class="card-body">
+                                                <h1 class="card-title">Liste des Raquettes d'or remportées :</h1>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="card-text">
+                                                                    <div class="list-group">
+                                                                        {% for goldenRacket in goldenRackets %}
+                                                                            {% if goldenRacket.finishedAt != null %}
+                                                                                {% for goldenRacketPlayer in goldenRacketPlayers %}
+                                                                                    {% if goldenRacket.id == goldenRacketPlayer.goldenRacket.id %}
+                                                                                        {% if goldenRacketPlayer.rank == 1 %}
+                                                                                            <div class="list-group-item list-group-item-action">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-4 ">
+                                                                                                        <a href="{{ path('gridG',{'id':goldenRacket.id}) }}">
+                                                                                                            <h5 class="mb-1">
+                                                                                                                Raquette
+                                                                                                                d'or
+                                                                                                                n°{{ goldenRacket.id }}
+                                                                                                            </h5>
+                                                                                                        </a>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <h5>
+                                                                                                            <span class="badge badge-warning"><i
+                                                                                                                        class="fad fa-trophy"></i> 1ère place</span>
+                                                                                                        </h5>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="col-md-12 text-right">
+                                                                                                            <h5>
+                                                                                                                <span class="badge badge-pill badge-danger">Terminé</span>
+                                                                                                            </h5>
+
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="col-md-12 text-right">
+                                                                                                            {% set date = goldenRacket.createdAt | date %}
+                                                                                                            <small class="">{{ date|ago }}</small>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        {% if player.goldenRacketWon == 0 %}
+                                                                            {% if app.user.id == player.id %}
+                                                                                <h5>Vous n'avez pas
+                                                                                    encore
+                                                                                    remporté de
+                                                                                    raquette
+                                                                                    d'or ! Allez à
+                                                                                    l'<a
+                                                                                            class="text-decoration-none"
+                                                                                            href="{{ path('home') }}">accueil</a>
+                                                                                    pour en jouer
+                                                                                    une
+                                                                                    autre !
+                                                                                </h5>
+                                                                            {% else %}
+                                                                                <h5>{{ player.fullName }}
+                                                                                    n'a pas encore
+                                                                                    remporté
+                                                                                    à une raquette
+                                                                                    d'or
+                                                                                    !</h5>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                        {% if goldenRackets | length == 0 %}
+                                                                            <div class="list-group-item list-group-item-action">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        {% if app.user.id == player.id %}
+                                                                                            <h5>Vous n'avez pas encore
+                                                                                                participé à une raquette
+                                                                                                d'or ! Allez à l'<a
+                                                                                                        class="text-decoration-none"
+                                                                                                        href="{{ path('home') }}">accueil</a>
+                                                                                                pour en commencer une !
+                                                                                            </h5>
+                                                                                        {% else %}
+                                                                                            <h5>{{ player.fullName }}
+                                                                                                n'a pas encore participé
+                                                                                                à une raquette d'or
+                                                                                                !</h5>
+                                                                                        {% endif %}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
                      aria-labelledby="v-pills-settings-tab">
@@ -280,4 +814,4 @@
             </div>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}

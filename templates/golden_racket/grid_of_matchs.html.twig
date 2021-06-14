@@ -131,12 +131,12 @@
                                                                 {% if jouer.game == game %}
                                                                     {% if jouer.isWinner == true and show == 1 %}
                                                                         <span class="badge badge-secondary"><i
-                                                                                    class="fas fa-crown"></i></span>
+                                                                                    class="fad fa-crown"></i></span>
                                                                     {% endif %}
                                                                     {{ jouer.player.fullName }}
                                                                     {% if jouer.isWinner == true and show == 0 %}
                                                                         <span class="badge badge-secondary"><i
-                                                                                    class="fas fa-crown"></i></span>
+                                                                                    class="fad fa-crown"></i></span>
                                                                     {% endif %}
                                                                     {% set show = show+1 %}
                                                                 {% endif %}
@@ -204,11 +204,11 @@
                                                             </h2>
                                                         {% elseif count == 2 %}
                                                             <h2><span class="badge badge-secondary"><i
-                                                                            class="fas fa-medal"></i></span>
+                                                                            class="fad fa-medal"></i></span>
                                                             </h2>
                                                         {% elseif count == 3 %}
                                                             <h2><span class="badge badge-bronze"><i
-                                                                            class="fas fa-medal"></i></span></h2>
+                                                                            class="fad fa-medal"></i></span></h2>
                                                         {% else %}
                                                             <h2><span class="badge badge-warning">{{ count }}</span>
                                                             </h2>
