@@ -128,10 +128,16 @@ class StatsService extends AbstractController
         $goldenRacketWon = $this->goldenRacketPlayersRepo->findBy(['player' => $player->getId(), 'rank' => 1]);
         $ranks = [];
         $rankAverage = 0;
+        $countGoldenRacketsPlayed = count($goldenRacketsPlayed);
         foreach ($goldenRacketsPlayed as $goldenRacketPlayed){
             $rank = $goldenRacketPlayed->getRank();
-            array_push($ranks,$rank);
-            $rankAverage = $rankAverage + $rank;
+            if ($rank != 999){
+                array_push($ranks,$rank);
+                $rankAverage = $rankAverage + $rank;
+            }
+            else {
+                $countGoldenRacketsPlayed--;
+            }
         }
         if (count($ranks)!=null){
             $goldenRacketAveragePlacement = $rankAverage/(count($ranks));
@@ -140,7 +146,7 @@ class StatsService extends AbstractController
 
 
         if(!empty($played) || $scores!=0){
-            $player->setGoldenRacketPlayed(count($goldenRacketsPlayed));
+            $player->setGoldenRacketPlayed($countGoldenRacketsPlayed);
             $player->setGoldenRacketWon(count($goldenRacketWon));
 
         }

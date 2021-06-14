@@ -400,6 +400,10 @@
                                                                                                             <span class="badge badge-bronze"><i
                                                                                                                         class="fad fa-medal"></i> 3ème place</span>
                                                                             </h5>
+                                                                        {% elseif goldenRacketPlayer.rank == 999 %}
+                                                                            <h5>
+                                                                                <span class="badge badge-info">Non classé</span>
+                                                                            </h5>
                                                                         {% else %}
                                                                             <h5>
                                                                                 <span class="badge badge-info">{{ goldenRacketPlayer.rank }}ème place</span>

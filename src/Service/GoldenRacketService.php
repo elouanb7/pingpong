@@ -150,9 +150,16 @@ class GoldenRacketService extends AbstractController
         $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['goldenRacket' => $goldenRacket], ['ratioWL' => 'ASC']);
         $countGoldenRacketPlayers = count($goldenRacketPlayers);
         foreach ($goldenRacketPlayers as $goldenRacketPlayer) {
-            $goldenRacketPlayer->setRank($countGoldenRacketPlayers);
-            $this->manager->persist($goldenRacketPlayer);
-            $this->manager->flush();
+            if ($goldenRacketPlayer->getNbGames()){
+                $goldenRacketPlayer->setRank($countGoldenRacketPlayers);
+                $this->manager->persist($goldenRacketPlayer);
+                $this->manager->flush();
+            }
+            else{
+                $goldenRacketPlayer->setRank(999);
+                $this->manager->persist($goldenRacketPlayer);
+                $this->manager->flush();
+            }
             $countGoldenRacketPlayers--;
         }
 
