@@ -103,7 +103,7 @@ class TournamentController extends AbstractController
                     array_push($playersl,$playerl);
                 }
                 $leaderboard = $playersl;
-                return $this->render('tournament/grid_of_matchs.html.twig', [
+                $response = $this->render('tournament/grid_of_matchs.html.twig', [
                     'games' => $games,
                     'nextGames' => $nextGames,
                     'jouers' => $jouers,
@@ -112,13 +112,15 @@ class TournamentController extends AbstractController
                     'oldRounds' => $oldRounds,
                     'tournament' => $this->tournamentRepo->findOneBy(['id' => $id]),
                 ]);
+                $response->setMaxAge(3600);
+                return $response;
             }
         }
         $nextGames = $this->gameRepo->findBy(['tournament' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
         $games = $this->gameRepo->findBy(['tournament' => $id], ['playedAt' => 'ASC']);
         $jouers = $this->jouerRepo->findAll();
 
-        return $this->render('tournament/grid_of_matchs.html.twig', [
+        $response = $this->render('tournament/grid_of_matchs.html.twig', [
             'games' => $games,
             'nextGames' => $nextGames,
             'jouers' => $jouers,
@@ -126,6 +128,8 @@ class TournamentController extends AbstractController
             'leaderboard' => false,
             'tournament' => $this->tournamentRepo->findOneBy(['id' => $id]),
         ]);
+        $response->setMaxAge(3600);
+        return $response;
     }
 
     /**

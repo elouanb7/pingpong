@@ -54,25 +54,25 @@ class HomeController extends AbstractController
         $this->session->set('goldenRacketId', null);
         $this->session->set('tournamentId', null);
 
-        $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC'], 6);
-        $allGames = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false],['playedAt' => 'DESC']);
-        $tournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC'], 6);
-        $allTournaments = $this->tournamentRepo->findBy([],['createdAt' => 'DESC']);
-        $goldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC'], 6);
-        $allGoldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC']);
+        $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false], ['playedAt' => 'DESC'], 6);
+        $allGames = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false], ['playedAt' => 'DESC']);
+        $tournaments = $this->tournamentRepo->findBy([], ['createdAt' => 'DESC'], 6);
+        $allTournaments = $this->tournamentRepo->findBy([], ['createdAt' => 'DESC']);
+        $goldenRackets = $this->goldenRacketRepo->findBy([], ['createdAt' => 'DESC'], 6);
+        $allGoldenRackets = $this->goldenRacketRepo->findBy([], ['createdAt' => 'DESC']);
         $jouers = $this->jouerRepo->findAll();
         $players = $this->playerRepo->findAll();
-        foreach ($players as $player){
+        foreach ($players as $player) {
             $this->statsService->matchsStats($player);
             $this->statsService->tournamentStats($player);
             $this->statsService->goldenRacketStats($player);
         }
 
-        if ($this->getUser()){
+        if ($this->getUser()) {
             $playerLogged = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
             $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['player' => $playerLogged->getId()]);
             $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['player' => $playerLogged->getId()]);
-            return $this->render('home/index.html.twig', [
+            $response = $this->render('home/index.html.twig', [
                 'games' => $games,
                 'allGames' => $allGames,
                 'tournaments' => $tournaments,
@@ -84,9 +84,11 @@ class HomeController extends AbstractController
                 'jouers' => $jouers,
                 'player' => $playerLogged,
             ]);
+            $response->setMaxAge(3600);
+            return $response;
         }
 
-        return $this->render('home/index.html.twig', [
+        $response = $this->render('home/index.html.twig', [
             'games' => $games,
             'allGames' => $allGames,
             'tournaments' => $tournaments,
@@ -95,6 +97,8 @@ class HomeController extends AbstractController
             'allGoldenRackets' => $allGoldenRackets,
             'jouers' => $jouers,
         ]);
+        $response->setMaxAge(3600);
+        return $response;
     }
 }
 

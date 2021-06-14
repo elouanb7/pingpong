@@ -85,7 +85,7 @@ class PlayerController extends AbstractController
             $this->statsService->goldenRacketStats($playerS);
         }
 
-        return $this->render('player/profile.html.twig', [
+        $response = $this->render('player/profile.html.twig', [
             'player' => $player,
             'games' => $games,
             'jouers' => $jouers,
@@ -95,5 +95,7 @@ class PlayerController extends AbstractController
             'goldenRackets' => $goldenRackets,
             'goldenRacketPlayers' => $goldenRacketPlayers,
         ]);
+        $response->setMaxAge(3600);
+        return $response;
     }
 }

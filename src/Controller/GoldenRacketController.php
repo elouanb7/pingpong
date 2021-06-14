@@ -82,7 +82,7 @@ class GoldenRacketController extends AbstractController
         $leaderboard = $playersl;
         $days = $goldenRacket->getDay();
         /* $this->goldenRacketService->doGoldenRacketDay($id);*/
-        return $this->render('golden_racket/grid_of_matchs.html.twig', [
+        $response = $this->render('golden_racket/grid_of_matchs.html.twig', [
             'leaderboard' => $leaderboard,
             'leaderboardP' => $leaderboardP,
             'goldenRacket' => $goldenRacket,
@@ -91,6 +91,8 @@ class GoldenRacketController extends AbstractController
             'jouers' => $jouers,
             'days' => $days
         ]);
+        $response->setMaxAge(3600);
+        return $response;
     }
 
     /**
