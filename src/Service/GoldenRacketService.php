@@ -115,11 +115,17 @@ class GoldenRacketService extends AbstractController
             }
         }
         $goldenRacketScore = 0;
+        $goldenRacketMatchW = 0;
         if (count($goldenRacketJouers) != null) {
             foreach ($goldenRacketJouers as $goldenRacketJouer) {
                 $goldenRacketScore = $goldenRacketScore + $goldenRacketJouer->getScore();
+                if ($goldenRacketJouer->getIsWinner() == true){
+                    $goldenRacketMatchW++;
+                }
             }
+            $goldenRacketMatchRatio = $goldenRacketMatchW / (count($goldenRacketJouers));
             $goldenRacketPointsRatio = $goldenRacketScore / (count($goldenRacketJouers));
+            $goldenRacketPlayer->setRatioWL($goldenRacketMatchRatio);
             $goldenRacketPlayer->setPointsAverage($goldenRacketPointsRatio);
             $goldenRacketPlayer->setNbGames(count($goldenRacketJouers));
             $this->manager->persist($goldenRacketPlayer);
@@ -141,7 +147,7 @@ class GoldenRacketService extends AbstractController
 
         // Tri en fonction du ratio de pts
 
-        $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['goldenRacket' => $goldenRacket], ['pointsAverage' => 'ASC']);
+        $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['goldenRacket' => $goldenRacket], ['ratioWL' => 'ASC']);
         $countGoldenRacketPlayers = count($goldenRacketPlayers);
         foreach ($goldenRacketPlayers as $goldenRacketPlayer) {
             $goldenRacketPlayer->setRank($countGoldenRacketPlayers);

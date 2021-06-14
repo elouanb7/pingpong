@@ -262,12 +262,12 @@ class Player implements UserInterface
         return $this;
     }
 
-    public function getMatchAveragePointsOf11(): ?int
+    public function getMatchAveragePointsOf11(): ?float
     {
         return $this->matchAveragePointsOf11;
     }
 
-    public function setMatchAveragePointsOf11(?int $matchAveragePointsOf11): self
+    public function setMatchAveragePointsOf11(?float $matchAveragePointsOf11): self
     {
         $this->matchAveragePointsOf11 = $matchAveragePointsOf11;
 

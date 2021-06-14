@@ -78,7 +78,12 @@ class PlayerController extends AbstractController
             $goldenRacket = $this->goldenRacketRepo->findOneBy(['id' => $goldenRacketPlayer->getGoldenRacket()]);
             array_push($goldenRackets, $goldenRacket);
         }
-
+        $players = $this->playerRepo->findAll();
+        foreach ($players as $playerS){
+            $this->statsService->matchsStats($playerS);
+            $this->statsService->tournamentStats($playerS);
+            $this->statsService->goldenRacketStats($playerS);
+        }
 
         return $this->render('player/profile.html.twig', [
             'player' => $player,

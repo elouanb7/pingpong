@@ -45,7 +45,6 @@ class StatsService extends AbstractController
 
     public function matchsStats($player)
     {
-        $null = null;
         $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
         $played = [];
         $scores = 0;
@@ -59,7 +58,7 @@ class StatsService extends AbstractController
         if(!empty($played) || $scores!=0){
             $pointsAverageOfEleven = $scores/count($played);
             $player->setMatchPlayed(count($played));
-            $player->setMatchAveragePointsOf11($pointsAverageOfEleven);
+            $player->setMatchAveragePointsOf11(floatval($pointsAverageOfEleven));
         }
         $won = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => true]);
         $lost = $this->jouerRepo->findBy(['player' => $player, 'isWinner' => false]);
@@ -76,8 +75,6 @@ class StatsService extends AbstractController
 
     public function tournamentStats($player)
     {
-
-        $null = null;
         $pands = $this->jouerRepo->findBy(['player' => $player->getId()]);
         $played = [];
         $scores = 0;
