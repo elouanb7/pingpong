@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}PingPong - Supprimer {{ player.fullName }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">Supprimer {{ player.fullName }}</h1>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Etes vous bien sur de vouloir supprimer {{ player.fullName }} ?
+                    </h5>
+                    <p class="card-text mt-3 ">
+                        <a href="{{ path('del_player', {'id' : player.id}) }}" class="btn btn-danger">Supprimer</a>
+                    <a href="{{ path('dashboard') }}" class="btn btn-primary">Revenir au dashboard</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+{% endblock %}

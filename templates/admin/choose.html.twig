@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PingPong - Choix du Joueur{% endblock %}
+
+{% block body %}
+    <div class="container d-flex h-100 align-items-center mt-5">
+        <div class="mx-auto text-center">
+            <h1 class="mx-auto my-0 text-uppercase">Choisissez le joueur à modifier/supprimer
+                <br>
+            </h1>
+            <div class="text-white-50 mx-auto "></div>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+            </div>
+            <div class="col-3"></div>
+            <div class="col-6">
+                {% if delete is defined %}
+                    <button type="submit" class="btn btn-danger mt-3 btn-block">Supprimer</button>
+
+                {% else %}
+                <button type="submit" class="btn btn-warning mt-3 btn-block">Modifier</button>
+                {% endif %}
+            </div>
+
+            <div class="col-3"></div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+

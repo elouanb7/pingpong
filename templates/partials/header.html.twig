@@ -9,6 +9,15 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ path('home') }}">Home <span class="sr-only">(current)</span></a>
             </li>
+            {% if app.user %}
+            {% for role in app.user.roles %}
+            {% if role == "ROLE_ADMIN"%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('dashboard') }}">Dashboard</a>
+                </li>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
             {#<li class="nav-item">
                 <a class="nav-link" href="#">Features</a>
             </li>#}

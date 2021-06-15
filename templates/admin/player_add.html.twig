@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block title %}PingPong - Nouveau Joueur{% endblock %}
+{% block body %}
+
+
+        <button class="btn btn-secondary" onclick="window.history.back();">Retour</button>
+        <div class="container d-flex h-100 align-items-center">
+            <div class="mx-auto text-center">
+                <h1 class="mx-auto my-0 text-uppercase">Nouveau Joueur
+                    <br>
+                </h1>
+                <div class="text-white-50 mx-auto "></div>
+            </div>
+        </div>
+
+
+    <div class="row">
+        <div class="mx-auto col-md-8">
+            <h2 class="mt-5 mb-3">
+                Complétez le formulaire</h2>
+            {% if violations is defined %}
+                <div class="row mt-3">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <div class="alert alert-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-body">
+
+                                {% for violation in violations %}
+                                    {{ violation.message }}
+                                    {% if violations[loop.index] is defined %}
+                                        <br>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+            {% endif %}
+            <div class="form-group">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="btn btn-success">Ajouter</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

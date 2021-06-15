@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PingPong - Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h3 class="ml-3">Bonjour {{ app.user.fullName }}</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Utilisateurs :</h3>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 mb-2"><a href="{{ path('add_player') }}" class="text-decoration-none text-white text-center">
+                                    <div class="card bg-success">
+                                        <div class="card-body">
+                                            <h1 class="card-title ">
+                                                <i class="fad fa-user-plus"></i>
+                                            </h1>
+                                            <h4 class="card-text">Ajouter un utilisateur</h4>
+                                        </div>
+                                    </div>
+                                </a></div>
+                            <div class="col-md-4 mb-2"><a href="{{ path('choose_edit') }}" class="text-decoration-none text-white text-center">
+                                    <div class="card bg-warning">
+                                        <div class="card-body">
+                                            <h1 class="card-title ">
+                                                <i class="fad fa-user-edit"></i>
+                                            </h1>
+                                            <h4 class="card-text">Modifier un utilisateur</h4>
+                                        </div>
+                                    </div>
+                                </a></div>
+                            <div class="col-md-4 mb-2"><a href="{{ path('choose_del') }}" class="text-decoration-none text-white text-center">
+                                    <div class="card bg-danger">
+                                        <div class="card-body">
+                                            <h1 class="card-title ">
+                                                <i class="fad fa-user-minus"></i>
+                                            </h1>
+                                            <h4 class="card-text">Supprimer un utilisateur</h4>
+                                        </div>
+                                    </div>
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
