@@ -126,6 +126,7 @@ class GoldenRacketController extends AbstractController
     public function goldenRackets(PaginatorInterface $paginator, Request $request): Response
     {
         $goldenRackets = $this->goldenRacketRepo->findBy([],['createdAt' => 'DESC']);
+
         $pagination = $paginator->paginate(
             $goldenRackets,
             $request->query->getInt('page', 1),
@@ -137,6 +138,18 @@ class GoldenRacketController extends AbstractController
             'style' => 'bottom',
             'span_class' => 'whatever',
         ]);
+        if ($this->getUser()){
+            $playerLogged = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
+            $goldenRacketPlayers = $this->goldenRacketPlayersRepo->findBy(['player' => $playerLogged->getId()]);
+            return $this->render('golden_racket/golden_rackets.html.twig', [
+                '$goldenRackets' => $goldenRackets,
+                'pagination' => $pagination,
+                'goldenRacketPlayers' => $goldenRacketPlayers,
+                'playerLogged' => $playerLogged,
+                ]);
+
+        }
+
         return $this->render('golden_racket/golden_rackets.html.twig', [
             '$goldenRackets' => $goldenRackets,
             'pagination' => $pagination,

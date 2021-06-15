@@ -150,6 +150,17 @@ class TournamentController extends AbstractController
             'style' => 'bottom',
             'span_class' => 'whatever',
         ]);
+        if ($this->getUser()){
+            $playerLogged = $this->playerRepo->findOneBy(['id' => $this->getUser()]);
+            $tournamentPlayers = $this->tournamentPlayersRepo->findBy(['player' => $playerLogged->getId()]);
+            return $this->render('tournament/tournaments.html.twig', [
+                'tournaments' => $tournaments,
+                'pagination' => $pagination,
+                'tournamentPlayers' => $tournamentPlayers,
+                'playerLogged' => $playerLogged,
+            ]);
+
+        }
         return $this->render('tournament/tournaments.html.twig', [
             'tournaments' => $tournaments,
             'pagination' => $pagination,

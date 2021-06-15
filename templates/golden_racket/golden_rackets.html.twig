@@ -14,22 +14,62 @@
                                 <div class="card-text">
                                     <div class="list-group">
                                         {% for goldenRacket in pagination %}
-                                            <div class="list-group-item list-group-item-action">
-                                                <div class="row">
-                                                    <div class="col-md-6 ">
+                                        <div class="list-group-item list-group-item-action">
+                                            <div class="row">
+                                                {% if app.user %}
+                                                <div class="col-md-4">
+                                                    {% else %}
+                                                    <div class="col-md-6">
+                                                        {% endif %}
+
                                                         <a href="{{ path('gridG',{'id':goldenRacket.id}) }}">
                                                             <h5 class="mb-1">
                                                                 Raquette d'or n°{{ goldenRacket.id }}
                                                             </h5>
                                                         </a>
                                                     </div>
+                                                    {% if app.user %}
+                                                        <div class="col-md-2">
+                                                            {% if goldenRacket.finishedAt != null %}
+                                                                {% for goldenRacketPlayer in goldenRacketPlayers %}
+                                                                    {% if goldenRacket.id == goldenRacketPlayer.goldenRacket.id %}
+                                                                        {% if goldenRacketPlayer.rank == 1 %}
+                                                                            <h5>
+                                                                                                            <span class="badge badge-warning"><i
+                                                                                                                        class="fad fa-trophy"></i> 1ère place</span>
+                                                                            </h5>
+                                                                        {% elseif goldenRacketPlayer.rank == 2 %}
+                                                                            <h5>
+                                                                                                            <span class="badge badge-secondary"><i
+                                                                                                                        class="fad fa-medal"></i> 2ème place</span>
+                                                                            </h5>
+                                                                        {% elseif goldenRacketPlayer.rank == 3 %}
+                                                                            <h5>
+                                                                                                            <span class="badge badge-bronze"><i
+                                                                                                                        class="fad fa-medal"></i> 3ème place</span>
+                                                                            </h5>
+                                                                        {% elseif goldenRacketPlayer.rank == 999 %}
+                                                                            <h5>
+                                                                                <span class="badge badge-info">Non classé</span>
+                                                                            </h5>
+                                                                        {% else %}
+                                                                            <h5>
+                                                                                <span class="badge badge-info">{{ goldenRacketPlayer.rank }}ème place</span>
+                                                                            </h5>
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %}
                                                     <div class="col-md-3">
                                                         <div class="col-md-12 text-right">
                                                             {% if goldenRacket.finishedAt != null %}
-                                                                <h5><span class="badge badge-pill badge-danger">Terminé</span>
+                                                                <h5>
+                                                                    <span class="badge badge-pill badge-danger">Terminée</span>
                                                                 </h5>
                                                             {% else %}
-                                                                <h5><span class="badge badge-pill badge-info">En cours</span>
+                                                                <h5><span class="badge badge-pill badge-warning">En cours</span>
                                                                 </h5>
                                                             {% endif %}
                                                         </div>
@@ -42,7 +82,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        {% endfor %}
+                                            {% endfor %}
                                     </div>
                                 </div>
                             </div>
