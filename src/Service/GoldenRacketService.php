@@ -101,7 +101,7 @@ class GoldenRacketService extends AbstractController
         $validJouers = [];
         $jouers = $this->jouerRepo->findBy(['player' => $player]);
         foreach ($jouers as $jouer) {
-            if ($jouer->getScore()) {
+            if ($jouer->getScore() ||$jouer->getScore()==0 && $jouer->getScore()!==null) {
                 array_push($validJouers, $jouer);
             }
         }

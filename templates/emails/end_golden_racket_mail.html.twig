@@ -12,15 +12,13 @@
 <body>
 <h1>Bonjour {{ player.fullName }} !</h1>
 <p>
-    Une nouvelle journée de compétition se prépare, nous entamons la
-    {% if days == 1 %}
-        1ère journée
-    {% else %}
-        {{ days }}ème journée
-    {% endif %} de la raquette d'or !
+    La raquette d'or n°{{ goldenRacket.id }} prend fin aujourd'hui après {{ days }} jours de compétition...
+    <br>
+    Voici les résultats :
 </p>
     {% if leaderboard %}
         {% set count = 0 %}
+        {% set winner = 0 %}
         <table class="table">
             <thead>
             <tr>
@@ -34,6 +32,9 @@
             <tbody>
             {% for player in leaderboard %}
                 {% set count = count + 1 %}
+                {% if count == 1 %}
+                    {% set winner = player %}
+                {% endif %}
                 <tr>
                     <th scope="row">{{ count }}</th>
                     <td style="text-align: center">{{ player.fullName }}</td>
@@ -61,6 +62,9 @@
             {% endfor %}
             </tbody>
         </table>
+        <h4>Felicitation au gagnant {{ winner.fullName }} !</h4>
     {% endif %}
+
+
 </body>
 </html>

@@ -54,8 +54,9 @@ class PlayerController extends AbstractController
     /**
      * @Route("/profile/{id}", name="profile")
      */
-    public function index($id): Response
-    {   $player = $this->playerRepo->findOneBy(['id' => $id]);
+    public function profile($id): Response
+    {
+        $player = $this->playerRepo->findOneBy(['id' => $id]);
         $games = [];
         $jouersP = $this->jouerRepo->findBy(['player' => $id],['playedAt' => 'DESC'], );
         $jouers = $this->jouerRepo->findAll();
@@ -106,6 +107,20 @@ class PlayerController extends AbstractController
         ]);
         $response->setMaxAge(3600);
         return $response;
+    }
+
+    /**
+     * @Route("/leaderboard", name="leaderboard")
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function leaderboard(Request $request, EntityManagerInterface $manager): Response
+    {
+        $players = $this->playerRepo->FindAll();
+        return $this->render('player/leaderboard.html.twig', [
+            'players' => $players
+        ]);
     }
 
     /**

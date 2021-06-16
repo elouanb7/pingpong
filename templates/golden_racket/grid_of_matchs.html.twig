@@ -46,7 +46,7 @@
                                 <div class="card-text {{ games|length>3 ? "dashboard" : "" }}">
                                     {% if days != null %}
                                         {% for day in range(1,days) %}
-                                            <h6 class="mt-1" id="jour{{ day }}">Jour {{ day }}</h6>
+                                            <a href="{{ path('golden_day',{'day' : day, 'id' : goldenRacket.id} ) }}"><h6 class="mt-1" id="jour{{ day }}">Jour {{ day }}</h6></a>
                                             <div class="list-group">
                                                 {% for game in games %}
                                                     {% if game.day == day %}

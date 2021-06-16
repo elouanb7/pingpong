@@ -64,6 +64,30 @@ class GoldenRacketController extends AbstractController
     }
 
     /**
+     * @Route("/goldenRacket/{id}/day/{day}", name="golden_day")
+     */
+    public function day($id, Request $request, $day): Response
+    {
+        $nextGames = $this->gameRepo->findBy(['goldenRacket' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
+        $this->session->set('goldenRacketId', $id);
+        $games = $this->gameRepo->findBy(['goldenRacket' => $id], ['playedAt' => 'ASC']);
+        $jouers = $this->jouerRepo->findAll();
+        $goldenRacket = $this->goldenRacketRepo->findOneBy(['id' => $id]);
+        $players = $this->playerRepo->findAll();
+        foreach ($players as $player) {
+            $this->goldenRacketService->updateStats($player->getId(), $id);
+        }
+        return $this->render('golden_racket/day.html.twig', [
+            'day' => $day,
+            'id' => $id,
+            'goldenRacket' => $goldenRacket,
+            'nextGames' => $nextGames,
+            'games' => $games,
+            'jouers' => $jouers,
+        ]);
+    }
+
+    /**
      * @Route("/goldenRacket/{id}/grid", name="gridG")
      * @throws TransportExceptionInterface
      */
@@ -146,11 +170,48 @@ class GoldenRacketController extends AbstractController
 
     /**
      * @Route("/goldenRacket/{id}/endGoldenRacket", name="endGoldenRacket")
+     * @throws TransportExceptionInterface
      */
     public function endGoldenRacket($id): Response
     {
+        $nextGames = $this->gameRepo->findBy(['goldenRacket' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
         $goldenRacket = $this->goldenRacketRepo->findOneBy(['id' => $id]);
         $goldenRacket->setFinishedAt(new \DateTime('now'));
+        $games = $this->gameRepo->findBy(['goldenRacket' => $id], ['playedAt' => 'ASC']);
+        $jouers = $this->jouerRepo->findAll();
+        $days = $goldenRacket->getDay();
+        $leaderboardP = $this->goldenRacketPlayersRepo->findBy(['goldenRacket' => $id], ['rank' => 'ASC']);
+        $playersl = [];
+        foreach ($leaderboardP as $playerl) {
+            $playerl = $playerl->getPlayer()->getId();
+            $playerl = $this->playerRepo->findOneBy(['id' => $playerl]);
+            array_push($playersl, $playerl);
+        }
+        $leaderboard = $playersl;
+        foreach ($leaderboard as $player) {
+            $email = (new TemplatedEmail())
+                ->from(new Address('elouanb7.test@gmail.com', 'PingPong Bot'))
+                ->to($player->getEmail())
+                ->subject("Résultats - Raquette d'or n°" . $goldenRacket->getId())
+                ->htmlTemplate('emails/end_golden_racket_mail.html.twig')
+                ->context([
+                    'date' => new \DateTime('now'),
+                    'leaderboard' => $leaderboard,
+                    'leaderboardP' => $leaderboardP,
+                    'goldenRacket' => $goldenRacket,
+                    'nextGames' => $nextGames,
+                    'games' => $games,
+                    'player' => $player,
+                    'jouers' => $jouers,
+                    'days' => $days
+                ]);
+            $this->mailer->send($email);
+        }
+        //Message de succès
+        $this->addflash(
+            'success',
+            "La journée à bien démarrée ! Un mail sera envoyé aux différents participants dans peu de temps !"
+        );
         $this->manager->persist($goldenRacket);
         $this->manager->flush();
         return $this->redirectToRoute('home', [
