@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/edc8d5fc95.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Bonjour {{ player.fullName }} !</h1>
+<p>
+    Une nouvelle journée de compétition se prépare, nous entamons la
+    {% if days == 1 %}
+        1ère journée
+    {% else %}
+        {{ days }}ème journée
+    {% endif %} de la raquette d'or !
+</p>
+    {% if leaderboard %}
+        {% set count = 0 %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Rang</th>
+                <th scope="col">Nom du joueur</th>
+                <th scope="col">Moy Pts/Match</th>
+                <th scope="col">Nb matchs joués</th>
+                <th scope="col">Nb matchs gagnés</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for player in leaderboard %}
+                {% set count = count + 1 %}
+                <tr>
+                    <th scope="row">{{ count }}</th>
+                    <td style="text-align: center">{{ player.fullName }}</td>
+                    <td style="text-align: center">{% if leaderboardP[loop.index-1].pointsAverage %}
+                            {{ leaderboardP[loop.index-1].pointsAverage | number_format(2, ',', ' ') }}
+                        {% else %}
+                            n/a
+                        {% endif %}</td>
+                    <td style="text-align: center">{% if leaderboardP[loop.index-1].nbGames %}
+                            {{ leaderboardP[loop.index-1].nbGames }}
+                        {% else %}
+                            n/a
+                        {% endif %}</td>
+                    <td style="text-align: center">{% if leaderboardP[loop.index-1].nbGames %}
+                            {% if leaderboardP[loop.index-1].ratioWL %}
+                                {% set matchsWon = leaderboardP[loop.index-1].ratioWL * leaderboardP[loop.index-1].nbGames %}
+                                {{ matchsWon }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        {% else %}
+                            n/a
+                        {% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{#
+<div class="col-md-12 mt-3">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Classement</h5>
+            <p class="card-text">
+            <div class="list-group">
+                <div class="list-group-item list-group-item-action">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <h5>Rang</h5>
+                        </div>
+                        <div class="col-md-3 text-center ">
+                            <h5>Nom du joueur</h5>
+                        </div>
+                        <div class="col-md-2 text-center ">
+                            <h5>Moy Pts/Match</h5>
+                        </div>
+                        <div class="col-md-3 text-center ">
+                            <h5>Nb matchs joués</h5>
+                        </div>
+                        <div class="col-md-3 text-center ">
+                            <h5>Nb matchs gagnés</h5>
+                        </div>
+                    </div>
+                </div>
+                {% for player in leaderboard %}
+                    {% set count = count + 1 %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="col-md-1">
+                                {% if not leaderboardP[loop.index-1].nbGames %}
+                                    <h5>Non Classé</h5>
+                                {% elseif count == 1 %}
+                                    <h2><span class="badge badge-warning"><i
+                                                    class="fad fa-table-tennis"></i></span>
+                                    </h2>
+                                {% elseif count == 2 %}
+                                    <h2><span class="badge badge-secondary"><i
+                                                    class="fad fa-medal"></i></span>
+                                    </h2>
+                                {% elseif count == 3 %}
+                                    <h2><span class="badge badge-bronze"><i
+                                                    class="fad fa-medal"></i></span></h2>
+                                {% else %}
+                                    <h2><span class="badge badge-warning">{{ count }}</span>
+                                    </h2>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <h5 class="mb-1">{{ player.fullName }}</h5></div>
+                            <div class="col-md-2 text-center">
+                                {% if leaderboardP[loop.index-1].pointsAverage %}
+                                    <h5 class="mb-1">{{ leaderboardP[loop.index-1].pointsAverage | number_format(2, ',', ' ') }}</h5>
+                                {% else %}
+                                    <h5>n/a</h5>
+                                {% endif %}
+
+                            </div>
+                            <div class="col-md-3 text-center">
+                                {% if leaderboardP[loop.index-1].nbGames %}
+                                    <h5 class="mb-1">{{ leaderboardP[loop.index-1].nbGames }}</h5>
+                                {% else %}
+                                    <h5>n/a</h5>
+                                {% endif %}
+
+                            </div>
+                            <div class="col-md-3 text-center">
+                                {% if leaderboardP[loop.index-1].nbGames %}
+                                    {% if leaderboardP[loop.index-1].ratioWL %}
+                                        {% set matchsWon = leaderboardP[loop.index-1].ratioWL * leaderboardP[loop.index-1].nbGames %}
+                                        <h5 class="mb-1">{{ matchsWon }}</h5>
+                                    {% else %}
+                                        <h5 class="mb-1">0</h5>
+                                    {% endif %}
+                                {% else %}
+                                    <h5 class="mb-1">n/a</h5>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endif %}
+</div>
+</div>
+</div>
+</div> #}
+</body>
+</html>
