@@ -51,7 +51,7 @@
                     <td style="text-align: center">{% if leaderboardP[loop.index-1].nbGames %}
                             {% if leaderboardP[loop.index-1].ratioWL %}
                                 {% set matchsWon = leaderboardP[loop.index-1].ratioWL * leaderboardP[loop.index-1].nbGames %}
-                                {{ matchsWon }}
+                                {{ matchsWon | round }}
                             {% else %}
                                 0
                             {% endif %}

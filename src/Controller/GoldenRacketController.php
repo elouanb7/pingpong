@@ -115,7 +115,7 @@ class GoldenRacketController extends AbstractController
         }
         $leaderboard = $playersl;
         $days = $goldenRacket->getDay();
-        if ($this->session->get('newDayVar', true)) {
+        if ($this->session->get('newDayVar')==true) {
             foreach ($leaderboard as $player) {
                 $email = (new TemplatedEmail())
                     ->from(new Address('elouanb7.test@gmail.com', 'PingPong Bot'))

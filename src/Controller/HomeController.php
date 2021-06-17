@@ -53,7 +53,7 @@ class HomeController extends AbstractController
     {
         $this->session->set('goldenRacketId', null);
         $this->session->set('tournamentId', null);
-
+        $this->session->set('newDayVar', false);
         $games = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false], ['playedAt' => 'DESC'], 6);
         $allGames = $this->gameRepo->findBy(['isTournament' => false, 'isGoldenRacket' => false], ['playedAt' => 'DESC']);
         $tournaments = $this->tournamentRepo->findBy([], ['createdAt' => 'DESC'], 6);
