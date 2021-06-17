@@ -118,8 +118,95 @@ class PlayerController extends AbstractController
     public function leaderboard(Request $request, EntityManagerInterface $manager): Response
     {
         $players = $this->playerRepo->FindAll();
+        foreach ($players as $player) {
+            $this->statsService->matchsStats($player);
+            $this->statsService->tournamentStats($player);
+            $this->statsService->goldenRacketStats($player);
+        }
+        $playerMatchs = $this->playerRepo->findBy([],['matchPlayed' => 'DESC'], 1);
+        $playerMatchs = $playerMatchs[0];
+        if ($playerMatchs->getMatchPlayed()===null){
+            $playerMatchs = null;
+        }
+        $playerMatchsWon = $this->playerRepo->findBy([],['matchWon' => 'DESC'], 1);
+        $playerMatchsWon = $playerMatchsWon[0];
+        if ($playerMatchsWon->getMatchWon()===null){
+            $playerMatchsWon = null;
+        }
+        $playerMatchsLost = $this->playerRepo->findBy([],['matchLost' => 'DESC'], 1);
+        $playerMatchsLost = $playerMatchsLost[0];
+        if ($playerMatchsLost->getMatchLost()===null){
+            $playerMatchsLost = null;
+        }
+        $playerMatchsRatio = $this->playerRepo->findBy([],['matchRatio' => 'DESC'], 1);
+        $playerMatchsRatio = $playerMatchsRatio[0];
+        if ($playerMatchsRatio->getMatchRatio()===null){
+            $playerMatchsRatio = null;
+        }
+        $playerMatchPointsOf11 = $this->playerRepo->findBy([],['matchAveragePointsOf11' => 'DESC'], 1);
+        $playerMatchPointsOf11 = $playerMatchPointsOf11[0];
+        if ($playerMatchPointsOf11->getMatchAveragePointsOf11()===null){
+            $playerMatchPointsOf11 = null;
+        }
+        $playerMatchPointsOf21 = $this->playerRepo->findBy([],['matchAveragePointsOf21' => 'DESC'], 1);
+        $playerMatchPointsOf21 = $playerMatchPointsOf21[0];
+        if ($playerMatchPointsOf21->getMatchAveragePointsOf21()===null){
+            $playerMatchPointsOf21 = null;
+        }
+        $playerTournaments = $this->playerRepo->findBy([],['tournamentPlayed' => 'DESC'], 1);
+        $playerTournaments = $playerTournaments[0];
+        if ($playerTournaments->getTournamentPlayed()===null){
+            $playerTournaments = null;
+        }
+        $playerTournamentsWon = $this->playerRepo->findBy([],['tournamentWon' => 'DESC'], 1);
+        $playerTournamentsWon = $playerTournamentsWon[0];
+        if ($playerTournamentsWon->getTournamentWon()===null){
+            $playerTournamentsWon = null;
+        }
+        $playersTournaments = $this->playerRepo->findBy([],['tournamentAveragePlacement' => 'ASC']);
+        $playerTournamentsAverage = [];
+        foreach ($playersTournaments as $player){
+            if ($player->getTournamentAveragePlacement()!==null){
+                array_push($playerTournamentsAverage, $player);
+                break;
+            }
+        }
+        $playerTournamentsAverage = $playerTournamentsAverage[0];
+        $playerGoldenRackets = $this->playerRepo->findBy([],['goldenRacketPlayed' => 'DESC'], 1);
+        $playerGoldenRackets = $playerGoldenRackets[0];
+        if ($playerGoldenRackets->getGoldenRacketPlayed()===null){
+            $playerGoldenRackets = null;
+        }
+        $playerGoldenRacketsWon = $this->playerRepo->findBy([],['goldenRacketWon' => 'DESC'], 1);
+        $playerGoldenRacketsWon = $playerGoldenRacketsWon[0];
+        if ($playerGoldenRacketsWon->getGoldenRacketWon()===null){
+            $playerGoldenRacketsWon = null;
+        }
+        $playersGoldenRackets = $this->playerRepo->findBy([],['goldenRacketAveragePlacement' => 'ASC']);
+        $playerGoldenRacketsAverage = [];
+        foreach ($playersGoldenRackets as $player){
+            if ($player->getGoldenRacketAveragePlacement()!==null){
+                array_push($playerGoldenRacketsAverage, $player);
+                break;
+            }
+        }
+        $playerGoldenRacketsAverage = $playerGoldenRacketsAverage[0];
+
+
         return $this->render('player/leaderboard.html.twig', [
-            'players' => $players
+            'players' => $players,
+            'playerMatchs' => $playerMatchs,
+            'playerMatchsWon' => $playerMatchsWon,
+            'playerMatchsLost' => $playerMatchsLost,
+            'playerMatchsRatio' => $playerMatchsRatio,
+            'playerMatchPointsOf11' => $playerMatchPointsOf11,
+            'playerMatchPointsOf21' => $playerMatchPointsOf21,
+            'playerTournaments' => $playerTournaments,
+            'playerTournamentsWon' => $playerTournamentsWon,
+            'playerTournamentsAverage' => $playerTournamentsAverage,
+            'playerGoldenRackets' => $playerGoldenRackets,
+            'playerGoldenRacketsWon' => $playerGoldenRacketsWon,
+            'playerGoldenRacketsAverage' => $playerGoldenRacketsAverage,
         ]);
     }
 

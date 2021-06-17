@@ -50,7 +50,7 @@ class StatsService extends AbstractController
         $scores = 0;
 
         foreach ($pands as $jouers){
-            if ($jouers->getScore()){
+            if ($jouers->getScore() || $jouers->getScore()==0 && $jouers->getScore()!==null){
                 array_push($played, $jouers);
                 $scores = $scores + $jouers->getScore();
             }
