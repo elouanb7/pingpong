@@ -111,11 +111,9 @@ class PlayerController extends AbstractController
 
     /**
      * @Route("/leaderboard", name="leaderboard")
-     * @param Request $request
-     * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function leaderboard(Request $request, EntityManagerInterface $manager): Response
+    public function leaderboard(): Response
     {
         $players = $this->playerRepo->FindAll();
         foreach ($players as $player) {
@@ -275,10 +273,9 @@ class PlayerController extends AbstractController
     /**
      * @Route("/admin/edit_player/choose", name="choose_edit")
      * @param Request $request
-     * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function chooseEdit(Request $request, EntityManagerInterface $manager): Response
+    public function chooseEdit(Request $request): Response
     {
         $form = $this->createForm(ChoosePlayerType::class);
         $form->handleRequest($request);
@@ -359,10 +356,9 @@ class PlayerController extends AbstractController
     /**
      * @Route("/admin/del_player/choose", name="choose_del")
      * @param Request $request
-     * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function chooseDel(Request $request, EntityManagerInterface $manager): Response
+    public function chooseDel(Request $request): Response
     {
         $form = $this->createForm(ChoosePlayerType::class);
         $form->handleRequest($request);
@@ -388,11 +384,9 @@ class PlayerController extends AbstractController
     /**
      * @Route("/admin/del_player/confirm/{id}", name="del_confirm")
      * @param Player $player
-     * @param Request $request
-     * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function confirmDel(Player $player,Request $request, EntityManagerInterface $manager): Response
+    public function confirmDel(Player $player): Response
     {
         return $this->render('admin/confirm_del.twig', [
             'player' => $player,
@@ -401,11 +395,10 @@ class PlayerController extends AbstractController
     /**
      * @Route("/admin/del_player/{id}", name="del_player")
      * @param Player $player
-     * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function delPlayer(Player $player,Request $request, EntityManagerInterface $manager): Response
+    public function delPlayer(Player $player, EntityManagerInterface $manager): Response
     {
             $manager->remove($player);
             //

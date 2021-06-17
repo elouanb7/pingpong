@@ -66,7 +66,7 @@ class GoldenRacketController extends AbstractController
     /**
      * @Route("/goldenRacket/{id}/day/{day}", name="golden_day")
      */
-    public function day($id, Request $request, $day): Response
+    public function day($id, $day): Response
     {
         $nextGames = $this->gameRepo->findBy(['goldenRacket' => $id, 'scoreP1' => null, 'scoreP2' => null], ['playedAt' => 'ASC'], 1);
         $this->session->set('goldenRacketId', $id);
