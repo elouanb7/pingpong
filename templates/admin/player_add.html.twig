@@ -24,7 +24,6 @@
                     <div class="col-6">
                         <div class="alert alert-danger" role="alert" aria-live="assertive" aria-atomic="true">
                             <div class="toast-body">
-
                                 {% for violation in violations %}
                                     {{ violation.message }}
                                     {% if violations[loop.index] is defined %}

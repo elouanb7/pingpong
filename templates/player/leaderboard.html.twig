@@ -42,7 +42,6 @@
             <hr>
             <div class="row">
                 <div class="card-columns ml-3 mr-3">
-                    {# <div class="col-6 mb-3"> #}
                     <div class="card alert-success">
                         <div class="card-body">
                             <h5 class="card-title">Matchs : </h5>
@@ -89,14 +88,14 @@
                                     Le plus grand nombre de défaites : n/a
                                 {% endif %}
                                 <br>
-                                {% if playerMatchsLost is not same as(null) %}
+                                {#{% if playerMatchsLost is not same as(null) %}
                                     Joueur ayant le plus de victoires en 2 points d'écart : <span
                                         class="h6">A ajouter</span>
                                     <br>
                                     Joueur ayant le plus de défaites en 2 points d'écart : <span
                                         class="h6">A ajouter</span>
                                     <br>
-                                {% endif %}
+                                {% endif %}#}
                                 {% if playerMatchsRatio is not same as(null) %}
                                     Joueur ayant le meilleur ratio Victoires / Défaites : <span
                                         class="h6">{{ playerMatchsRatio.matchRatio | number_format(2, ',', ' ') }} {% if app.user %}{% if app.user.fullName==playerMatchsRatio.fullName %}

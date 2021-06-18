@@ -147,7 +147,6 @@ class GameController extends AbstractController
                 $edit = false;
             }
         }
-
                 return $this->render('game/detail.html.twig', [
                     'edit' => $edit,
                     'game' => $game,
